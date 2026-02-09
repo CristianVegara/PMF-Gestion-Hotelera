@@ -1,0 +1,5 @@
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('admin', '$2a$10$8.UnVuG9HHgffUDAlk8q6OuVGkqCYAdVqKz3T.Y6B5V7Bw.T.Y6B5', 'ROLE_ADMIN', '2024-01-01 10:00:00');
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('jdoe', '$2a$10$vI8BvWZpC8ZpX9.Z7H6O.uM8vI8BvWZpC8ZpX9.Z7H6O.uM8vI8B', 'ROLE_USER', '2024-01-15 14:30:00');
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('mgarcia', '$2a$10$L2k.XyZ1.234567890abcdL2k.XyZ1.234567890abcdL2k.XyZ', 'ROLE_USER', '2024-02-01 09:15:00');
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('moderator_01', '$2a$10$PqR.StU1.vWxYz2.345678PqR.StU1.vWxYz2.345678PqR.St', 'ROLE_MODERATOR', '2024-02-05 18:45:00');
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('guest_user', '$2a$10$AbC.DeF1.gHiJkL3.456789AbC.DeF1.gHiJkL3.456789AbC.De', 'ROLE_GUEST', CURRENT_TIMESTAMP);
