@@ -1,37 +1,24 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import Navbar from './components/Navbar'; 
+import Home from './pages/Home';
+import Clients from './pages/Clients';
+import ClientForm from './pages/ClientForm';
 
 function App() {
-  const [message, setMessage] = useState('Cargando...')
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    fetch('api/test')
-  .then((res) => res.text())
-  .then((data) => setMessage(data))
-  .catch(() => setMessage('Error al conectar con backend'))
-
-  }, [])
-
   return (
-    <>
-      <div>
-        <h1>Vite + React 4</h1>
+    <Router>
+      <Navbar />
+      <div style={{ marginTop: '80px', padding: '20px' }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/clients" element={<Clients />} />
+          <Route path="/clients/form" element={<ClientForm />} />
+          <Route path="/clients/edit/:id" element={<ClientForm />} />
+        </Routes>
       </div>
-      <div className="backend-message">
-        <strong>Backend dice:</strong> {message}
-      </div>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>Edit <code>src/App.jsx</code> and save to test HMR</p>
-      </div>
-      <p className="read-the-docs">
-        Click on the logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
