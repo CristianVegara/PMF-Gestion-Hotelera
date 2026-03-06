@@ -25,3 +25,8 @@ INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('77889900P', 'Ricard
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('88990011Q', 'Silvia Ramos', '611999000', 'silvia.ramos@email.com');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('99001122R', 'Alberto Castro', '622111222', 'alberto.castro@email.com');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('00112233S', 'Irene Ortega', '622222333', 'irene.ortega@email.com');
+-- Inserts de facturas de prueba
+INSERT INTO invoices (cliente_id, concepto, noches, precio, subtotal, iva, total, pagada) VALUES
+(1, 'Habitación Doble', 2, 50.00, 100.00, 10.00, 110.00, FALSE),
+(2, 'Suite Ejecutiva', 3, 80.00, 240.00, 24.00, 264.00, TRUE),
+(3, 'Habitación Individual', 1, 40.00, 40.00, 4.00, 44.00, FALSE);
