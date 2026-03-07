@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionmediterraneo.hotel.entities.Client;
@@ -34,9 +35,11 @@ public class ClientController {
     private IClientService clientService;
 
     @GetMapping
-    public List<Client> getClients() {
+    public List<Client> getClients(
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String direction) {
         try {
-            return clientService.findAll();
+            return clientService.findAllSorted(sortBy, direction);
         } catch(Exception e) {
             System.err.println("-- ERROR EN CLIENTES --");
             e.printStackTrace();

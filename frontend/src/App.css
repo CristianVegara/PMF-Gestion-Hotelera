@@ -2,18 +2,23 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  text-align: left;
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  height: 4em;
+  padding: 1em;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -35,8 +40,23 @@
 
 .card {
   padding: 2em;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
 }
 
 .read-the-docs {
-  color: #888;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  #root {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .card {
+    padding: 1.5em;
+  }
 }

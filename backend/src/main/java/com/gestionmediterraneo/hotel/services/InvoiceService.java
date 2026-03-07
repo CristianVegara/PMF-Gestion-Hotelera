@@ -2,6 +2,7 @@ package com.gestionmediterraneo.hotel.services;
 
 import com.gestionmediterraneo.hotel.daos.IInvoiceDAO;
 import com.gestionmediterraneo.hotel.entities.Invoice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,11 @@ public class InvoiceService {
 
     public List<Invoice> findAll() {
         return invoiceDao.findAll();
+    }
+
+    public List<Invoice> findAllSorted(String sortBy, String direction) {
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        return invoiceDao.findAll(sort);
     }
 
     public Optional<Invoice> findById(Long id) {

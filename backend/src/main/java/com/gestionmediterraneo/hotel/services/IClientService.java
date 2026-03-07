@@ -14,4 +14,6 @@ public interface IClientService {
 	public Client findByDni(String dni);
 	
 	public Client delete(Client client);
+	
+	List<Client> findAllSorted(String sortBy, String direction);
 }

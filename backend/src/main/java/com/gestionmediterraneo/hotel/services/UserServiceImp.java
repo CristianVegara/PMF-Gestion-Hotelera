@@ -5,19 +5,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.gestionmediterraneo.hotel.daos.IUserDAO;
 import com.gestionmediterraneo.hotel.entities.User;
+
 
 //Implementación del servicio del user
 @Service
 public class UserServiceImp implements IUserService {
 
-	@Autowired
-	private IUserDAO userDao;
-	
-	@Override
-	@Transactional(readOnly = true)
-	public List<User> findAll(){
-		return (List<User>) userDao.findAll();
-	}
+    @Autowired
+    private IUserDAO userDao;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> findAll() {
+        return (List<User>) userDao.findAll();
+    }
 }

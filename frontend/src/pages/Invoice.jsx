@@ -4,13 +4,15 @@ import "./Invoice.css";
 
 const Invoice = () => {
   const [invoices, setInvoices] = useState([]);
+  const [sortBy, setSortBy] = useState("id");
+  const [direction, setDirection] = useState("asc");
 
   useEffect(() => {
     fetchInvoices();
-  }, []);
+  }, [sortBy, direction]);
 
   const fetchInvoices = () => {
-    fetch("/api/invoice") 
+    fetch(`/api/invoice?sortBy=${sortBy}&direction=${direction}`)
       .then(res => res.json())
       .then(data => setInvoices(data))
       .catch(err => console.error("Error cargando facturas:", err));
@@ -31,6 +33,28 @@ const Invoice = () => {
       <div className="clients-container">
         <div className="header-actions">
           <h2 className="title-list">Listado de Facturas</h2>
+
+        {/* no soy capaz de arregarlo   
+        <div className="inv-sort-controls">
+            <label>
+              Ordenar por:
+              <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+                <option value="id">ID</option>
+                <option value="cliente">Cliente</option>
+                <option value="total">Total</option>
+                <option value="fecha">Fecha</option>
+              </select>
+            </label>
+
+            <label>
+              Dirección:
+              <select value={direction} onChange={e => setDirection(e.target.value)}>
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
+              </select>
+            </label>
+          </div> */}
+
           <Link to="/invoice/form" className="btn-new">Nueva Factura</Link>
         </div>
 

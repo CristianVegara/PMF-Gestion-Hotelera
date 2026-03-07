@@ -30,13 +30,9 @@ public class InvoiceController {
     private IClientDAO clientDao;
 
     @GetMapping
-    public List<Invoice> getInvoices() {
-        try {
-            return invoiceService.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+    public List<Invoice> getInvoices(@RequestParam(defaultValue = "id") String sortBy,
+                                     @RequestParam(defaultValue = "asc") String direction) {
+        return invoiceService.findAllSorted(sortBy, direction);
     }
 
     @GetMapping("/{id}")

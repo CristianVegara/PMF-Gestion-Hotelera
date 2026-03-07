@@ -6,14 +6,17 @@ import Clients from './pages/Clients';
 import ClientForm from './pages/ClientForm';
 import Invoice from './pages/Invoice';
 import InvoiceForm from './pages/InvoiceForm';
+import Login from './pages/Login';
+
 
 function App() {
   return (
     <Router>
       <Navbar />
-      <div style={{ marginTop: '80px', padding: '20px' }}>
+      <div className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/clients/form" element={<ClientForm />} />
           <Route path="/clients/edit/:id" element={<ClientForm />} />

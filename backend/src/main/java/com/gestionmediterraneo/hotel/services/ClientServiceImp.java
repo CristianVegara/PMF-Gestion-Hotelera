@@ -1,4 +1,5 @@
 package com.gestionmediterraneo.hotel.services;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -43,5 +44,12 @@ public class ClientServiceImp implements IClientService {
 		clientDao.delete(client);
 		return client;
 	}
+	
+	  @Override
+	    @Transactional(readOnly = true)
+	    public List<Client> findAllSorted(String sortBy, String direction) {
+	        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+	        return clientDao.findAll(sort);
+	    }
 
 }

@@ -4,21 +4,26 @@ import './Clients.css';
 
 const Clients = () => {
   const [clients, setClients] = useState([]);
+  const [sortBy, setSortBy] = useState('id');
+  const [direction, setDirection] = useState('asc');
 
   useEffect(() => {
     fetchClients();
-  }, []);
+  }, [sortBy, direction]);
 
-  const fetchClients = () => {
-    fetch('/api/clients')
-      .then(res => res.json())
-      .then(data => setClients(data))
-      .catch(err => console.error(err));
+  const fetchClients = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/clients?sortBy=${sortBy}&direction=${direction}`);
+      const data = await response.json();
+      setClients(data);
+    } catch (error) {
+      console.error('Error al cargar los clientes:', error);
+    }
   };
 
   const deleteClient = (id) => {
     if (window.confirm('¿Estás seguro de eliminar este cliente?')) {
-      fetch(`/api/clients/${id}`, { method: 'DELETE' })
+      fetch(`http://localhost:8080/api/clients/${id}`, { method: 'DELETE' })
         .then(res => {
           if (res.ok) fetchClients();
         })
@@ -33,7 +38,25 @@ const Clients = () => {
           <h2 className="title-list">Listado de Clientes</h2>
           <Link to="/clients/form" className="btn-new"> Nuevo Cliente</Link>
         </div>
-        
+        <div className="sort-controls">
+          <label>
+            Ordenar por:
+            <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+              <option value="id">ID</option>
+              <option value="nombre">Nombre</option>
+              <option value="dni">DNI</option>
+              <option value="correo">Correo</option>
+            </select>
+          </label>
+          <label>
+            Dirección:
+            <select value={direction} onChange={e => setDirection(e.target.value)}>
+              <option value="asc">Ascendente</option>
+              <option value="desc">Descendente</option>
+            </select>
+          </label>
+        </div>
+
         <div className="table-responsive">
           <table className="clients-table">
             <thead>
