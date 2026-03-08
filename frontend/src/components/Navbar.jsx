@@ -11,7 +11,7 @@ const Navbar = () => {
                 <li><Link to="/clients">Clientes</Link></li>
             {/* <li><Link to="/clients/form">Nuevo Cliente</Link></li> */}
                 <li><Link to="/invoice">Facturas</Link></li>
-                <li><Link to="/rooms">Habitaciones</Link></li
+                <li><Link to="/rooms">Habitaciones</Link></li>
             {/* <li><Link to="/invoice/form">Nueva Factura</Link></li> */}
             </ul>
         </div>
