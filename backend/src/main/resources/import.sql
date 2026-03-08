@@ -30,3 +30,8 @@ INSERT INTO invoices (cliente_id, concepto, noches, precio, subtotal, iva, total
 (1, 'Habitación Doble', 2, 50.00, 100.00, 10.00, 110.00, FALSE),
 (2, 'Suite Ejecutiva', 3, 80.00, 240.00, 24.00, 264.00, TRUE),
 (3, 'Habitación Individual', 1, 40.00, 40.00, 4.00, 44.00, FALSE);
+
+--Inserts de habitaciones de prueba
+INSERT INTO room (number, type, price, available) VALUES (101, 'Individual', 60.00, 1);
+INSERT INTO room (number, type, price, available) VALUES (102, 'Individual', 60.00, 1);
+INSERT INTO room (number, type, price, available) VALUES (202, 'Doble', 90.00, 0);

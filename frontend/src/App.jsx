@@ -6,6 +6,9 @@ import Clients from './pages/Clients';
 import ClientForm from './pages/ClientForm';
 import Invoice from './pages/Invoice';
 import InvoiceForm from './pages/InvoiceForm';
+import Rooms from './pages/Rooms';
+import RoomForm from './pages/RoomsForm';
+
 
 function App() {
   return (
@@ -20,6 +23,9 @@ function App() {
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/invoice/form" element={<InvoiceForm />} />
           <Route path="/invoice/edit/:id" element={<InvoiceForm />} />
+          <Route path="/rooms" element={<Rooms />} />
+          <Route path="/rooms/form" element={<RoomForm />} />    
+          <Route path="/rooms/edit/:id" element={<RoomForm />} /> 
         </Routes>
       </div>
     </Router>
