@@ -9,6 +9,8 @@ import InvoiceForm from './pages/InvoiceForm';
 import Login from './pages/Login';
 import Rooms from './pages/Rooms';
 import RoomForm from './pages/RoomsForm';
+import Activities from './pages/Activities';
+import Activity  from './pages/Activity';
 
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
       <div className="main-content">
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/activities" element={<Activities />} />
+          <Route path="/activities/:id" element={<Activity />} />
           <Route path="/login" element={<Login />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/clients/form" element={<ClientForm />} />

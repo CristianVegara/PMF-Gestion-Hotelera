@@ -1,0 +1,237 @@
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --bg: #f1f5f9;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --text-light: #64748b;
+  --danger: #ef4444;
+  --accent: #f59e0b;
+  --border: #e2e8f0;
+  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
+}
+
+.activities-page {
+  padding: 40px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: var(--bg);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.activities-header {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.activities-header h1 {
+  font-size: 2rem;
+  color: var(--text);
+  margin: 0;
+  font-weight: 800;
+}
+
+.activities-header p {
+  color: var(--text-light);
+  margin: 4px 0 0;
+}
+
+.activity-form-container {
+  background: var(--surface);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 40px;
+  border: 1px solid var(--border);
+}
+
+.section-title h2, .section-title h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.activity-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.input-group input {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 13px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.calendar-container {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 40px;
+}
+
+.calendar-card {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.react-calendar {
+  width: 100% !important;
+  border: none !important;
+  font-family: inherit !important;
+}
+
+.react-calendar__navigation button {
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.react-calendar__tile {
+  padding: 1.5em 0.5em !important;
+  border-radius: 8px;
+}
+
+.react-calendar__tile--active {
+  background: var(--primary) !important;
+  color: white !important;
+}
+
+.highlight {
+  background: #fff7ed !important;
+  color: var(--accent) !important;
+  font-weight: 800 !important;
+  box-shadow: inset 0 0 0 1px #ffedd5;
+}
+
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.activity-card {
+  background: var(--surface);
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.activity-card:hover {
+  transform: translateX(4px);
+  border-color: var(--primary);
+}
+
+.activity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.activity-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.price-tag {
+  background: #f0fdf4;
+  color: #166534;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.delete-icon {
+  background: transparent;
+  color: var(--text-light);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-icon:hover {
+  background: var(--danger);
+  color: white;
+  border-color: var(--danger);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-light);
+  background: #f8fafc;
+  border-radius: var(--radius);
+  border: 2px dashed var(--border);
+}
+
+@media (max-width: 850px) {
+  .calendar-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.clickable-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: #3b82f6; 
+}

@@ -25,13 +25,33 @@ INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('77889900P', 'Ricard
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('88990011Q', 'Silvia Ramos', '611999000', 'silvia.ramos@email.com');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('99001122R', 'Alberto Castro', '622111222', 'alberto.castro@email.com');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('00112233S', 'Irene Ortega', '622222333', 'irene.ortega@email.com');
--- Inserts de facturas de prueba
-INSERT INTO invoices (cliente_id, concepto, noches, precio, subtotal, iva, total, pagada) VALUES
-(1, 'Habitación Doble', 2, 50.00, 100.00, 10.00, 110.00, FALSE),
-(2, 'Suite Ejecutiva', 3, 80.00, 240.00, 24.00, 264.00, TRUE),
-(3, 'Habitación Individual', 1, 40.00, 40.00, 4.00, 44.00, FALSE);
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('12345678A', 'Juan Pérez', '600111222', 'juan.perez@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('23456789B', 'María García', '600222333', 'maria.garcia@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('34567890C', 'Carlos Rodríguez', '600333444', 'carlos.rod@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('45678901D', 'Ana Martínez', '600444555', 'ana.mtz@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('56789012E', 'Luis López', '600555666', 'luis.lopez@email.com');
 
 --Inserts de habitaciones de prueba
 INSERT INTO room (number, type, price, available) VALUES (101, 'Individual', 60.00, 1);
 INSERT INTO room (number, type, price, available) VALUES (102, 'Individual', 60.00, 1);
 INSERT INTO room (number, type, price, available) VALUES (202, 'Doble', 90.00, 0);
+
+--Inserts de actividades de prueba
+INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Excursión en 4x4', 45.00, '2026-05-19 10:00:00', '2026-05-19 12:00:00', 10);
+INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Kayak en la costa', 30.00, '2026-05-19 12:30:00', '2026-05-19 14:30:00', 8);
+INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Ruta de senderismo', 20.00, '2026-05-19 15:00:00', '2026-05-19 17:00:00', 15);
+INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Paseo en barco', 60.00, '2026-05-20 09:30:00', '2026-05-20 11:30:00', 12);
+INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Buceo básico', 80.00, '2026-05-20 12:00:00', '2026-05-20 14:00:00', 6);
+
+--Inserts tabla actividades-clientes
+INSERT INTO activities_clients (activity_id, client_id) VALUES (1, 1);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (1, 2);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (2, 3);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (3, 4);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (3, 5);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 1);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 2);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 3);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 4);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 5);
+INSERT INTO activities_clients (activity_id, client_id) VALUES (5, 1);

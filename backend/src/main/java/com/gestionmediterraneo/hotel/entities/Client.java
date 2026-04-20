@@ -1,10 +1,17 @@
 package com.gestionmediterraneo.hotel.entities;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -31,6 +38,11 @@ public class Client {
 	@NotEmpty(message="No puede estar vacío")
 	@Column(nullable=false, unique=true)
 	String correo;
+	
+	@ManyToMany(mappedBy = "clients")
+    @JsonIgnore
+	private List<Activity> activities;
+	
 
 	public Long getId() {
 		return id;
@@ -72,7 +84,12 @@ public class Client {
 		this.correo = correo;
 	}
 	
-	
-	
+	public List<Activity> getActivities() {
+	    return activities;
+	}
+
+	public void setActivities(List<Activity> activities) {
+	    this.activities = activities;
+	}
 	
 }
