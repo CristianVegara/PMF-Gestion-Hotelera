@@ -1,9 +1,14 @@
---Inserts de usuarios
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('admin', '$2a$10$8.UnVuG9HHgffUDAlk8q6OuVGkqCYAdVqKz3T.Y6B5V7Bw.T.Y6B5', 'ROLE_ADMIN', '2024-01-01 10:00:00');
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('jdoe', '$2a$10$vI8BvWZpC8ZpX9.Z7H6O.uM8vI8BvWZpC8ZpX9.Z7H6O.uM8vI8B', 'ROLE_USER', '2024-01-15 14:30:00');
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('mgarcia', '$2a$10$L2k.XyZ1.234567890abcdL2k.XyZ1.234567890abcdL2k.XyZ', 'ROLE_USER', '2024-02-01 09:15:00');
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('moderator_01', '$2a$10$PqR.StU1.vWxYz2.345678PqR.StU1.vWxYz2.345678PqR.St', 'ROLE_MODERATOR', '2024-02-05 18:45:00');
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('guest_user', '$2a$10$AbC.DeF1.gHiJkL3.456789AbC.DeF1.gHiJkL3.456789AbC.De', 'ROLE_GUEST', CURRENT_TIMESTAMP);
+-- Usuarios
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('admin', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'ADMIN', CURRENT_TIMESTAMP);
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp1', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp2', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp3', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp4', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp5', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp6', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp7', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp8', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
+INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp9', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
 --Inserts de clientes
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('12345678A', 'Juan Pérez', '600111222', 'juan.perez@email.com');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('23456789B', 'María García', '600222333', 'maria.garcia@email.com');
@@ -55,3 +60,62 @@ INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 3);
 INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 4);
 INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 5);
 INSERT INTO activities_clients (activity_id, client_id) VALUES (5, 1);
+
+-- Empleados
+INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Juan', 'Pérez', 'Recepción', 1);
+INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Ana', 'García', 'Recepción', 2);
+INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Carlos', 'Sánchez', 'Recepción', 3);
+INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Marta', 'López', 'Limpieza', 4);
+INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Luis', 'Gómez', 'Limpieza', 5);
+INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Elena', 'Rivas', 'Limpieza', 6);
+INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Pedro', 'Torres', 'Seguridad', 7);
+INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Sofía', 'Castro', 'Seguridad', 8);
+INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Diego', 'Ruiz', 'Seguridad', 9);
+-- Horarios (Solo los 3 turnos principales)
+INSERT INTO schedules (nombre_turno, hora_entrada, hora_salida) VALUES ('Turno Mañana', '08:00:00', '15:00:00');
+INSERT INTO schedules (nombre_turno, hora_entrada, hora_salida) VALUES ('Turno Tarde', '15:00:00', '22:00:00');
+INSERT INTO schedules (nombre_turno, hora_entrada, hora_salida) VALUES ('Turno Noche', '22:00:00', '08:00:00');
+-- Shifts (Lunes 27 de Abril al Domingo 3 de Mayo, 2026)
+-- Lunes 27
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-27', 1, 1, 'Equipo A');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-27', 2, 1, 'Equipo A');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-27', 3, 1, 'Equipo A');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-27', 4, 2, 'Equipo B');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-27', 5, 2, 'Equipo B');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-27', 6, 2, 'Equipo B');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-27', 7, 3, 'Equipo C');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-27', 8, 3, 'Equipo C');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-27', 9, 3, 'Equipo C');
+-- Martes 28
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 1, 1, 'Sin cambios');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 2, 1, 'Sin cambios');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 3, 1, 'Sin cambios');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 4, 2, 'Sin cambios');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 5, 2, 'Sin cambios');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 6, 2, 'Sin cambios');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 7, 3, 'Sin cambios');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 8, 3, 'Sin cambios');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 9, 3, 'Sin cambios');
+-- Miércoles 29 (Rotación de ejemplo)
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 7, 1, 'Rotación');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 8, 1, 'Rotación');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 9, 1, 'Rotación');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 1, 2, 'Rotación');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 2, 2, 'Rotación');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 3, 2, 'Rotación');
+-- Jueves 30
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-30', 4, 1, 'Día completo');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-30', 5, 1, 'Día completo');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-30', 6, 1, 'Día completo');
+-- Viernes 01 (Mayo)
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-01', 1, 3, 'Festivo');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-01', 2, 3, 'Festivo');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-01', 3, 3, 'Festivo');
+-- Sábado 02
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-02', 4, 2, 'Fin de semana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-02', 5, 2, 'Fin de semana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-02', 6, 2, 'Fin de semana');
+-- Domingo 03
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-03', 7, 1, 'Fin de semana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-03', 8, 1, 'Fin de semana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-03', 9, 1, 'Fin de semana');

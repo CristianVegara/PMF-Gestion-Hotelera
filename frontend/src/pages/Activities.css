@@ -235,3 +235,21 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   border-color: #3b82f6; 
 }
+
+.input-group select {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: white;
+}
+
+.input-group input[type="date"] {
+  padding: 11px; /
+}
+
+.price-tag {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}

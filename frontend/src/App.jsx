@@ -11,6 +11,8 @@ import Rooms from './pages/Rooms';
 import RoomForm from './pages/RoomsForm';
 import Activities from './pages/Activities';
 import Activity  from './pages/Activity';
+import Shifts  from './pages/Shifts';
+
 
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
           <Route path="/rooms" element={<Rooms />} />
           <Route path="/rooms/form" element={<RoomForm />} />    
           <Route path="/rooms/edit/:id" element={<RoomForm />} /> 
+          <Route path="/shifts" element={<Shifts />} /> 
         </Routes>
       </div>
     </Router>

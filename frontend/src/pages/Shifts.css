@@ -1,0 +1,149 @@
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --bg: #f1f5f9;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --text-light: #64748b;
+  --danger: #ef4444;
+  --accent-yellow: #5bfe6b46; 
+  --accent-yellow-light: #ff2b2b65;
+  --border: #e2e8f0;
+  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
+}
+
+.shifts-page {
+  padding: 40px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: var(--bg);
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+.shifts-header {
+  margin-bottom: 32px;
+}
+
+.shifts-header h1 {
+  font-size: 2rem;
+  color: var(--text);
+  margin: 0;
+  font-weight: 800;
+}
+
+.shift-form-container {
+  background: var(--surface);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 40px;
+  border: 1px solid var(--border);
+}
+
+.shift-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.input-group select, .input-group input {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 30px;
+}
+
+.calendar-card {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ESTILO DEL CALENDARIO AMARILLO */
+.highlight-yellow {
+  background: var(--accent-yellow) !important;
+  color: var(--text) !important;
+  font-weight: bold !important;
+  border-radius: 8px;
+}
+
+.shift-card {
+  background: var(--surface);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge-yellow {
+  background: var(--accent-yellow-light);
+  color: #854d0e;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.shift-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+.btn-delete {
+  background: transparent;
+  color: var(--text-light);
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-light);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+@media (max-width: 800px) {
+  .calendar-grid { grid-template-columns: 1fr; }
+}
