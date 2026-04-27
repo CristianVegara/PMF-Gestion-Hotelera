@@ -38,13 +38,13 @@ public class RoomController {
         try {
             room = roomService.findById(id);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("mensaje", "Error al realizar la consulta");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (room == null) {
-            response.put("mensaje", "La habitación ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+            response.put("mensaje", "La habitación ID: " + id + " no existe");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
@@ -57,19 +57,13 @@ public class RoomController {
         Map<String, Object> response = new HashMap<>();
 
         if (result.hasErrors()) {
-            List<String> errors = result.getFieldErrors()
-                    .stream()
-                    .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
-                    .collect(Collectors.toList());
-            response.put("errors", errors);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return validarCampos(result);
         }
 
         try {
             roomNew = roomService.save(room);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar el insert en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("mensaje", "Error al insertar en la base de datos");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -79,13 +73,17 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Room room, @PathVariable Long id) {
+    public ResponseEntity<?> update(@Valid @RequestBody Room room, BindingResult result, @PathVariable Long id) {
         Room currentRoom = roomService.findById(id);
         Room roomUpdated = null;
         Map<String, Object> response = new HashMap<>();
 
+        if (result.hasErrors()) {
+            return validarCampos(result);
+        }
+
         if (currentRoom == null) {
-            response.put("mensaje", "Error: no se pudo editar, la habitación ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+            response.put("mensaje", "Error: no se pudo editar, el ID: " + id + " no existe");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
@@ -93,18 +91,16 @@ public class RoomController {
             currentRoom.setNumber(room.getNumber());
             currentRoom.setType(room.getType());
             currentRoom.setPrice(room.getPrice());
-            currentRoom.setAvailable(room.isAvailable());
-
+            currentRoom.setStatus(room.getStatus());
             roomUpdated = roomService.save(currentRoom);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al actualizar la habitación en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("mensaje", "Error al actualizar");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         response.put("mensaje", "La habitación ha sido actualizada con éxito");
         response.put("room", roomUpdated);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK); // Cambiado a OK (200)
     }
 
     @DeleteMapping("/{id}")
@@ -113,15 +109,14 @@ public class RoomController {
         Room roomEliminar = roomService.findById(id);
 
         if (roomEliminar == null) {
-            response.put("mensaje", "Error: no se pudo eliminar, la habitación ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+            response.put("mensaje", "Error: ID no encontrado");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
         try {
             roomService.delete(roomEliminar);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al eliminar la habitación de la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("mensaje", "Error al eliminar");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -129,4 +124,13 @@ public class RoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    private ResponseEntity<?> validarCampos(BindingResult result) {
+        Map<String, Object> response = new HashMap<>();
+        List<String> errors = result.getFieldErrors()
+                .stream()
+                .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+                .collect(Collectors.toList());
+        response.put("errors", errors);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }

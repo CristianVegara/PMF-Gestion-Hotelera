@@ -9,5 +9,4 @@ import com.gestionmediterraneo.hotel.entities.Room;
 
 @Repository
 public interface IRoomDAO extends JpaRepository<Room, Long> {
-    List<Room> findByAvailable(boolean available);
 }  
