@@ -32,16 +32,35 @@
   color: #555;
 }
 
+/* 🔥 INPUTS CORREGIDOS */
 .login-placeholder input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 15px;
   border-radius: 6px;
   border: 1px solid #ccc;
   box-sizing: border-box;
-  color: #333;
+
+  background-color: #1a252f; /* fondo oscuro */
+  color: #ffffff;            /* texto blanco */
+  font-size: 0.95rem;
+
+  transition: all 0.2s ease;
 }
 
+/* Placeholder más claro */
+.login-placeholder input::placeholder {
+  color: #cfcfcf;
+}
+
+/* Focus más visible */
+.login-placeholder input:focus {
+  outline: none;
+  border-color: #218838;
+  box-shadow: 0 0 6px rgba(33, 136, 56, 0.4);
+}
+
+/* BOTÓN LOGIN */
 .btn-login {
   width: 100%;
   padding: 12px;
@@ -58,6 +77,7 @@
   background-color: #1a692b;
 }
 
+/* RESPONSIVE */
 @media (max-width: 480px) {
   .login-container {
     padding: 30px 20px;

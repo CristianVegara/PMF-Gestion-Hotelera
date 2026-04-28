@@ -15,6 +15,7 @@
     transition: all 0.3s ease;
 }
 
+/* HEADER */
 .header-actions {
     display: flex;
     justify-content: space-between;
@@ -32,7 +33,7 @@
 }
 
 .btn-new {
-    background-color: #007bff; 
+    background-color: #007bff;
     color: white;
     padding: 12px 24px;
     border-radius: 6px;
@@ -46,6 +47,42 @@
     transform: translateY(-1px);
 }
 
+/* SORT CONTROLS */
+.sort-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    padding: 10px 0;
+}
+
+.sort-controls label {
+    font-weight: 600;
+    color: #1a252f;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+}
+
+.sort-controls select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    color: #1a252f;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.sort-controls select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
+}
+
+/* TABLE */
 .table-responsive {
     border-radius: 8px;
     overflow-x: auto;
@@ -90,6 +127,7 @@
     text-align: center;
 }
 
+/* ACTION BUTTONS */
 .btn-edit {
     background-color: #f39c12;
     color: white;
@@ -120,4 +158,60 @@
 
 .btn-delete:hover {
     background-color: #a93226;
+}
+
+.invoice-breakdown {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.invoice-subtotal {
+    color: #6c757d;
+}
+
+.invoice-discount {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.invoice-discount.empty {
+    color: #adb5bd;
+    font-style: italic;
+}
+
+.invoice-total {
+    font-weight: 800;
+    color: #1a252f;
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px dashed #dee2e6;
+}
+
+/* BADGE DESCUENTO */
+.discount-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 6px;
+}
+
+.discount-badge.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.discount-badge.inactive {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* UX EXTRA */
+.invoices-table tr:hover .invoice-breakdown {
+    transform: scale(1.01);
+    transition: all 0.2s ease;
 }

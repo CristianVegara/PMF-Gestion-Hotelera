@@ -11,6 +11,7 @@ body {
     width: 100%;
 }
 
+/* SIDEBAR PRINCIPAL */
 .sidebar {
     width: 220px;
     background-color: #1e3a8a;
@@ -26,6 +27,7 @@ body {
     z-index: 1000;
 }
 
+/* BRAND */
 .sidebar .brand {
     font-size: 24px;
     font-weight: bold;
@@ -33,6 +35,7 @@ body {
     margin-bottom: 40px;
 }
 
+/* MENU */
 .sidebar ul {
     list-style: none;
     padding: 0;
@@ -51,12 +54,41 @@ body {
     display: block;
     font-weight: 500;
     border-radius: 4px;
+    transition: background-color 0.2s ease;
 }
 
 .sidebar a:hover {
     background-color: #3b5ba1;
 }
 
+/* 👤 USUARIO LOGUEADO */
+.user-info {
+    color: #ffffff;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* 🔴 BOTÓN LOGOUT */
+.btn-logout {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    width: 80%;
+    margin: 0 auto 20px auto;
+    display: block;
+    transition: background-color 0.2s ease;
+}
+
+.btn-logout:hover {
+    background-color: #a93226;
+}
+
+/* CONTENIDO PRINCIPAL */
 .main-content {
     margin-left: 220px; 
     padding: 20px;
@@ -64,12 +96,14 @@ body {
     overflow-y: auto;
 }
 
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .sidebar {
         position: relative;
         width: 100%;
         height: auto;
     }
+
     .main-content {
         margin-left: 0;
     }

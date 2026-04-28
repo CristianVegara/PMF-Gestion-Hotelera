@@ -55,3 +55,13 @@ INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 3);
 INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 4);
 INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 5);
 INSERT INTO activities_clients (activity_id, client_id) VALUES (5, 1);
+
+-- Inerts de descuentos
+INSERT INTO discounts (concepto, porcentaje, fecha_caducidad)
+VALUES ('Descuento Fidelidad', 10, '2026-12-31');
+
+INSERT INTO discounts (concepto, porcentaje, fecha_caducidad)
+VALUES ('Descuento VIP', 15, '2026-10-31');
+
+INSERT INTO discounts (concepto, porcentaje, fecha_caducidad)
+VALUES ('Promoción Verano', 5, '2026-08-31');
