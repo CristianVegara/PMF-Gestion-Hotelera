@@ -1,9 +1,11 @@
 package com.gestionmediterraneo.hotel.controllers;
 
 import com.gestionmediterraneo.hotel.entities.Client;
+import com.gestionmediterraneo.hotel.entities.Discount;
 import com.gestionmediterraneo.hotel.entities.Invoice;
 import com.gestionmediterraneo.hotel.services.InvoiceService;
 import com.gestionmediterraneo.hotel.daos.IClientDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -75,11 +77,33 @@ public class InvoiceController {
             response.put("mensaje", "Cliente ID: " + invoice.getCliente().getId() + " no existe");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+
         invoice.setCliente(cliente);
 
-        invoice.setSubtotal(invoice.getPrecio().multiply(new BigDecimal(invoice.getNoches())));
-        invoice.setIva(invoice.getSubtotal().multiply(new BigDecimal("0.10")));
-        invoice.setTotal(invoice.getSubtotal().add(invoice.getIva()));
+        // ===== CÁLCULO DESCUENTO =====
+        double porcentajeDescuento = 0.0;
+
+        if (cliente.getDiscounts() != null) {
+            for (Discount d : cliente.getDiscounts()) {
+                porcentajeDescuento += d.getPorcentaje();
+            }
+        }
+
+        BigDecimal subtotal = invoice.getPrecio()
+                .multiply(new BigDecimal(invoice.getNoches()));
+
+        BigDecimal descuento = subtotal
+                .multiply(new BigDecimal(porcentajeDescuento / 100));
+
+        BigDecimal subtotalConDescuento = subtotal.subtract(descuento);
+
+        BigDecimal iva = subtotalConDescuento
+                .multiply(new BigDecimal("0.10"));
+
+        invoice.setSubtotal(subtotalConDescuento);
+        invoice.setIva(iva);
+        invoice.setTotal(subtotalConDescuento.add(iva));
+
         invoice.setPagada(false);
 
         try {
@@ -95,6 +119,9 @@ public class InvoiceController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    // =========================
+    // UPDATE CON DESCUENTOS
+    // =========================
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody Invoice invoiceData, @PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
@@ -116,12 +143,35 @@ public class InvoiceController {
             currentInvoice.setConcepto(invoiceData.getConcepto());
             currentInvoice.setNoches(invoiceData.getNoches());
             currentInvoice.setPrecio(invoiceData.getPrecio());
-            currentInvoice.setSubtotal(invoiceData.getPrecio().multiply(new BigDecimal(invoiceData.getNoches())));
-            currentInvoice.setIva(currentInvoice.getSubtotal().multiply(new BigDecimal("0.10")));
-            currentInvoice.setTotal(currentInvoice.getSubtotal().add(currentInvoice.getIva()));
+
+            // ===== CÁLCULO DESCUENTO =====
+            double porcentajeDescuento = 0.0;
+
+            if (cliente.getDiscounts() != null) {
+                for (Discount d : cliente.getDiscounts()) {
+                    porcentajeDescuento += d.getPorcentaje();
+                }
+            }
+
+            BigDecimal subtotal = invoiceData.getPrecio()
+                    .multiply(new BigDecimal(invoiceData.getNoches()));
+
+            BigDecimal descuento = subtotal
+                    .multiply(new BigDecimal(porcentajeDescuento / 100));
+
+            BigDecimal subtotalConDescuento = subtotal.subtract(descuento);
+
+            BigDecimal iva = subtotalConDescuento
+                    .multiply(new BigDecimal("0.10"));
+
+            currentInvoice.setSubtotal(subtotalConDescuento);
+            currentInvoice.setIva(iva);
+            currentInvoice.setTotal(subtotalConDescuento.add(iva));
+
             currentInvoice.setPagada(invoiceData.isPagada());
 
             invoiceService.save(currentInvoice);
+
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al actualizar la factura");
             response.put("error", e.getMessage());
@@ -135,7 +185,7 @@ public class InvoiceController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Map<String,Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         Invoice invoiceEliminar = invoiceService.findById(id).orElse(null);
 
         if (invoiceEliminar == null) {
@@ -154,5 +204,4 @@ public class InvoiceController {
         response.put("mensaje", "Factura eliminada con éxito");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 }

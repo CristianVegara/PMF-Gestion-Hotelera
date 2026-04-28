@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Invoice.css";
 
 const Invoice = () => {
+
   const [invoices, setInvoices] = useState([]);
   const [sortBy, setSortBy] = useState("id");
   const [direction, setDirection] = useState("asc");
@@ -15,51 +16,57 @@ const Invoice = () => {
     fetch(`/api/invoice?sortBy=${sortBy}&direction=${direction}`)
       .then(res => res.json())
       .then(data => setInvoices(data))
-      .catch(err => console.error("Error cargando facturas:", err));
+      .catch(err => console.error("Error:", err));
   };
 
   const deleteInvoice = (id) => {
-    if (window.confirm("¿Estás seguro de eliminar esta factura?")) {
+    if (window.confirm("¿Eliminar factura?")) {
       fetch(`/api/invoice/${id}`, { method: "DELETE" })
         .then(res => {
           if (res.ok) fetchInvoices();
-        })
-        .catch(err => console.error(err));
+        });
     }
   };
 
   return (
     <div className="clients-page-wrapper">
+
       <div className="clients-container">
+
         <div className="header-actions">
           <h2 className="title-list">Listado de Facturas</h2>
 
-        {/* no soy capaz de arregarlo   
-        <div className="inv-sort-controls">
-            <label>
-              Ordenar por:
-              <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
-                <option value="id">ID</option>
-                <option value="cliente">Cliente</option>
-                <option value="total">Total</option>
-                <option value="fecha">Fecha</option>
-              </select>
-            </label>
-
-            <label>
-              Dirección:
-              <select value={direction} onChange={e => setDirection(e.target.value)}>
-                <option value="asc">Ascendente</option>
-                <option value="desc">Descendente</option>
-              </select>
-            </label>
-          </div> */}
-
-          <Link to="/invoice/form" className="btn-new">Nueva Factura</Link>
+          <Link to="/invoice/form" className="btn-new">
+            Nueva Factura
+          </Link>
         </div>
 
+        {/* CONTROLES */}
+        <div className="sort-controls">
+
+          <label>
+            Ordenar por:
+            <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+              <option value="id">ID</option>
+              <option value="cliente.nombre">Cliente</option>
+              <option value="total">Total</option>
+            </select>
+          </label>
+
+          <label>
+            Dirección:
+            <select value={direction} onChange={e => setDirection(e.target.value)}>
+              <option value="asc">Ascendente</option>
+              <option value="desc">Descendente</option>
+            </select>
+          </label>
+
+        </div>
+
+        {/* TABLA */}
         <div className="table-responsive">
           <table className="clients-table">
+
             <thead>
               <tr>
                 <th>ID</th>
@@ -68,9 +75,10 @@ const Invoice = () => {
                 <th>Concepto</th>
                 <th>Noches</th>
                 <th>Total (€)</th>
-                <th className="text-center">Acciones</th>
+                <th>Acciones</th>
               </tr>
             </thead>
+
             <tbody>
               {invoices.map(inv => (
                 <tr key={inv.id}>
@@ -79,16 +87,23 @@ const Invoice = () => {
                   <td>{inv.cliente?.dni}</td>
                   <td>{inv.concepto}</td>
                   <td>{inv.noches}</td>
-                  <td>{inv.total?.toFixed(2)}</td>
+                  <td>{inv.total?.toFixed(2)} €</td>
+
                   <td className="text-center">
-                    <Link to={`/invoice/edit/${inv.id}`} className="btn-edit">Editar</Link>
-                    <button onClick={() => deleteInvoice(inv.id)} className="btn-delete">Eliminar</button>
+                    <Link to={`/invoice/edit/${inv.id}`} className="btn-edit">
+                      Editar
+                    </Link>
+                    <button onClick={() => deleteInvoice(inv.id)} className="btn-delete">
+                      Eliminar
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
+
       </div>
     </div>
   );

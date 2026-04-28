@@ -43,6 +43,10 @@ public class Client {
     @JsonIgnore
 	private List<Activity> activities;
 	
+	@ManyToMany(mappedBy = "clients")
+	@JsonIgnore
+	private List<Discount> discounts;
+	
 
 	public Long getId() {
 		return id;
@@ -91,5 +95,14 @@ public class Client {
 	public void setActivities(List<Activity> activities) {
 	    this.activities = activities;
 	}
+	
+	public List<Discount> getDiscounts() {
+	    return discounts;
+	}
+
+	public void setDiscounts(List<Discount> discounts) {
+	    this.discounts = discounts;
+	}
+
 	
 }
