@@ -1,187 +1,187 @@
-.rooms-page-wrapper {
-    background-color: #e9ecef; 
-    min-height: 100vh;
-    padding: 40px 20px;
+/* --- VARIABLES Y RESET --- */
+:root {
+  --primary: #1a252f;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --danger: #dc3545;
+  --info: #007bff;
+  --bg-light: #f8f9fa;
+  --border: #dee2e6;
+  --shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
-.rooms-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+/* --- DISEÑO PRINCIPAL (LAYOUT) --- */
+.main-layout {
+  display: flex;
+  gap: 30px;
+  width: 98%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px 0;
+  align-items: flex-start;
 }
 
-.title-list {
-    color: #1a252f; 
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 800;
-}
+.table-column { flex: 1; min-width: 0; } /* Ajuste flexible */
+.info-column { flex: 0 0 380px; }
 
+/* --- COMPONENTES COMUNES --- */
 .header-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    border-bottom: 3px solid #dee2e6;
-    padding-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.btn-new {
-    background-color: #218838;
-    color: white;
-    padding: 12px 24px;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: 700;
-    transition: all 0.2s ease;
+.scrollable-table, .mini-client-list, .scrollable-modal-body, .agenda-list {
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  background: white;
 }
 
-.btn-new:hover {
-    background-color: #1a692b;
-    transform: translateY(-1px);
+.scrollable-table { max-height: 700px; border-radius: 8px; }
+
+/* --- TABLAS (General) --- */
+.rooms-table, .history-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.table-responsive {
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #dee2e6;
+.rooms-table th, .rooms-table td, 
+.history-table th, .history-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
 }
 
-.rooms-table {
-    width: 100%;
-    border-collapse: collapse;
+.rooms-table th, .history-table th {
+  background: var(--bg-light);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.rooms-table thead {
-    background-color: #1a252f; 
+.row-selected td {
+  background-color: #f0f2f4;
+  border-left: 4px solid var(--primary);
 }
 
-.rooms-table th {
-    color: #ffffff;
-    padding: 18px 15px;
-    text-align: left;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.85rem;
+/* --- VISTA CUADROS (GRID) --- */
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 15px;
 }
 
-.rooms-table td {
-    padding: 16px 15px;
-    border-bottom: 1px solid #dee2e6;
-    color: #212529;
-    background-color: #ffffff;
-    transition: background-color 0.2s ease;
+.room-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.rooms-table tr:hover td {
-    background-color: #dee2e6 !important; 
-    color: #000000 !important;
-    cursor: pointer;
+.room-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.room-card.selected { border: 2px solid var(--info); background: #f0f7ff; }
+.room-card.disponible { border-top: 5px solid var(--success); }
+.room-card.ocupada { border-top: 5px solid var(--danger); }
+
+.room-card-number { font-size: 1.3rem; font-weight: bold; display: block; }
+.room-card-status { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
+
+/* --- ESTADOS (PILLS) --- */
+.status-pill {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+.status-pill.disponible { background: #d4edda; color: #155724; }
+.status-pill.ocupada { background: #f8d7da; color: #721c24; }
+
+/* --- PANEL DERECHO --- */
+.sticky-panel {
+  position: sticky;
+  top: 20px;
+  background: var(--bg-light);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
-.rooms-table tr:last-child td {
-    border-bottom: none;
+.room-agenda {
+  background: white;
+  border: 1px dashed var(--secondary);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 15px 0;
 }
 
-.text-center { text-align: center; }
+.agenda-list { border: none; max-height: 120px; }
+.clickable-booking:hover { background: #f0f7ff; cursor: pointer; }
 
-.btn-edit {
-    background-color: #f39c12;
-    color: white;
-    padding: 8px 14px;
-    text-decoration: none;
-    border-radius: 4px;
-    margin-right: 8px;
-    font-size: 0.85rem;
-    font-weight: 700;
+/* --- FORMULARIOS E INPUTS --- */
+.date-group, .edit-date-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
 }
 
-.btn-delete {
-    background-color: #c0392b;
-    color: white;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 700;
+label { font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; color: var(--primary); }
+
+.search-input-inline, .date-input-field {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
-.btn-delete:hover { background-color: #a93226; }
-
-/* Formulario */
-.form-container {
-    max-width: 500px;
-    margin: 40px auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    color: #333;
+/* --- BOTONES --- */
+.btn-action, .btn-confirm-final {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.alert-errors {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    border: 1px solid #f5c6cb;
+.btn-action { background: var(--primary); color: white; }
+.btn-confirm-final { background: var(--success); color: white; margin: 10px 0; }
+.btn-secondary { background: var(--secondary); color: white; padding: 8px 15px; border-radius: 4px; border: none; cursor: pointer;}
+.view-btn { border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; background: transparent; }
+.view-btn.active { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold; }
+
+/* --- MODALES --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.alert-errors ul {
-    margin: 0;
-    padding-left: 20px;
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
-.form-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
+.modal-large { max-width: 750px; }
+.modal-header { background: var(--bg-light); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+.modal-body { padding: 20px; }
+.scrollable-modal-body { max-height: 450px; border: none; }
+.modal-footer { padding: 15px; background: var(--bg-light); text-align: right; border-top: 1px solid var(--border); }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.form-group input[type="text"],
-.form-group input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.button-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.btn-save {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    flex: 1;
-    font-weight: bold;
-}
-
-.btn-cancel {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    flex: 1;
-    font-weight: bold;
-}
+/* --- SCROLLBAR --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
