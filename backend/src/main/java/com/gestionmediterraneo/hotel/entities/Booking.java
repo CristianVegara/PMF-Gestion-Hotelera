@@ -3,6 +3,8 @@ package com.gestionmediterraneo.hotel.entities;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="booking")
 public class Booking {
@@ -10,20 +12,41 @@ public class Booking {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-
     private LocalDate fechaEntrada;
     private LocalDate fechaSalida;
     private String estado;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @JsonBackReference
     private Client cliente;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room habitacion;
     
+    public enum BookingStatus {
+	    SIN_CONFIRMAR, CONFIRMADA, TERMINADA, CANCELADA
+	}
+    
+    @PrePersist
+    @PreUpdate 
+    public void asignarEstadoAutomatico() {
+        LocalDate hoy = LocalDate.now();
 
+        if (this.fechaEntrada == null || this.fechaSalida == null) {
+            this.estado = "PENDIENTE";
+            return;
+        }
+
+        if (hoy.isAfter(this.fechaSalida)) {
+            this.estado = "TERMINADA";
+        } else if (!hoy.isBefore(this.fechaEntrada)) {
+            this.estado = "CONFIRMADA";
+        } else {
+            this.estado = "PRÓXIMA";
+        }
+    }
 	public Booking() {
 	}
 	
@@ -32,9 +55,9 @@ public class Booking {
 		this.id = id;
 		this.fechaEntrada = fechaEntrada;
 		this.fechaSalida = fechaSalida;
-		this.estado = estado;
 		this.cliente = cliente;
 		this.habitacion = habitacion;
+		asignarEstadoAutomatico();
 	}
 
 	public Long getId() {
@@ -65,9 +88,6 @@ public class Booking {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
 
 	public Client getCliente() {
 		return cliente;
@@ -85,5 +105,5 @@ public class Booking {
 		this.habitacion = habitacion;
 	}
 
-    
+	
 }

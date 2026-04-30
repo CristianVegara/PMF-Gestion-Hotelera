@@ -6,6 +6,10 @@ const Clients = () => {
   const [clients, setClients] = useState([]);
   const [sortBy, setSortBy] = useState('id');
   const [direction, setDirection] = useState('asc');
+  
+  // Estados para el Modal de Reservas
+  const [showModal, setShowModal] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null);
 
   useEffect(() => {
     fetchClients();
@@ -31,6 +35,22 @@ const Clients = () => {
     }
   };
 
+  // Abrir ventana de historial de reservas
+  const openBookingHistory = (client) => {
+    setSelectedClient(client);
+    setShowModal(true);
+  };
+
+  // Colores para los estados (usando el campo 'estado' de tu JSON)
+  const getStatusStyle = (estado) => {
+    switch (estado) {
+      case 'TERMINADA': return { color: '#6c757d', fontWeight: 'bold' }; // Gris
+      case 'CONFIRMADA': return { color: '#28a745', fontWeight: 'bold' }; // Verde
+      case 'PRÓXIMA': return { color: '#007bff', fontWeight: 'bold' };    // Azul
+      default: return { color: '#333', fontWeight: 'bold' };
+    }
+  };
+
   return (
     <div className="clients-page-wrapper">
       <div className="clients-container">
@@ -38,6 +58,7 @@ const Clients = () => {
           <h2 className="title-list">Listado de Clientes</h2>
           <Link to="/clients/form" className="btn-new"> Nuevo Cliente</Link>
         </div>
+        
         <div className="sort-controls">
           <label>
             Ordenar por:
@@ -79,6 +100,23 @@ const Clients = () => {
                   <td>{client.correo}</td>
                   <td className="text-center">
                     <Link to={`/clients/edit/${client.id}`} className="btn-edit">Editar</Link>
+                    
+                    <button 
+                      onClick={() => openBookingHistory(client)} 
+                      className="btn-history"
+                      style={{ 
+                        margin: '0 5px', 
+                        backgroundColor: '#6f42c1', 
+                        color: 'white', 
+                        border: 'none', 
+                        padding: '5px 10px', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer' 
+                      }}
+                    >
+                      Historial
+                    </button>
+
                     <button onClick={() => deleteClient(client.id)} className="btn-delete">Eliminar</button>
                   </td>
                 </tr>
@@ -87,6 +125,70 @@ const Clients = () => {
           </table>
         </div>
       </div>
+
+      {/* VENTANA MODAL DE RESERVAS ACTUALIZADA */}
+      {showModal && selectedClient && (
+        <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+          <div className="modal-content" style={{ backgroundColor: 'white', padding: '25px', borderRadius: '12px', width: '95%', maxWidth: '850px', maxHeight: '80vh', overflowY: 'auto' }}>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #eee', marginBottom: '15px', paddingBottom: '10px' }}>
+              <h3>Historial de Reservas: {selectedClient.nombre}</h3>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer' }}>&times;</button>
+            </div>
+            
+            <div className="history-body">
+              {selectedClient.bookings && selectedClient.bookings.length > 0 ? (
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ backgroundColor: '#f8f9fa', textAlign: 'left' }}>
+                      <th style={{ padding: '12px', borderBottom: '1px solid #ddd' }}>Nº Reserva</th>
+                      <th style={{ padding: '12px', borderBottom: '1px solid #ddd' }}>Habitación</th>
+                      <th style={{ padding: '12px', borderBottom: '1px solid #ddd' }}>Precio</th>
+                      <th style={{ padding: '12px', borderBottom: '1px solid #ddd' }}>Entrada</th>
+                      <th style={{ padding: '12px', borderBottom: '1px solid #ddd' }}>Salida</th>
+                      <th style={{ padding: '12px', borderBottom: '1px solid #ddd' }}>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedClient.bookings.map(book => (
+                      <tr key={book.id}>
+                        {/* Nº Reserva */}
+                        <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>#{book.id}</td>
+                        
+                        {/* Habitación: Sacamos 'number' del objeto 'habitacion' */}
+                        <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
+                          {book.habitacion ? book.habitacion.number : '---'}
+                        </td>
+
+                        {/* Precio: Sacamos 'price' del objeto 'habitacion' */}
+                        <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
+                          {book.habitacion ? `${book.habitacion.price}€` : '0€'}
+                        </td>
+                        
+                        <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>{new Date(book.fechaEntrada).toLocaleDateString()}</td>
+                        <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>{new Date(book.fechaSalida).toLocaleDateString()}</td>
+                        
+                        {/* Estado: Usamos 'book.estado' que es como viene en tu JSON */}
+                        <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
+                          <span style={getStatusStyle(book.estado)}>
+                            {book.estado}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>Este cliente no tiene estancias registradas.</p>
+              )}
+            </div>
+
+            <div style={{ marginTop: '20px', textAlign: 'right' }}>
+              <button onClick={() => setShowModal(false)} className="btn-delete" style={{ backgroundColor: '#6c757d', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer' }}>Cerrar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
