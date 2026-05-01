@@ -82,6 +82,11 @@ public class ClientController {
             response.put("errors", errors);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
         }
+        
+        if (client.getCorreo() == null || !client.getCorreo().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            response.put("mensaje", "El email no tiene un formato válido (xxx@x.x)");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
         try {
             clientNew = clientService.save(client);
@@ -98,14 +103,30 @@ public class ClientController {
     
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Client client, @PathVariable Long id) {
-        Client currentClient = clientService.findById(id);
-        Client clientUpdated = null;
+    public ResponseEntity<?> update(@Valid @RequestBody Client client, BindingResult result, @PathVariable Long id) {
+
         Map<String, Object> response = new HashMap<>();
 
+        if (result.hasErrors()) {
+            List<String> errors = result.getFieldErrors()
+                    .stream()
+                    .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+                    .collect(Collectors.toList());
+
+            response.put("Errores en los campos", errors);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        
+        if (client.getCorreo() == null || !client.getCorreo().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            response.put("mensaje", "El email no tiene un formato válido (xxx@x.x)");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        Client currentClient = clientService.findById(id);
+
         if (currentClient == null) {
-            response.put("mensaje", "Error: no se pudo editar, el cliente ID: ".concat(id.toString().concat(" no existe en la base de datos")));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+            response.put("mensaje", "Cliente no encontrado");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
         try {
@@ -114,17 +135,19 @@ public class ClientController {
             currentClient.setTelefono(client.getTelefono());
             currentClient.setCorreo(client.getCorreo());
 
-            clientUpdated = clientService.save(currentClient);
+            Client updated = clientService.save(currentClient);
+
+            response.put("mensaje", "Actualizado con éxito");
+            response.put("client", updated);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al actualizar el cliente en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("mensaje", "Error en la base de datos");
+            response.put("error", e.getMessage());
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        response.put("mensaje", "El cliente ha sido actualizado con éxito");
-        response.put("client", clientUpdated);
-
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
     
     
