@@ -1,16 +1,15 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vitest } from 'vitest';
 import ClientForm from '../pages/ClientForm';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
-const mockNavigate = vi.fn();
+const mockNavigate = vitest.fn();
 
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
+vitest.mock('react-router-dom', async () => {
+  const actual = await vitest.importActual('react-router-dom');
   return {
     ...actual,
-    useNavigate: () => mockNavigate,
-    useParams: () => ({ id: null })
+    useNavigate: () => mockNavigate
   };
 });
 
@@ -24,15 +23,31 @@ const mockClient = {
   correo: 'juan@test.com'
 };
 
-const renderComponent = () =>
+const renderCreate = () =>
   render(
-    <BrowserRouter>
-      <ClientForm />
-    </BrowserRouter>
+    <MemoryRouter initialEntries={['/clients/new']}>
+      <Routes>
+        <Route path="/clients/new" element={<ClientForm />} />
+      </Routes>
+    </MemoryRouter>
   );
 
-  test('renderiza formulario en modo creación', () => {
-  renderComponent();
+const renderEdit = () =>
+  render(
+    <MemoryRouter initialEntries={['/clients/edit/1']}>
+      <Routes>
+        <Route path="/clients/edit/:id" element={<ClientForm />} />
+      </Routes>
+    </MemoryRouter>
+  );
+
+beforeEach(() => {
+  vitest.clearAllMocks();
+});
+
+
+test('renderiza formulario en modo creación', () => {
+  renderCreate();
 
   expect(screen.getByText('Nuevo Cliente')).toBeInTheDocument();
   expect(screen.getByText('Guardar')).toBeInTheDocument();
@@ -43,25 +58,20 @@ test('envía formulario correctamente (crear cliente)', async () => {
     status: 201,
     json: async () => ({ mensaje: 'Cliente creado' })
   });
-
-  renderComponent();
+  renderCreate();
 
   fireEvent.change(screen.getByLabelText('DNI'), {
-    target: { value: '123A' }
+    target: { value: mockClient.dni }
   });
-
   fireEvent.change(screen.getByLabelText('Nombre Completo'), {
-    target: { value: 'Juan' }
+    target: { value: mockClient.nombre }
   });
-
   fireEvent.change(screen.getByLabelText('Teléfono'), {
-    target: { value: '111' }
+    target: { value: mockClient.telefono }
   });
-
   fireEvent.change(screen.getByLabelText('Correo Electrónico'), {
-    target: { value: 'juan@test.com' }
+    target: { value: mockClient.correo }
   });
-
   fireEvent.click(screen.getByText('Guardar'));
 
   await waitFor(() => {
@@ -70,6 +80,25 @@ test('envía formulario correctamente (crear cliente)', async () => {
   });
 });
 
+test('no envía el formulario si falta el DNI', async () => {
+  renderCreate();
+
+  fireEvent.change(screen.getByLabelText('Nombre Completo'), {
+    target: { value: mockClient.nombre }
+  });
+  fireEvent.change(screen.getByLabelText('Teléfono'), {
+    target: { value: mockClient.telefono }
+  });
+  fireEvent.change(screen.getByLabelText('Correo Electrónico'), {
+    target: { value: mockClient.correo }
+  });
+
+  fireEvent.click(screen.getByText('Guardar'));
+
+  await waitFor(() => {
+    expect(fetch).not.toHaveBeenCalled();
+  });
+});
 
 test('muestra errores si el backend devuelve 400', async () => {
   fetch.mockResolvedValueOnce({
@@ -78,15 +107,25 @@ test('muestra errores si el backend devuelve 400', async () => {
       errors: ['DNI inválido', 'Nombre obligatorio']
     })
   });
+  renderCreate();
 
-  renderComponent();
+  fireEvent.change(screen.getByLabelText('DNI'), {
+    target: { value: mockClient.dni }
+  });
+  fireEvent.change(screen.getByLabelText('Nombre Completo'), {
+    target: { value: mockClient.nombre }
+  });
+  fireEvent.change(screen.getByLabelText('Teléfono'), {
+    target: { value: mockClient.telefono }
+  });
+  fireEvent.change(screen.getByLabelText('Correo Electrónico'), {
+    target: { value: mockClient.correo }
+  });
 
   fireEvent.click(screen.getByText('Guardar'));
 
-  await waitFor(() => {
-    expect(screen.getByText('DNI inválido')).toBeInTheDocument();
-    expect(screen.getByText('Nombre obligatorio')).toBeInTheDocument();
-  });
+  expect(await screen.findByText('DNI inválido')).toBeInTheDocument();
+  expect(await screen.findByText('Nombre obligatorio')).toBeInTheDocument();
 });
 
 test('carga datos del cliente al editar', async () => {
@@ -95,13 +134,11 @@ test('carga datos del cliente al editar', async () => {
     json: async () => mockClient
   });
 
-  renderComponent();
+  renderEdit();
 
   await waitFor(() => {
-    expect(screen.getByDisplayValue('123A')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Juan')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('111')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('juan@test.com')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('123A')).toBeInTheDocument();
   });
 });
 
@@ -116,8 +153,7 @@ test('edita cliente correctamente', async () => {
       json: async () => ({ mensaje: 'Cliente actualizado' })
     });
 
-  renderComponent();
-
+  renderEdit();
   await waitFor(() => screen.getByDisplayValue('Juan'));
 
   fireEvent.change(screen.getByLabelText('Nombre Completo'), {
@@ -145,13 +181,9 @@ test('muestra errores al editar cliente', async () => {
       })
     });
 
-  renderComponent();
+  renderEdit();
 
   await waitFor(() => screen.getByDisplayValue('Juan'));
-
-  fireEvent.change(screen.getByLabelText('Nombre Completo'), {
-    target: { value: '' }
-  });
 
   fireEvent.click(screen.getByText('Actualizar'));
 

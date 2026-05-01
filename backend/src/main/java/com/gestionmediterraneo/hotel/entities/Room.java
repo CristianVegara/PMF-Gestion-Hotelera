@@ -1,24 +1,32 @@
 package com.gestionmediterraneo.hotel.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "habitacion")
 public class Room {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
    
+    @NotBlank(message = "no puede estar vacío")
     @Column(name = "numero", nullable = false, unique = true)
     private String number;
 
+    @NotBlank(message = "no puede estar vacío")
     @Column(name = "tipo", nullable = false)
     private String type;
 
+    @NotBlank(message = "no puede estar vacío")
     @Column(name = "estado")
     private String status;
 
+    @NotNull(message = "no puede ser nulo")
+    @Positive(message = "debe ser mayor que 0")
     @Column(name = "precio_por_noche")
     private Double price;
 

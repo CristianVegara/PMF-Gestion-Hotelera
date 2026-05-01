@@ -27,9 +27,9 @@ const Shifts = () => {
         fetch('http://localhost:8080/api/employees'),
         fetch('http://localhost:8080/api/schedules')
       ]);
-      setShifts(await resShifts.json());
-      setEmployees(await resEmps.json());
-      setSchedules(await resSchs.json());
+      setShifts(await resShifts.json() || []);
+      setEmployees(await resEmps.json() || []);
+      setSchedules(await resSchs.json() || []);
     } catch (error) {
       console.error("Error al cargar datos:", error);
     }

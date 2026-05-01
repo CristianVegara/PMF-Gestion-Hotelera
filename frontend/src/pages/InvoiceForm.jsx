@@ -16,36 +16,31 @@ const InvoiceForm = () => {
   const [clients, setClients] = useState([]);
   const [errors, setErrors] = useState([]);
 
-  // Traer clientes
   useEffect(() => {
     fetch("/api/clients")
       .then(res => res.json())
       .then(data => setClients(data))
-      .catch(err => console.error("Error cargando clientes:", err));
+      .catch(err => console.error(err));
   }, []);
 
-  // Cargar invoice si es edición
   useEffect(() => {
     if (id) {
       fetch(`/api/invoice/${id}`)
         .then(res => {
-          if (!res.ok) throw new Error("Error en la respuesta del servidor");
+          if (!res.ok) throw new Error();
           return res.json();
         })
         .then(data => {
           if (data) {
             setInvoice({
-              clienteId: data.cliente.id || "",
+              clienteId: data.cliente?.id || "",
               concepto: data.concepto || "",
               noches: data.noches || 1,
               precio: data.precio || 0
             });
           }
         })
-        .catch(err => {
-          console.error("Error cargando factura:", err);
-          navigate("/invoice");
-        });
+        .catch(() => navigate("/invoice"));
     }
   }, [id, navigate]);
 
@@ -88,16 +83,15 @@ const InvoiceForm = () => {
 
       const data = await response.json();
 
-      if (response.status === 201 || response.status === 200) {
-        alert(data.mensaje);
+      if (response.ok) {
+        alert(data.mensaje || "Ok");
         navigate("/invoice");
       } else if (response.status === 400 && data.errors) {
         setErrors(data.errors);
       } else {
-        alert(data.mensaje || "Error inesperado");
+        alert(data.mensaje || "Error");
       }
     } catch (err) {
-      console.error(err);
       alert("Error de conexión");
     }
   };
@@ -107,7 +101,7 @@ const InvoiceForm = () => {
       <h2>{id ? "Editar Factura" : "Nueva Factura"}</h2>
 
       {errors.length > 0 && (
-        <div className="alert-errors">
+        <div className="alert-errors" role="alert" aria-label="Lista de errores">
           <ul>
             {errors.map((err, index) => (
               <li key={index}>{err}</li>
@@ -118,75 +112,38 @@ const InvoiceForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Cliente</label>
-          <select
-            name="clienteId"
-            value={invoice.clienteId}
-            onChange={handleChange}
-            required
-          >
+          <label htmlFor="clienteId">Cliente</label>
+          <select id="clienteId" name="clienteId" value={invoice.clienteId} onChange={handleChange} required>
             <option value="">Selecciona un cliente</option>
             {clients.map(c => (
-              <option key={c.id} value={c.id}>
-                {c.nombre} ({c.dni})
-              </option>
+              <option key={c.id} value={c.id}>{c.nombre} ({c.dni})</option>
             ))}
           </select>
         </div>
 
         <div className="form-group">
-          <label>Concepto</label>
-          <input
-            type="text"
-            name="concepto"
-            value={invoice.concepto}
-            onChange={handleChange}
-            placeholder="Habitación doble"
-            required
-          />
+          <label htmlFor="concepto">Concepto</label>
+          <input id="concepto" type="text" name="concepto" value={invoice.concepto} onChange={handleChange} required />
         </div>
 
         <div className="form-group">
-          <label>Nº de noches</label>
-          <input
-            type="number"
-            name="noches"
-            value={invoice.noches}
-            onChange={handleChange}
-            min="1"
-            required
-          />
+          <label htmlFor="noches">Nº de noches</label>
+          <input id="noches" type="number" name="noches" value={invoice.noches} onChange={handleChange} min="1" required />
         </div>
 
         <div className="form-group">
-          <label>Precio por noche (€)</label>
-          <input
-            type="number"
-            name="precio"
-            value={invoice.precio}
-            onChange={handleChange}
-            min="0"
-            required
-          />
+          <label htmlFor="precio">Precio por noche (€)</label>
+          <input id="precio" type="number" name="precio" value={invoice.precio} onChange={handleChange} min="0" required />
         </div>
 
         <div className="invoice-summary">
-          <p><strong>Subtotal:</strong> {subtotal.toFixed(2)} €</p>
-          <p><strong>IVA (10%):</strong> {iva.toFixed(2)} €</p>
-          <p><strong>Total:</strong> {total.toFixed(2)} €</p>
+          <p>Subtotal: <span data-testid="subtotal-val">{subtotal.toFixed(2)} €</span></p>
+          <p>Total: <span data-testid="total-val">{total.toFixed(2)} €</span></p>
         </div>
 
         <div className="button-group">
-          <button type="submit" className="btn-save">
-            {id ? "Actualizar" : "Crear Factura"}
-          </button>
-          <button
-            type="button"
-            className="btn-cancel"
-            onClick={() => navigate("/invoice")}
-          >
-            Cancelar
-          </button>
+          <button type="submit" className="btn-save">{id ? "Actualizar" : "Crear Factura"}</button>
+          <button type="button" className="btn-cancel" onClick={() => navigate("/invoice")}>Cancelar</button>
         </div>
       </form>
     </div>

@@ -26,7 +26,6 @@ public class ShiftServiceImp implements IShiftService {
     @Override
     @Transactional(readOnly = true)
     public List<Shift> findShiftsByRange(LocalDate start, LocalDate end) {
-        // Asumiendo que crearás este método en tu IShiftDAO
         return shiftDao.findByFechaBetween(start, end);
     }
 

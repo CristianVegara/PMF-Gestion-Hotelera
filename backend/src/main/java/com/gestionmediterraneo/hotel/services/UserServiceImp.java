@@ -10,7 +10,6 @@ import com.gestionmediterraneo.hotel.daos.IUserDAO;
 import com.gestionmediterraneo.hotel.entities.User;
 
 
-//Implementación del servicio del user
 @Service
 public class UserServiceImp implements IUserService {
 

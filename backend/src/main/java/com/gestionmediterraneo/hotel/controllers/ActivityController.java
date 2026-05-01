@@ -143,7 +143,7 @@ public class ActivityController {
         response.put("mensaje", "La actividad ha sido actualizada con éxito");
         response.put("activity", activityUpdated);
 
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
     
     @DeleteMapping("/{id}")

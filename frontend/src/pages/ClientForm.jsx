@@ -5,7 +5,7 @@ import './ClientForm.css';
 const ClientForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [client, setClient] = useState({
     dni: '',
     nombre: '',
@@ -33,7 +33,7 @@ const ClientForm = () => {
           }
         })
         .catch(err => {
-          console.error("Error cargando cliente:", err);
+          console.error('Error cargando cliente:', err);
           navigate('/clients');
         });
     }
@@ -41,8 +41,8 @@ const ClientForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setClient(prevState => ({
-      ...prevState,
+    setClient(prev => ({
+      ...prev,
       [name]: value
     }));
   };
@@ -50,36 +50,36 @@ const ClientForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
-    
+
     const method = id ? 'PUT' : 'POST';
     const url = id ? `/api/clients/${id}` : '/api/clients';
 
     try {
       const response = await fetch(url, {
-        method: method,
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(client)
       });
 
       const data = await response.json();
 
-      if (response.status === 201 || response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         alert(data.mensaje);
         navigate('/clients');
       } else if (response.status === 400 && data.errors) {
         setErrors(data.errors);
       } else {
-        alert(data.mensaje || "Error inesperado");
+        alert(data.mensaje || 'Error inesperado');
       }
     } catch (err) {
-      alert("Error de conexión");
+      alert('Error de conexión');
     }
   };
 
   return (
     <div className="form-container">
       <h2>{id ? 'Editar Cliente' : 'Nuevo Cliente'}</h2>
-      
+
       {errors.length > 0 && (
         <div className="alert-errors">
           <ul>
@@ -92,50 +92,63 @@ const ClientForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>DNI</label>
-          <input 
-            type="text" 
+          <label htmlFor="dni">DNI</label>
+          <input
+            id="dni"
+            type="text"
             name="dni"
-            value={client.dni} 
-            onChange={handleChange} 
-            required 
+            value={client.dni}
+            onChange={handleChange}
+            required
           />
         </div>
+
         <div className="form-group">
-          <label>Nombre Completo</label>
-          <input 
-            type="text" 
+          <label htmlFor="nombre">Nombre Completo</label>
+          <input
+            id="nombre"
+            type="text"
             name="nombre"
-            value={client.nombre} 
-            onChange={handleChange} 
-            required 
+            value={client.nombre}
+            onChange={handleChange}
+            required
           />
         </div>
+
         <div className="form-group">
-          <label>Teléfono</label>
-          <input 
-            type="text" 
+          <label htmlFor="telefono">Teléfono</label>
+          <input
+            id="telefono"
+            type="text"
             name="telefono"
-            value={client.telefono} 
-            onChange={handleChange} 
-            required 
+            value={client.telefono}
+            onChange={handleChange}
+            required
           />
         </div>
+
         <div className="form-group">
-          <label>Correo Electrónico</label>
-          <input 
-            type="email" 
+          <label htmlFor="correo">Correo Electrónico</label>
+          <input
+            id="correo"
+            type="email"
             name="correo"
-            value={client.correo} 
-            onChange={handleChange} 
-            required 
+            value={client.correo}
+            onChange={handleChange}
+            required
           />
         </div>
+
         <div className="button-group">
           <button type="submit" className="btn-save">
             {id ? 'Actualizar' : 'Guardar'}
           </button>
-          <button type="button" className="btn-cancel" onClick={() => navigate('/clients')}>
+
+          <button
+            type="button"
+            className="btn-cancel"
+            onClick={() => navigate('/clients')}
+          >
             Cancelar
           </button>
         </div>
