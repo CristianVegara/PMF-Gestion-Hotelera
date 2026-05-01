@@ -43,7 +43,6 @@ public class BookingController {
             return ResponseEntity.status(409).body("La habitación ya está reservada en esas fechas.");
         }
 
-        booking.setEstado("CONFIRMADA");
         Booking newBooking = bookingRepository.save(booking);
 
         LocalDate hoy = LocalDate.now();

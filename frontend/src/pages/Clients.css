@@ -97,3 +97,33 @@
     padding: 10px 8px;
   }
 }
+
+.main-layout {
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+}
+
+.table-column { flex: 0 0 65%; }
+.info-column { flex: 0 0 32%; }
+
+.clickable-row { cursor: pointer; transition: 0.2s; }
+.clickable-row:hover { background-color: #f8f9fa; }
+
+.row-selected {
+  background-color: #e7f3ff !important;
+  border-left: 4px solid #007bff;
+}
+
+.no-selection-message {
+  text-align: center;
+  color: #6c757d;
+  padding: 40px 20px;
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+}
+
+.history-table {
+    font-size: 0.85rem;
+    width: 100%;
+}
