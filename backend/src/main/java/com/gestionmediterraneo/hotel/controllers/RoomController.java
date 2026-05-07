@@ -1,6 +1,9 @@
 package com.gestionmediterraneo.hotel.controllers;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.gestionmediterraneo.hotel.entities.Room;
+import com.gestionmediterraneo.hotel.enums.RoomType;
 import com.gestionmediterraneo.hotel.services.IRoomService;
 
 import jakarta.validation.Valid;
@@ -70,6 +74,94 @@ public class RoomController {
         response.put("mensaje", "La habitación ha sido creada con éxito");
         response.put("room", roomNew);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+    
+    @GetMapping("/dynamic")
+    public List<Room> getAllDynamic() {
+        return roomService.getAllRoomsWithDynamicPrice(LocalDate.now());
+    }
+
+    @GetMapping("/dynamic/{id}")
+    public ResponseEntity<?> showDynamic(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Room room = roomService.getRoomWithDynamicPrice(id, LocalDate.now());
+            if (room == null) {
+                response.put("mensaje", "La habitación ID: " + id + " no existe");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(room, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/dynamic/chart/type/{type}")
+    public ResponseEntity<?> getPriceChartByType(@PathVariable RoomType type) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            List<String> labels = new ArrayList<>();
+            List<Double> prices = new ArrayList<>();
+            
+            LocalDate currentMonth = LocalDate.now().withDayOfMonth(1);
+
+            for (int i = 11; i >= 0; i--) {
+                LocalDate targetDate = currentMonth.minusMonths(i);
+                Double price = roomService.getPriceByTypeAndDate(type, targetDate);
+                
+                labels.add(targetDate.getMonth().name() + " " + targetDate.getYear());
+                prices.add(price);
+            }
+
+            Map<String, Object> chartData = new LinkedHashMap<>();
+            chartData.put("type", type);
+            chartData.put("labels", labels);
+            chartData.put("datasets", prices);
+
+            return new ResponseEntity<>(chartData, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al generar la gráfica por tipo");
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @GetMapping("/dynamic/chart/all-types")
+    public ResponseEntity<?> getCombinedPriceChart() {
+        Map<String, Object> response = new LinkedHashMap<>();
+        try {
+            List<String> labels = new ArrayList<>();
+            Map<RoomType, List<Double>> datasets = new LinkedHashMap<>();
+            
+            for (RoomType type : RoomType.values()) {
+                datasets.put(type, new ArrayList<>());
+            }
+
+            LocalDate currentMonth = LocalDate.now().withDayOfMonth(1);
+
+            for (int i = 11; i >= 0; i--) {
+                LocalDate targetDate = currentMonth.minusMonths(i);
+                labels.add(targetDate.getMonth().name() + " " + targetDate.getYear());
+
+                for (RoomType type : RoomType.values()) {
+                    Double price = roomService.getPriceByTypeAndDate(type, targetDate);
+                    datasets.get(type).add(price);
+                }
+            }
+
+            response.put("labels", labels);
+            response.put("datasets", datasets);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Error al procesar el histórico combinado: " + e.getMessage());
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/{id}")

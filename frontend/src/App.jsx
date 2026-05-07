@@ -13,13 +13,14 @@ import RoomForm from './pages/RoomsForm';
 import Activities from './pages/Activities';
 import Activity from './pages/Activity';
 import Shifts  from './pages/Shifts';
+import RoomPriceType from './pages/RoomPriceType';
+import RoomPriceAll from './pages/RoomPriceAll';
 
 
 function App() {
 
   const [user, setUser] = useState(null);
 
-  // cargar sesión al inicio
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
@@ -30,7 +31,7 @@ function App() {
   return (
     <Router>
 
-      {/* pasamos user al navbar */}
+      {}
       <Navbar user={user} setUser={setUser} />
 
       <div className="main-content">
@@ -53,6 +54,9 @@ function App() {
           <Route path="/rooms" element={<Rooms />} />
           <Route path="/rooms/form" element={<RoomForm />} />
           <Route path="/rooms/edit/:id" element={<RoomForm />} />
+          
+          <Route path="/rooms/price/all" element={<RoomPriceAll />} />
+          <Route path="/rooms/price/:type" element={<RoomPriceType />} />
 
           <Route path="/shifts" element={<Shifts />} /> 
         </Routes>
