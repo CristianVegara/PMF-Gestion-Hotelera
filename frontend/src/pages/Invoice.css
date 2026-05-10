@@ -144,6 +144,23 @@
     background-color: #d68910;
 }
 
+.btn-print {
+    background-color: #198754;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s ease;
+}
+
+.btn-print:hover {
+    background-color: #146c43;
+}
+
 .btn-delete {
     background-color: #c0392b;
     color: white;

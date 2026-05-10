@@ -121,6 +121,18 @@ INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (238, 'Do
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (239, 'Doble', 'Disponible', 75.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (240, 'Doble', 'Disponible', 75.0);
 
+-- Interts Invoices
+INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Estancia Habitación Doble', 3, 80.00, 240.00, 50.40, 290.40, b'1', 1);
+INSERT INTO invoices(concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Suite Nupcial', 2, 150.00, 300.00, 63.00, 363.00, b'1', 2);
+INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Habitación Individual', 5, 55.00, 275.00, 57.75, 332.75, b'0', 3);
+INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Apartamento Turístico', 7, 120.00, 840.00, 176.40, 1016.40, b'1', 4);
+INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Estancia Fin de Semana', 2, 95.00, 190.00, 39.90, 229.90, b'0', 5);
+INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Habitación Triple', 4, 110.00, 440.00, 92.40, 532.40, b'1', 6);
+INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Bungalow Familiar', 10, 200.00, 2000.00, 420.00, 2420.00, b'1', 7);
+INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Estancia Económica', 1, 45.00, 45.00, 9.45, 54.45, b'0', 8);
+INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Habitación Vistas Mar', 3, 135.50, 406.50, 85.37, 491.87, b'1', 9);
+INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Pack Relax Todo Incluido', 4, 180.00, 720.00, 151.20, 871.20, b'0', 10);
+
 -- PLANTA 3: SUITES (301-320)
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (301, 'Suite', 'Disponible', 120.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (302, 'Suite', 'Disponible', 120.0);
