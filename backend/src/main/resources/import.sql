@@ -122,16 +122,53 @@ INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (239, 'Do
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (240, 'Doble', 'Disponible', 75.0);
 
 -- Interts Invoices
-INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Estancia Habitación Doble', 3, 80.00, 240.00, 50.40, 290.40, b'1', 1);
-INSERT INTO invoices(concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Suite Nupcial', 2, 150.00, 300.00, 63.00, 363.00, b'1', 2);
-INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Habitación Individual', 5, 55.00, 275.00, 57.75, 332.75, b'0', 3);
-INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Apartamento Turístico', 7, 120.00, 840.00, 176.40, 1016.40, b'1', 4);
+INSERT INTO invoices (concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada, cliente_id) VALUES ('Estancia Habitación Doble', 3, 80.00, 240.00, 5.00, 12.00, 'Bronze', 228.00, 22.80, 250.80, b'1', 1);
+INSERT INTO invoices (concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada, cliente_id) VALUES ('Suite Nupcial', 2, 150.00, 300.00, 10.00, 30.00, 'Silver', 270.00, 27.00, 297.00, b'1', 2);
+INSERT INTO invoices (concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada, cliente_id) VALUES ('Habitación Individual', 5, 55.00, 275.00, 15.00, 41.25, 'Gold', 233.75, 23.38, 257.13, b'0', 3);
+INSERT INTO invoices (concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada, cliente_id) VALUES ('Apartamento Turístico', 7, 120.00, 840.00, 20.00, 168.00, 'Diamante', 672.00, 67.20, 739.20, b'1', 4);
 INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Estancia Fin de Semana', 2, 95.00, 190.00, 39.90, 229.90, b'0', 5);
 INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Habitación Triple', 4, 110.00, 440.00, 92.40, 532.40, b'1', 6);
 INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Bungalow Familiar', 10, 200.00, 2000.00, 420.00, 2420.00, b'1', 7);
 INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Estancia Económica', 1, 45.00, 45.00, 9.45, 54.45, b'0', 8);
 INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Habitación Vistas Mar', 3, 135.50, 406.50, 85.37, 491.87, b'1', 9);
 INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cliente_id) VALUES ('Pack Relax Todo Incluido', 4, 180.00, 720.00, 151.20, 871.20, b'0', 10);
+
+-- Reservas de ejemplo para rangos de fidelidad
+-- Cliente 1: Bronze (3 reservas en 3 meses)
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-03-05', '2026-03-08', 'TERMINADA', 1, 1);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-04-02', '2026-04-05', 'TERMINADA', 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-05-03', '2026-05-06', 'TERMINADA', 1, 3);
+
+-- Cliente 2: Silver (5 reservas en 6 meses)
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-01-10', '2026-01-12', 'TERMINADA', 2, 4);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-02-12', '2026-02-14', 'TERMINADA', 2, 5);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-03-14', '2026-03-16', 'TERMINADA', 2, 6);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-04-16', '2026-04-18', 'TERMINADA', 2, 7);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-05-01', '2026-05-03', 'TERMINADA', 2, 8);
+
+-- Cliente 3: Gold (8 reservas en 6 meses)
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2025-12-05', '2025-12-07', 'TERMINADA', 3, 9);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-01-05', '2026-01-07', 'TERMINADA', 3, 10);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-02-05', '2026-02-07', 'TERMINADA', 3, 11);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-03-05', '2026-03-07', 'TERMINADA', 3, 12);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-03-22', '2026-03-24', 'TERMINADA', 3, 13);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-04-05', '2026-04-07', 'TERMINADA', 3, 14);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-04-22', '2026-04-24', 'TERMINADA', 3, 15);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-05-05', '2026-05-07', 'TERMINADA', 3, 16);
+
+-- Cliente 4: Diamante (12 reservas en 12 meses)
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2025-06-05', '2025-06-07', 'TERMINADA', 4, 17);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2025-07-05', '2025-07-07', 'TERMINADA', 4, 18);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2025-08-05', '2025-08-07', 'TERMINADA', 4, 19);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2025-09-05', '2025-09-07', 'TERMINADA', 4, 20);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2025-10-05', '2025-10-07', 'TERMINADA', 4, 21);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2025-11-05', '2025-11-07', 'TERMINADA', 4, 22);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2025-12-05', '2025-12-07', 'TERMINADA', 4, 23);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-01-05', '2026-01-07', 'TERMINADA', 4, 24);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-02-05', '2026-02-07', 'TERMINADA', 4, 25);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-03-05', '2026-03-07', 'TERMINADA', 4, 26);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-04-05', '2026-04-07', 'TERMINADA', 4, 27);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-05-05', '2026-05-07', 'TERMINADA', 4, 28);
 
 -- PLANTA 3: SUITES (301-320)
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (301, 'Suite', 'Disponible', 120.0);

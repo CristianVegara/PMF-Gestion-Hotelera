@@ -11,6 +11,9 @@ const mockInvoices = [
     id: 1,
     concepto: 'Reserva Suite',
     noches: 2,
+    loyaltyRank: 'Bronze',
+    discountAmount: 10.00,
+    discountPercentage: 5,
     total: 200.50,
     cliente: { nombre: 'Carlos', dni: '123X' }
   },
@@ -18,6 +21,9 @@ const mockInvoices = [
     id: 2,
     concepto: 'Estancia Estándar',
     noches: 1,
+    loyaltyRank: 'Sin rango',
+    discountAmount: 0,
+    discountPercentage: 0,
     total: 80.00,
     cliente: { nombre: 'Marta', dni: '456Y' }
   }
@@ -47,6 +53,8 @@ test('carga y muestra las facturas al iniciar', async () => {
   await waitFor(() => {
     expect(screen.getByText('Reserva Suite')).toBeInTheDocument();
     expect(screen.getByText('Carlos')).toBeInTheDocument();
+    expect(screen.getByText('Bronze')).toBeInTheDocument();
+    expect(screen.getByText('10.00 € (5%)')).toBeInTheDocument();
     expect(screen.getByText('200.50 €')).toBeInTheDocument();
   });
 });

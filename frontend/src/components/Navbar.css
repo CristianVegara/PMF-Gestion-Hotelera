@@ -7,7 +7,7 @@ body {
 
 #root {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
 }
 
@@ -29,10 +29,11 @@ body {
 
 /* BRAND */
 .sidebar .brand {
-    font-size: 24px;
+    font-size: 1.35rem;
     font-weight: bold;
     padding: 0 20px;
     margin-bottom: 40px;
+    line-height: 1.2;
 }
 
 /* MENU */
@@ -91,20 +92,91 @@ body {
 /* CONTENIDO PRINCIPAL */
 .main-content {
     margin-left: 220px; 
-    padding: 20px;
+    padding: 24px;
     flex-grow: 1;
     overflow-y: auto;
+    min-width: 0;
+    width: calc(100% - 220px);
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+    #root {
+        display: block;
+    }
+
     .sidebar {
-        position: relative;
+        position: sticky;
+        top: 0;
         width: 100%;
         height: auto;
+        max-height: none;
+        padding: 12px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    }
+
+    .sidebar .brand {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        padding: 0 4px;
+    }
+
+    .sidebar ul {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: thin;
+    }
+
+    .sidebar li {
+        flex: 0 0 auto;
+        margin-bottom: 0;
+    }
+
+    .sidebar a {
+        padding: 9px 12px;
+        white-space: nowrap;
+        background-color: rgba(255,255,255,0.08);
+    }
+
+    .sidebar-footer {
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .user-info {
+        margin: 0;
+        min-width: 0;
+        overflow: hidden;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .btn-logout {
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 8px 12px;
+        width: auto;
     }
 
     .main-content {
         margin-left: 0;
+        padding: 14px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .sidebar {
+        padding: 10px;
+    }
+
+    .main-content {
+        padding: 10px;
     }
 }

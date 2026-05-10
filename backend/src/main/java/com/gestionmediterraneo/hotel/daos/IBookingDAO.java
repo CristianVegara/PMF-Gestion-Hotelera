@@ -19,5 +19,9 @@ public interface IBookingDAO extends JpaRepository<Booking, Long> {
     boolean estaOcupada(@Param("roomId") Long roomId, 
                         @Param("fEntrada") java.time.LocalDate fEntrada, 
                         @Param("fSalida") java.time.LocalDate fSalida);
+
+    long countByCliente_Id(Long clientId);
+
+    long countByCliente_IdAndFechaEntradaBetween(Long clientId, LocalDate startDate, LocalDate endDate);
 	
 }

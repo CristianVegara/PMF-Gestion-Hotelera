@@ -1,9 +1,10 @@
 package com.gestionmediterraneo.hotel.controllers;
 
 import com.gestionmediterraneo.hotel.entities.Client;
-import com.gestionmediterraneo.hotel.entities.Discount;
 import com.gestionmediterraneo.hotel.entities.Invoice;
 import com.gestionmediterraneo.hotel.services.InvoiceService;
+import com.gestionmediterraneo.hotel.services.LoyaltyService;
+import com.gestionmediterraneo.hotel.services.LoyaltyTier;
 import com.gestionmediterraneo.hotel.daos.IClientDAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class InvoiceController {
 
     @Autowired
     private IClientDAO clientDao;
+
+    @Autowired
+    private LoyaltyService loyaltyService;
 
     @GetMapping
     public List<Invoice> getInvoices(@RequestParam(defaultValue = "id") String sortBy,
@@ -80,30 +84,7 @@ public class InvoiceController {
 
         invoice.setCliente(cliente);
 
-        // ===== CÁLCULO DESCUENTO =====
-        double porcentajeDescuento = 0.0;
-
-        if (cliente.getDiscounts() != null) {
-            for (Discount d : cliente.getDiscounts()) {
-                porcentajeDescuento += d.getPorcentaje();
-            }
-        }
-
-        BigDecimal subtotal = invoice.getPrecio()
-                .multiply(new BigDecimal(invoice.getNoches()));
-
-        BigDecimal descuento = subtotal
-                .multiply(new BigDecimal(porcentajeDescuento / 100));
-
-        BigDecimal subtotalConDescuento = subtotal.subtract(descuento);
-
-        BigDecimal iva = subtotalConDescuento
-                .multiply(new BigDecimal("0.10"));
-
-        invoice.setSubtotal(subtotalConDescuento);
-        invoice.setIva(iva);
-        invoice.setTotal(subtotalConDescuento.add(iva));
-
+        applyLoyaltyDiscount(invoice, cliente);
         invoice.setPagada(false);
 
         try {
@@ -144,30 +125,7 @@ public class InvoiceController {
             currentInvoice.setNoches(invoiceData.getNoches());
             currentInvoice.setPrecio(invoiceData.getPrecio());
 
-            // ===== CÁLCULO DESCUENTO =====
-            double porcentajeDescuento = 0.0;
-
-            if (cliente.getDiscounts() != null) {
-                for (Discount d : cliente.getDiscounts()) {
-                    porcentajeDescuento += d.getPorcentaje();
-                }
-            }
-
-            BigDecimal subtotal = invoiceData.getPrecio()
-                    .multiply(new BigDecimal(invoiceData.getNoches()));
-
-            BigDecimal descuento = subtotal
-                    .multiply(new BigDecimal(porcentajeDescuento / 100));
-
-            BigDecimal subtotalConDescuento = subtotal.subtract(descuento);
-
-            BigDecimal iva = subtotalConDescuento
-                    .multiply(new BigDecimal("0.10"));
-
-            currentInvoice.setSubtotal(subtotalConDescuento);
-            currentInvoice.setIva(iva);
-            currentInvoice.setTotal(subtotalConDescuento.add(iva));
-
+            applyLoyaltyDiscount(currentInvoice, cliente);
             currentInvoice.setPagada(invoiceData.isPagada());
 
             invoiceService.save(currentInvoice);
@@ -203,5 +161,25 @@ public class InvoiceController {
 
         response.put("mensaje", "Factura eliminada con éxito");
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    private void applyLoyaltyDiscount(Invoice invoice, Client cliente) {
+        LoyaltyTier tier = loyaltyService.calculateTier(cliente);
+        BigDecimal subtotalBeforeDiscount = invoice.getPrecio()
+                .multiply(BigDecimal.valueOf(invoice.getNoches()));
+        BigDecimal discountPercentage = BigDecimal.valueOf(tier.getDiscountPercentage());
+        BigDecimal discountAmount = subtotalBeforeDiscount
+                .multiply(discountPercentage)
+                .divide(BigDecimal.valueOf(100));
+        BigDecimal subtotalWithDiscount = subtotalBeforeDiscount.subtract(discountAmount);
+        BigDecimal iva = subtotalWithDiscount.multiply(new BigDecimal("0.10"));
+
+        invoice.setSubtotalBeforeDiscount(subtotalBeforeDiscount);
+        invoice.setDiscountPercentage(discountPercentage);
+        invoice.setDiscountAmount(discountAmount);
+        invoice.setLoyaltyRank(tier.getRank());
+        invoice.setSubtotal(subtotalWithDiscount);
+        invoice.setIva(iva);
+        invoice.setTotal(subtotalWithDiscount.add(iva));
     }
 }

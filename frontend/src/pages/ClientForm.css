@@ -57,6 +57,7 @@
     display: flex;
     gap: 12px;
     margin-top: 25px;
+    flex-wrap: wrap;
 }
 
 .btn-save {
@@ -89,4 +90,21 @@
 
 .btn-cancel:hover {
     background-color: #545b62;
+}
+
+@media (max-width: 640px) {
+    .form-container {
+        margin: 16px auto;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn-save,
+    .btn-cancel {
+        width: 100%;
+    }
 }

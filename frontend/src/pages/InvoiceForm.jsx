@@ -2,6 +2,32 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./InvoiceForm.css";
 
+const countBookingsBetween = (bookings, months) => {
+  const today = new Date();
+  const start = new Date(today);
+  start.setMonth(start.getMonth() - months);
+
+  return bookings.filter(book => {
+    if (!book.fechaEntrada) return false;
+    const date = new Date(book.fechaEntrada);
+    return date >= start && date <= today;
+  }).length;
+};
+
+const calculateLoyaltyTier = (client) => {
+  const bookings = client?.bookings || [];
+  const lastThreeMonths = countBookingsBetween(bookings, 3);
+  const lastSixMonths = countBookingsBetween(bookings, 6);
+  const lastYear = countBookingsBetween(bookings, 12);
+  const totalBookings = bookings.length;
+
+  if (lastYear >= 12 || totalBookings >= 18) return { rank: "Diamante", discount: 20 };
+  if (lastSixMonths >= 8 || totalBookings >= 10) return { rank: "Gold", discount: 15 };
+  if (lastSixMonths >= 5 || totalBookings >= 6) return { rank: "Silver", discount: 10 };
+  if (lastThreeMonths >= 3) return { rank: "Bronze", discount: 5 };
+  return { rank: "Sin rango", discount: 0 };
+};
+
 const InvoiceForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -53,8 +79,12 @@ const InvoiceForm = () => {
   };
 
   const subtotal = invoice.noches * invoice.precio;
-  const iva = subtotal * 0.10;
-  const total = subtotal + iva;
+  const selectedClient = clients.find(client => String(client.id) === String(invoice.clienteId));
+  const loyaltyTier = calculateLoyaltyTier(selectedClient);
+  const discountAmount = subtotal * (loyaltyTier.discount / 100);
+  const subtotalWithDiscount = subtotal - discountAmount;
+  const iva = subtotalWithDiscount * 0.10;
+  const total = subtotalWithDiscount + iva;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +98,7 @@ const InvoiceForm = () => {
       concepto: invoice.concepto,
       noches: invoice.noches,
       precio: invoice.precio,
-      subtotal,
+      subtotal: subtotalWithDiscount,
       iva,
       total,
       pagada: false
@@ -137,7 +167,11 @@ const InvoiceForm = () => {
         </div>
 
         <div className="invoice-summary">
-          <p>Subtotal: <span data-testid="subtotal-val">{subtotal.toFixed(2)} €</span></p>
+          <p>Subtotal base: <span data-testid="subtotal-val">{subtotal.toFixed(2)} €</span></p>
+          <p>Rango fidelidad: <span>{loyaltyTier.rank}</span></p>
+          <p>Descuento ({loyaltyTier.discount}%): <span>-{discountAmount.toFixed(2)} €</span></p>
+          <p>Subtotal con descuento: <span>{subtotalWithDiscount.toFixed(2)} €</span></p>
+          <p>IVA 10%: <span>{iva.toFixed(2)} €</span></p>
           <p>Total: <span data-testid="total-val">{total.toFixed(2)} €</span></p>
         </div>
 

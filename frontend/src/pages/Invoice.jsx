@@ -49,7 +49,10 @@ const Invoice = () => {
     }
 
     const invoiceDate = new Date().toLocaleDateString("es-ES");
-    const subtotal = invoice.subtotal ?? Number(invoice.noches || 0) * Number(invoice.precio || 0);
+    const subtotalBeforeDiscount = invoice.subtotalBeforeDiscount ?? Number(invoice.noches || 0) * Number(invoice.precio || 0);
+    const discountAmount = invoice.discountAmount ?? Math.max(subtotalBeforeDiscount - Number(invoice.subtotal || subtotalBeforeDiscount), 0);
+    const discountPercentage = invoice.discountPercentage ?? 0;
+    const subtotal = invoice.subtotal ?? subtotalBeforeDiscount - discountAmount;
     const iva = invoice.iva ?? Number(subtotal || 0) * 0.10;
     const total = invoice.total ?? Number(subtotal || 0) + Number(iva || 0);
 
@@ -186,6 +189,7 @@ const Invoice = () => {
                 <p>Concepto: ${escapeHtml(invoice.concepto || "-")}</p>
                 <p>Noches: ${escapeHtml(invoice.noches || 0)}</p>
                 <p>Precio por noche: ${escapeHtml(formatCurrency(invoice.precio))}</p>
+                <p>Rango fidelidad: ${escapeHtml(invoice.loyaltyRank || "Sin rango")}</p>
               </div>
             </section>
 
@@ -210,7 +214,15 @@ const Invoice = () => {
 
             <section class="totals">
               <div class="totals-row">
-                <span>Subtotal</span>
+                <span>Subtotal base</span>
+                <strong>${escapeHtml(formatCurrency(subtotalBeforeDiscount))}</strong>
+              </div>
+              <div class="totals-row">
+                <span>Descuento ${escapeHtml(invoice.loyaltyRank || "Sin rango")} (${escapeHtml(discountPercentage)}%)</span>
+                <strong>-${escapeHtml(formatCurrency(discountAmount))}</strong>
+              </div>
+              <div class="totals-row">
+                <span>Subtotal con descuento</span>
                 <strong>${escapeHtml(formatCurrency(subtotal))}</strong>
               </div>
               <div class="totals-row">
@@ -283,6 +295,8 @@ const Invoice = () => {
     <th>DNI</th>
     <th>Concepto</th>
     <th>Noches</th>
+    <th>Rango</th>
+    <th>Descuento</th>
     <th>Total (€)</th>
     <th>Acciones</th>
     </tr>
@@ -296,9 +310,12 @@ const Invoice = () => {
       <td>{inv.cliente?.dni}</td>
       <td>{inv.concepto}</td>
       <td>{inv.noches}</td>
+      <td><span className="loyalty-badge">{inv.loyaltyRank || "Sin rango"}</span></td>
+      <td>{formatCurrency(inv.discountAmount)} ({Number(inv.discountPercentage || 0).toFixed(0)}%)</td>
       <td>{formatCurrency(inv.total)}</td>
       
       <td className="text-center">
+      <div className="action-group">
       <Link to={`/invoice/edit/${inv.id}`} className="btn-edit">
       Editar
       </Link>
@@ -308,6 +325,7 @@ const Invoice = () => {
       <button onClick={() => deleteInvoice(inv.id)} className="btn-delete">
       Eliminar
       </button>
+      </div>
       </td>
       </tr>
     ))}

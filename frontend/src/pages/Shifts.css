@@ -16,6 +16,7 @@
 .shifts-page {
   padding: 40px 24px;
   max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
   background-color: var(--bg);
   min-height: 100vh;
@@ -71,6 +72,8 @@
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  min-height: 44px;
+  white-space: nowrap;
 }
 
 .calendar-grid {
@@ -103,6 +106,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 14px;
 }
 
 .badge-yellow {
@@ -116,6 +120,7 @@
 
 .shift-meta {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   font-size: 0.85rem;
   color: var(--text-light);
@@ -146,4 +151,53 @@
 
 @media (max-width: 800px) {
   .calendar-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .shifts-page {
+    padding: 18px 10px;
+  }
+
+  .shifts-header {
+    margin-bottom: 20px;
+  }
+
+  .shifts-header h1 {
+    font-size: 1.55rem;
+  }
+
+  .shift-form-container,
+  .calendar-card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .shift-form {
+    gap: 14px;
+  }
+
+  .input-group,
+  .btn-primary {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .react-calendar__navigation button {
+    min-width: 34px;
+    padding: 6px;
+  }
+
+  .react-calendar__tile {
+    padding: 0.9em 0.25em !important;
+  }
+
+  .shift-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .shift-card .btn-delete {
+    min-height: 38px;
+    width: 100%;
+  }
 }

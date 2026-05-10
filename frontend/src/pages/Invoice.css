@@ -6,7 +6,7 @@
 }
 
 .invoices-container {
-    max-width: 1100px;
+    max-width: 1180px;
     margin: auto;
     background: #ffffff;
     padding: 30px;
@@ -87,10 +87,12 @@
     border-radius: 8px;
     overflow-x: auto;
     border: 1px solid #dee2e6;
+    -webkit-overflow-scrolling: touch;
 }
 
 .invoices-table {
     width: 100%;
+    min-width: 1040px;
     border-collapse: collapse;
 }
 
@@ -134,10 +136,14 @@
     padding: 8px 14px;
     border-radius: 4px;
     text-decoration: none;
-    margin-right: 8px;
     font-size: 0.85rem;
     font-weight: 700;
     transition: background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    white-space: nowrap;
 }
 
 .btn-edit:hover {
@@ -153,8 +159,12 @@
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 700;
-    margin-right: 8px;
     transition: background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    white-space: nowrap;
 }
 
 .btn-print:hover {
@@ -171,6 +181,11 @@
     font-size: 0.85rem;
     font-weight: 700;
     transition: background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    white-space: nowrap;
 }
 
 .btn-delete:hover {
@@ -227,8 +242,75 @@
     color: #721c24;
 }
 
+.loyalty-badge {
+    background-color: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 999px;
+    color: #3730a3;
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+
 /* UX EXTRA */
 .invoices-table tr:hover .invoice-breakdown {
     transform: scale(1.01);
     transition: all 0.2s ease;
+}
+
+.action-group {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    min-width: 230px;
+}
+
+@media (max-width: 768px) {
+    .invoices-page-wrapper {
+        padding: 16px 10px;
+    }
+
+    .invoices-container {
+        padding: 16px 12px;
+        border-radius: 10px;
+    }
+
+    .header-actions {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .title-list {
+        font-size: 1.45rem;
+    }
+
+    .btn-new {
+        text-align: center;
+        width: 100%;
+    }
+
+    .sort-controls {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .sort-controls label {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .sort-controls select {
+        width: 100%;
+    }
+
+    .table-responsive {
+        margin-inline: -4px;
+    }
 }

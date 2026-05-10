@@ -1,3 +1,51 @@
+.clients-page-wrapper {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.clients-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  margin: auto;
+  max-width: 1180px;
+  padding: 30px;
+}
+
+.header-actions {
+  align-items: center;
+  border-bottom: 3px solid #dee2e6;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+}
+
+.title-list {
+  color: #1a252f;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.btn-new {
+  background-color: #007bff;
+  border-radius: 6px;
+  color: white;
+  font-weight: 700;
+  padding: 12px 24px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-new:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
 .sort-controls {
   display: flex;
   gap: 20px;
@@ -22,14 +70,59 @@
   color: #1a252f;
 }
 
+.dni-search-label {
+  flex: 1 1 260px;
+}
+
+.search-input-group {
+  display: flex;
+  gap: 8px;
+  min-width: 260px;
+}
+
+.search-input-group input {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  color: #1a252f;
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+}
+
+.search-input-group input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.12);
+  outline: none;
+}
+
+.btn-clear-search {
+  background-color: #6c757d;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.results-counter {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin: -8px 0 12px;
+}
+
 .table-responsive {
   overflow-x: auto;
   border-radius: 8px;
   border: 1px solid #dee2e6;
+  -webkit-overflow-scrolling: touch;
 }
 
 .clients-table {
   width: 100%;
+  min-width: 760px;
   border-collapse: collapse;
 }
 
@@ -66,9 +159,13 @@
   padding: 8px 14px;
   text-decoration: none;
   border-radius: 4px;
-  margin-right: 8px;
   font-size: 0.85rem;
   font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  white-space: nowrap;
 }
 
 .btn-delete {
@@ -80,6 +177,11 @@
   cursor: pointer;
   font-size: 0.85rem;
   font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  white-space: nowrap;
 }
 
 .btn-delete:hover {
@@ -126,4 +228,253 @@
 .history-table {
     font-size: 0.85rem;
     width: 100%;
+    border-collapse: collapse;
+}
+
+.action-group {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  min-width: 230px;
+}
+
+.action-group button {
+  margin: 0 !important;
+}
+
+.btn-history {
+  align-items: center;
+  background-color: #6f42c1;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.85rem;
+  font-weight: 700;
+  justify-content: center;
+  min-height: 36px;
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+
+.btn-history:hover {
+  background-color: #59359a;
+}
+
+.empty-table-message {
+  color: #6c757d;
+  font-weight: 600;
+  padding: 28px 16px !important;
+  text-align: center;
+}
+
+.clients-page-wrapper .modal-overlay {
+  align-items: center;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 16px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.clients-history-modal {
+  background-color: white;
+  border-radius: 12px;
+  max-height: 86vh;
+  max-width: 1040px;
+  overflow: hidden;
+  padding: 24px;
+  position: relative;
+  width: 95%;
+}
+
+.history-modal-header {
+  align-items: flex-start;
+  border-bottom: 2px solid #eee;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+}
+
+.history-modal-header h3 {
+  color: #1a252f;
+  margin: 0;
+}
+
+.history-modal-header p {
+  color: #6c757d;
+  margin: 4px 0 0;
+}
+
+.modal-close-button {
+  background: none;
+  border: none;
+  color: #1a252f;
+  cursor: pointer;
+  font-size: 1.6rem;
+  line-height: 1;
+  padding: 4px 8px;
+}
+
+.booking-summary {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.booking-summary div {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.booking-summary strong {
+  color: #1a252f;
+  display: block;
+  font-size: 1.35rem;
+}
+
+.booking-summary span {
+  color: #6c757d;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.history-body {
+  max-height: 48vh;
+  overflow-y: auto;
+}
+
+.history-responsive {
+  border-radius: 8px;
+}
+
+.clients-history-modal .history-table {
+  min-width: 920px;
+}
+
+.clients-history-modal .history-table th {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  color: #1a252f;
+  padding: 12px;
+  text-align: left;
+}
+
+.clients-history-modal .history-table td {
+  border-bottom: 1px solid #eee;
+  padding: 12px;
+}
+
+.empty-history-message {
+  color: #666;
+  padding: 24px;
+  text-align: center;
+}
+
+.history-modal-footer {
+  margin-top: 18px;
+  text-align: right;
+}
+
+.btn-modal-close {
+  background-color: #6c757d;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 20px;
+}
+
+@media (max-width: 768px) {
+  .clients-page-wrapper,
+  .clients-container {
+    padding: 16px 12px;
+  }
+
+  .header-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .title-list {
+    font-size: 1.45rem;
+  }
+
+  .btn-new {
+    text-align: center;
+    width: 100%;
+  }
+
+  .sort-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sort-controls label {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sort-controls select {
+    width: 100%;
+  }
+
+  .search-input-group {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .table-responsive {
+    margin-inline: -4px;
+  }
+
+  .clients-page-wrapper .modal-overlay {
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .clients-history-modal {
+    max-height: 92vh;
+    padding: 16px;
+    width: 100%;
+  }
+
+  .history-modal-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-close-button {
+    align-self: flex-end;
+    position: absolute;
+    right: 16px;
+    top: 14px;
+  }
+
+  .booking-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .history-body {
+    max-height: 48vh;
+  }
+
+  .history-modal-footer,
+  .btn-modal-close {
+    width: 100%;
+  }
 }

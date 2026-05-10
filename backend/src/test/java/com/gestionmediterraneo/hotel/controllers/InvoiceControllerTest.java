@@ -1,13 +1,13 @@
 package com.gestionmediterraneo.hotel.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
@@ -20,6 +20,8 @@ import com.gestionmediterraneo.hotel.daos.IClientDAO;
 import com.gestionmediterraneo.hotel.entities.Client;
 import com.gestionmediterraneo.hotel.entities.Invoice;
 import com.gestionmediterraneo.hotel.services.InvoiceService;
+import com.gestionmediterraneo.hotel.services.LoyaltyService;
+import com.gestionmediterraneo.hotel.services.LoyaltyTier;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,9 @@ class InvoiceControllerTest {
 
     @MockBean
     private IClientDAO clientDao;
+
+    @MockBean
+    private LoyaltyService loyaltyService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -85,12 +90,20 @@ class InvoiceControllerTest {
         invoice.setPrecio(new BigDecimal("100.00"));
 
         when(clientDao.findById(1L)).thenReturn(Optional.of(cliente));
-        when(invoiceService.save(any(Invoice.class))).thenReturn(invoice);
+        when(loyaltyService.calculateTier(any(Client.class)))
+                .thenReturn(new LoyaltyTier("Bronze", 5, 3, 3));
+        when(invoiceService.save(any(Invoice.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         mockMvc.perform(post("/api/invoice")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invoice)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.invoice.loyaltyRank").value("Bronze"))
+                .andExpect(jsonPath("$.invoice.discountPercentage").value(5))
+                .andExpect(jsonPath("$.invoice.discountAmount").value(10.0))
+                .andExpect(jsonPath("$.invoice.subtotal").value(190.0))
+                .andExpect(jsonPath("$.invoice.iva").value(19.0))
+                .andExpect(jsonPath("$.invoice.total").value(209.0));
     }
 
     @Test
@@ -127,6 +140,8 @@ class InvoiceControllerTest {
 
         when(invoiceService.findById(id)).thenReturn(Optional.of(existingInvoice));
         when(clientDao.findById(1L)).thenReturn(Optional.of(cliente));
+        when(loyaltyService.calculateTier(any(Client.class)))
+                .thenReturn(new LoyaltyTier("Silver", 10, 5, 6));
         when(invoiceService.save(any(Invoice.class))).thenReturn(existingInvoice);
 
         mockMvc.perform(put("/api/invoice/1")
