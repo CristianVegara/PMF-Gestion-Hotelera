@@ -19,7 +19,11 @@ public class Invoice {
     private String concepto;
     private int noches;
     private BigDecimal precio;
+    private BigDecimal subtotalBeforeDiscount;
     private BigDecimal subtotal;
+    private BigDecimal discountPercentage;
+    private BigDecimal discountAmount;
+    private String loyaltyRank;
     private BigDecimal iva;
     private BigDecimal total;
     private boolean pagada;
@@ -40,8 +44,20 @@ public class Invoice {
     public BigDecimal getPrecio() { return precio; }
     public void setPrecio(BigDecimal precio) { this.precio = precio; }
 
+    public BigDecimal getSubtotalBeforeDiscount() { return subtotalBeforeDiscount; }
+    public void setSubtotalBeforeDiscount(BigDecimal subtotalBeforeDiscount) { this.subtotalBeforeDiscount = subtotalBeforeDiscount; }
+
     public BigDecimal getSubtotal() { return subtotal; }
     public void setSubtotal(BigDecimal subtotal) { this.subtotal = subtotal; }
+
+    public BigDecimal getDiscountPercentage() { return discountPercentage; }
+    public void setDiscountPercentage(BigDecimal discountPercentage) { this.discountPercentage = discountPercentage; }
+
+    public BigDecimal getDiscountAmount() { return discountAmount; }
+    public void setDiscountAmount(BigDecimal discountAmount) { this.discountAmount = discountAmount; }
+
+    public String getLoyaltyRank() { return loyaltyRank; }
+    public void setLoyaltyRank(String loyaltyRank) { this.loyaltyRank = loyaltyRank; }
 
     public BigDecimal getIva() { return iva; }
     public void setIva(BigDecimal iva) { this.iva = iva; }

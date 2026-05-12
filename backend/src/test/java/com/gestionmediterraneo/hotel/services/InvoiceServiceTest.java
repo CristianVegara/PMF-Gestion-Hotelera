@@ -5,14 +5,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import com.gestionmediterraneo.hotel.daos.IInvoiceDAO;
-import com.gestionmediterraneo.hotel.entities.Client;
-import com.gestionmediterraneo.hotel.entities.Discount;
 import com.gestionmediterraneo.hotel.entities.Invoice;
 
 import org.junit.jupiter.api.Test;
@@ -90,7 +87,7 @@ class InvoiceServiceTest {
     }
 
     @Test
-    void shouldSaveInvoiceWithoutDiscounts() {
+    void shouldSaveInvoice() {
         Invoice invoice = new Invoice();
         invoice.setTotal(new BigDecimal("100.00"));
 
@@ -104,41 +101,21 @@ class InvoiceServiceTest {
     }
 
     @Test
-    void shouldSaveInvoiceAndApplyDiscounts() {
-        Discount d1 = new Discount();
-        d1.setPorcentaje(10.0);
-        Discount d2 = new Discount();
-        d2.setPorcentaje(5.0);
-
-        Client client = new Client();
-        client.setDiscounts(Arrays.asList(d1, d2));
-
+    void shouldSaveInvoiceWithExistingDiscountFields() {
         Invoice invoice = new Invoice();
-        invoice.setCliente(client);
-        invoice.setTotal(new BigDecimal("100.00"));
-
-        when(invoiceDao.save(any(Invoice.class))).thenAnswer(i -> i.getArguments()[0]);
-
-        Invoice result = invoiceService.save(invoice);
-
-        assertEquals(0, new BigDecimal("85.00").compareTo(result.getTotal()));
-        verify(invoiceDao).save(any(Invoice.class));
-    }
-
-    @Test
-    void shouldSaveInvoiceWithClientButNoDiscounts() {
-        Client client = new Client();
-        client.setDiscounts(new ArrayList<>());
-
-        Invoice invoice = new Invoice();
-        invoice.setCliente(client);
-        invoice.setTotal(new BigDecimal("100.00"));
+        invoice.setSubtotalBeforeDiscount(new BigDecimal("100.00"));
+        invoice.setDiscountPercentage(new BigDecimal("5.00"));
+        invoice.setDiscountAmount(new BigDecimal("5.00"));
+        invoice.setSubtotal(new BigDecimal("95.00"));
+        invoice.setIva(new BigDecimal("9.50"));
+        invoice.setTotal(new BigDecimal("104.50"));
 
         when(invoiceDao.save(any(Invoice.class))).thenReturn(invoice);
 
         Invoice result = invoiceService.save(invoice);
 
-        assertEquals(new BigDecimal("100.00"), result.getTotal());
+        assertEquals(new BigDecimal("5.00"), result.getDiscountAmount());
+        assertEquals(new BigDecimal("104.50"), result.getTotal());
         verify(invoiceDao).save(invoice);
     }
 
