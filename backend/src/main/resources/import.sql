@@ -135,16 +135,16 @@ INSERT INTO invoices (concepto, noches, precio, subtotal, iva, total, pagada, cl
 
 -- Reservas de ejemplo para rangos de fidelidad
 -- Cliente 1: Bronze (3 reservas en 3 meses)
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-03-05', '2026-03-08', 'TERMINADA', 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-04-02', '2026-04-05', 'TERMINADA', 1, 2);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-05-03', '2026-05-06', 'TERMINADA', 1, 3);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-08-01', '2026-08-03', 'PRÓXIMA', 1, 3);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-03-10', '2026-03-15', 'TERMINADA', 1, 1);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-09-20', '2026-09-25', 'PRÓXIMA', 1, 2);
 
 -- Cliente 2: Silver (5 reservas en 6 meses)
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-01-10', '2026-01-12', 'TERMINADA', 2, 4);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-02-12', '2026-02-14', 'TERMINADA', 2, 5);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-03-14', '2026-03-16', 'TERMINADA', 2, 6);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-04-16', '2026-04-18', 'TERMINADA', 2, 7);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-05-01', '2026-05-03', 'TERMINADA', 2, 8);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-06-01', '2026-06-10', 'PRÓXIMA', 2, 3);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-05-15', '2026-05-20', 'CANCELADA', 2, 4);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-04-20', '2026-04-25', 'TERMINADA', 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-07-05', '2026-07-12', 'PRÓXIMA', 2, 1);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2026-05-08', '2026-05-15', 'CONFIRMADA', 2, 4);
 
 -- Cliente 3: Gold (8 reservas en 6 meses)
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id) VALUES ('2025-12-05', '2025-12-07', 'TERMINADA', 3, 9);

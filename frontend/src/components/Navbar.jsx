@@ -29,6 +29,7 @@ const Navbar = ({ user, setUser }) => {
                 <li><Link to="/clients">Clientes</Link></li>
                 <li><Link to="/invoice">Facturas</Link></li>
                 <li><Link to="/rooms">Habitaciones</Link></li>
+                <li><Link to="/bookings">Reservas</Link></li>
                 <li><Link to="/activities">Actividades</Link></li>
                 <li><Link to="/shifts">Turnos</Link></li>
             </ul>

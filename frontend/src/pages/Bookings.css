@@ -1,0 +1,188 @@
+.bookings-page-wrapper {
+    background-color: #f4f7f6;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.bookings-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.title-list {
+    color: #2c3e50;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.btn-new {
+    background-color: #6f42c1;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-new:hover {
+    background-color: #5a32a3;
+    color: white;
+}
+
+.bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bookings-table th {
+    background-color: #f8f9fa;
+    color: #7f8c8d;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 2px solid #eee;
+}
+
+.bookings-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f2f2f2;
+    color: #2c3e50;
+    vertical-align: middle;
+}
+
+/* Efecto hover en las filas para indicar que son clicables */
+.booking-row:hover {
+    background-color: #f9f7ff;
+}
+
+.badge-room {
+    background-color: #e9ecef;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-action {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+/* Overlay que oscurece el fondo */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Caja blanca del modal */
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444;
+}
+
+.form-group input, .form-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-save {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background-color: #7f8c8d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.modal-confirm-delete {
+    text-align: center;
+    border-top: 5px solid #e74c3c;
+}
+
+.warning-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.modal-subtext {
+    font-size: 0.85rem;
+    color: #e74c3c;
+    margin-top: 5px;
+}
+
+.btn-delete-confirm {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-delete-confirm:hover {
+    background-color: #c0392b;
+}
+
+.btn-edit { background-color: #d1ecf1; color: #0c5460; }
+.btn-delete { background-color: #f8d7da; color: #721c24; }

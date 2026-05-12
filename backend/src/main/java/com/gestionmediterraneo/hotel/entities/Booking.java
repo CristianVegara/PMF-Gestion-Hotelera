@@ -2,8 +2,7 @@ package com.gestionmediterraneo.hotel.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="booking")
@@ -12,13 +11,14 @@ public class Booking {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    
     private LocalDate fechaEntrada;
     private LocalDate fechaSalida;
     private String estado;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonBackReference
+    @JsonIgnoreProperties({"bookings", "activities"})
     private Client cliente;
 
     @ManyToOne
@@ -104,6 +104,4 @@ public class Booking {
 	public void setHabitacion(Room habitacion) {
 		this.habitacion = habitacion;
 	}
-
-	
 }
