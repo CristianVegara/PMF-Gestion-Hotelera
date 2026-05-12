@@ -15,14 +15,14 @@ import Bookings from './pages/Bookings';
 import Activities from './pages/Activities';
 import Activity from './pages/Activity';
 import Shifts  from './pages/Shifts';
-import RoomDetails from './pages/RoomDetails';
+import RoomPriceType from './pages/RoomPriceType';
+import RoomPriceAll from './pages/RoomPriceAll';
 
 
 function App() {
 
   const [user, setUser] = useState(null);
 
-  // cargar sesión al inicio
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
@@ -59,6 +59,9 @@ function App() {
           <Route path="/rooms/:id" element={<RoomDetails />} />
 
           <Route path="/bookings" element={<Bookings />} />
+          
+          <Route path="/rooms/price/all" element={<RoomPriceAll />} />
+          <Route path="/rooms/price/:type" element={<RoomPriceType />} />
 
           <Route path="/shifts" element={<Shifts />} /> 
         </Routes>

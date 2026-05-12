@@ -4,6 +4,8 @@ import com.gestionmediterraneo.hotel.daos.IBookingDAO;
 import com.gestionmediterraneo.hotel.daos.IRoomDAO;
 import com.gestionmediterraneo.hotel.entities.Booking;
 import com.gestionmediterraneo.hotel.entities.Room;
+import com.gestionmediterraneo.hotel.enums.RoomStatus;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +51,7 @@ public class BookingController {
         LocalDate hoy = LocalDate.now();
         if ((booking.getFechaEntrada().isBefore(hoy) || booking.getFechaEntrada().isEqual(hoy)) 
              && booking.getFechaSalida().isAfter(hoy)) {
-            room.setStatus("Ocupada");
+            room.setStatus(RoomStatus.OCUPADA);
             roomRepository.save(room);
         }
 
@@ -79,9 +81,9 @@ public class BookingController {
                                           && hoy.isBefore(booking.getFechaSalida());
 
             if (deberiaEstarOcupada) {
-                room.setStatus("Ocupada");
+                room.setStatus(RoomStatus.OCUPADA);
             } else {
-                room.setStatus("Disponible");
+                room.setStatus(RoomStatus.LIBRE);
             }
             roomRepository.save(room);
 
