@@ -1,4 +1,4 @@
-
+/* --- VARIABLES Y RESET --- */
 :root {
   --primary: #1a252f;
   --secondary: #6c757d;
@@ -10,11 +10,7 @@
   --shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
-.status-pill.libre { background-color: #28a745; }
-.status-pill.ocupada { background-color: #007bff; }
-.status-pill.sucia { background-color: #ffc107; }
-.status-pill.fuera-de-servicio { background-color: #dc3545; }
-
+/* --- DISEÑO PRINCIPAL (LAYOUT) --- */
 .main-layout {
   display: flex;
   gap: 30px;
@@ -96,7 +92,7 @@
 .room-card-number { font-size: 1.3rem; font-weight: bold; display: block; }
 .room-card-status { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
 
-
+/* --- ESTADOS (PILLS) --- */
 .status-pill {
   padding: 3px 10px;
   border-radius: 20px;
@@ -106,7 +102,7 @@
 .status-pill.disponible { background: #d4edda; color: #155724; }
 .status-pill.ocupada { background: #f8d7da; color: #721c24; }
 
-
+/* --- PANEL DERECHO --- */
 .sticky-panel {
   position: sticky;
   top: 20px;
@@ -128,7 +124,7 @@
 .agenda-list { border: none; max-height: 120px; }
 .clickable-booking:hover { background: #f0f7ff; cursor: pointer; }
 
-
+/* --- FORMULARIOS E INPUTS --- */
 .date-group, .edit-date-group {
   display: flex;
   flex-direction: column;
@@ -145,7 +141,7 @@ label { font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; color: var(--p
   box-sizing: border-box;
 }
 
-
+/* --- BOTONES --- */
 .btn-action, .btn-confirm-final {
   width: 100%;
   padding: 10px;
@@ -162,6 +158,7 @@ label { font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; color: var(--p
 .view-btn { border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; background: transparent; }
 .view-btn.active { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold; }
 
+/* --- MODALES --- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -171,8 +168,6 @@ label { font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; color: var(--p
   align-items: center;
   z-index: 1000;
 }
-
-
 
 .modal-content {
   background: white;
@@ -190,7 +185,7 @@ label { font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; color: var(--p
 .scrollable-modal-body { max-height: 450px; border: none; }
 .modal-footer { padding: 15px; background: var(--bg-light); text-align: right; border-top: 1px solid var(--border); }
 
-
+/* --- SCROLLBAR --- */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
 

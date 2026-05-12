@@ -1,21 +1,12 @@
 import { useState, useEffect } from 'react';
 import './Rooms.css';
 
-// Función auxiliar para convertir "FUERA_DE_SERVICIO" -> "Fuera de servicio"
-const formatEnum = (text) => {
-  if (!text) return "";
-  return text.charAt(0) + text.slice(1).toLowerCase().replace(/_/g, ' ');
-};
-
-// Función para convertir "FUERA_DE_SERVICIO" -> "fuera-de-servicio" (para CSS)
-const enumToClass = (text) => {
-  return text ? text.toLowerCase().replace(/_/g, '-') : '';
-};
-
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const [roomSelected, setRoomSelected] = useState(null);
   const [roomBookings, setRoomBookings] = useState([]); 
+  
+  // Estados de vista e interfaz
   const [viewMode, setViewMode] = useState('list');
   const [showHistory, setShowHistory] = useState(false); 
 
@@ -106,6 +97,7 @@ const Rooms = () => {
     });
   };
 
+  // Solo mostramos reservas que terminan hoy o en el futuro en el panel lateral
   const agendaFutura = roomBookings.filter(b => new Date(b.fechaSalida) >= new Date().setHours(0,0,0,0));
 
   return (
@@ -135,14 +127,8 @@ const Rooms = () => {
                       onClick={() => { setRoomSelected(room); fetchRoomBookings(room.id); }} 
                       className={roomSelected?.id === room.id ? 'row-selected' : ''}
                     >
-                      <td>{room.id}</td>
-                      <td>{room.number}</td>
-                      <td>{formatEnum(room.type)}</td>
-                      <td>
-                        <span className={`status-pill ${enumToClass(room.status)}`}>
-                          {formatEnum(room.status)}
-                        </span>
-                      </td>
+                      <td>{room.id}</td><td>{room.number}</td><td>{room.type}</td>
+                      <td><span className={`status-pill ${room.status.toLowerCase()}`}>{room.status}</span></td>
                     </tr>
                   ))}
                 </tbody>
@@ -152,12 +138,12 @@ const Rooms = () => {
                 {rooms.map(room => (
                   <div 
                     key={room.id} 
-                    className={`room-card ${enumToClass(room.status)} ${roomSelected?.id === room.id ? 'selected' : ''}`}
+                    className={`room-card ${room.status.toLowerCase()} ${roomSelected?.id === room.id ? 'selected' : ''}`}
                     onClick={() => { setRoomSelected(room); fetchRoomBookings(room.id); }}
                   >
                     <div className="room-card-number">{room.number}</div>
-                    <div className="room-card-type">{formatEnum(room.type)}</div>
-                    <div className="room-card-status">{formatEnum(room.status)}</div>
+                    <div className="room-card-type">{room.type}</div>
+                    <div className="room-card-status">{room.status}</div>
                   </div>
                 ))}
               </div>
@@ -175,8 +161,8 @@ const Rooms = () => {
               </div>
 
               <div className="detail-info-basic">
-                <p><strong>Tipo:</strong> {formatEnum(roomSelected.type)} | <strong>Precio:</strong> {roomSelected.price.toFixed(2)}€</p>
-                <p><strong>Estado:</strong> <span className={`status-text ${enumToClass(roomSelected.status)}`}>{formatEnum(roomSelected.status)}</span></p>
+                <p><strong>Tipo:</strong> {roomSelected.type} | <strong>Precio:</strong> {roomSelected.price.toFixed(2)}€</p>
+                <p><strong>Estado:</strong> <span className={`status-text ${roomSelected.status.toLowerCase()}`}>{roomSelected.status}</span></p>
               </div>
               
               <hr className="divider" />
@@ -226,7 +212,7 @@ const Rooms = () => {
         </div>
       </div>
 
-      {/* MODAL HISTORIAL */}
+      {/* MODAL HISTORIAL COMPLETO */}
       {showHistory && (
         <div className="modal-overlay" onClick={() => setShowHistory(false)}>
           <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
@@ -257,7 +243,7 @@ const Rooms = () => {
         </div>
       )}
 
-      {/* MODAL EDICIÓN */}
+      {/* MODAL DE EDICIÓN CON TODA LA INFORMACIÓN */}
       {bookingDetail && (
         <div className="modal-overlay" onClick={() => setBookingDetail(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
@@ -277,11 +263,22 @@ const Rooms = () => {
                   <input type="date" className="date-input-field" value={bookingDetail.fechaSalida} onChange={(e) => setBookingDetail({...bookingDetail, fechaSalida: e.target.value})} />
                 </div>
               </div>
+
               <hr className="divider" />
+
               <div className="info-section">
                 <h4>👤 Información del Cliente</h4>
                 <p><strong>Nombre completo:</strong> {bookingDetail.cliente?.nombre}</p>
                 <p><strong>DNI/Documento:</strong> {bookingDetail.cliente?.dni}</p>
+                <p><strong>Teléfono:</strong> {bookingDetail.cliente?.telefono || 'No disponible'}</p>
+                <p><strong>Correo electrónico:</strong> {bookingDetail.cliente?.correo || 'No disponible'}</p>
+              </div>
+
+              <div className="info-section">
+                <h4>🏨 Información de Habitación</h4>
+                <p><strong>Número:</strong> {roomSelected?.number}</p>
+                <p><strong>Tipo:</strong> {roomSelected?.type}</p>
+                <p><strong>Estado de reserva:</strong> {bookingDetail.estado}</p>
               </div>
             </div>
             <div className="modal-footer">

@@ -13,8 +13,6 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionmediterraneo.hotel.entities.Room;
-import com.gestionmediterraneo.hotel.enums.RoomStatus;
-import com.gestionmediterraneo.hotel.enums.RoomType;
 import com.gestionmediterraneo.hotel.services.IRoomService;
 
 import org.junit.jupiter.api.Test;
@@ -69,9 +67,9 @@ class RoomControllerTest {
     void shouldCreateRoom() throws Exception {
         Room room = new Room();
         room.setNumber("101");
-        room.setType(RoomType.DOBLE);
+        room.setType("Double");
         room.setPrice(150.0);
-        room.setStatus(RoomStatus.LIBRE);
+        room.setStatus("Available");
 
         when(roomService.save(any(Room.class))).thenReturn(room);
 
@@ -102,9 +100,9 @@ class RoomControllerTest {
 
         Room updatedRoom = new Room();
         updatedRoom.setNumber("102");
-        updatedRoom.setType(RoomType.SUITE);
+        updatedRoom.setType("Suite");
         updatedRoom.setPrice(250.0);
-        updatedRoom.setStatus(RoomStatus.LIBRE);
+        updatedRoom.setStatus("Available");
 
         when(roomService.findById(id)).thenReturn(existingRoom);
         when(roomService.save(any(Room.class))).thenReturn(updatedRoom);
@@ -120,9 +118,9 @@ class RoomControllerTest {
     void shouldReturnNotFoundWhenUpdatingNonExistingRoom() throws Exception {
         Room roomData = new Room();
         roomData.setNumber("105");
-        roomData.setType(RoomType.INDIVIDUAL);
+        roomData.setType("Single");
         roomData.setPrice(100.0);
-        roomData.setStatus(RoomStatus.OCUPADA);
+        roomData.setStatus("Available");
 
         when(roomService.findById(1L)).thenReturn(null);
 
