@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Rooms.css';
 
 // Función auxiliar para convertir "FUERA_DE_SERVICIO" -> "Fuera de servicio"
@@ -29,15 +30,7 @@ const Rooms = () => {
   const [bookingDetail, setBookingDetail] = useState(null);
 
   useEffect(() => {
-    fetchRooms();
-  }, []);
-
-  const fetchRooms = () => {
-    fetch('/api/rooms').then(res => res.json()).then(data => setRooms(data));
-  };
-
-  const fetchRoomBookings = (roomId) => {
-    fetch(`/api/bookings/room/${roomId}`)
+    fetch('http://localhost:8080/api/rooms')
       .then(res => res.json())
       .then(data => {
         const sorted = data.sort((a, b) => new Date(b.fechaEntrada) - new Date(a.fechaEntrada));
@@ -112,7 +105,6 @@ const Rooms = () => {
     <div className="rooms-page-wrapper">
       <div className="rooms-container main-layout">
         
-        {/* COLUMNA IZQUIERDA */}
         <div className="table-column">
           <div className="header-actions">
             <h2 className="title-list">Habitaciones ({rooms.length})</h2>

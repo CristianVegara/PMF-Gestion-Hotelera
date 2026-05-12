@@ -4,12 +4,14 @@ import './App.css';
 import Navbar from './components/Navbar'; 
 import Home from './pages/Home';
 import Clients from './pages/Clients';
+import ClientDetails from './pages/ClientDetails';
 import ClientForm from './pages/ClientForm';
 import Invoice from './pages/Invoice';
 import InvoiceForm from './pages/InvoiceForm';
 import Login from './pages/Login';
 import Rooms from './pages/Rooms';
 import RoomForm from './pages/RoomsForm';
+import Bookings from './pages/Bookings';
 import Activities from './pages/Activities';
 import Activity from './pages/Activity';
 import Shifts  from './pages/Shifts';
@@ -30,8 +32,7 @@ function App() {
 
   return (
     <Router>
-
-      {}
+      {/* pasamos user al navbar */}
       <Navbar user={user} setUser={setUser} />
 
       <div className="main-content">
@@ -46,6 +47,7 @@ function App() {
           <Route path="/clients" element={<Clients />} />
           <Route path="/clients/form" element={<ClientForm />} />
           <Route path="/clients/edit/:id" element={<ClientForm />} />
+          <Route path="/clients/:id" element={<ClientDetails />} />
 
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/invoice/form" element={<InvoiceForm />} />
@@ -54,6 +56,9 @@ function App() {
           <Route path="/rooms" element={<Rooms />} />
           <Route path="/rooms/form" element={<RoomForm />} />
           <Route path="/rooms/edit/:id" element={<RoomForm />} />
+          <Route path="/rooms/:id" element={<RoomDetails />} />
+
+          <Route path="/bookings" element={<Bookings />} />
           
           <Route path="/rooms/price/all" element={<RoomPriceAll />} />
           <Route path="/rooms/price/:type" element={<RoomPriceType />} />

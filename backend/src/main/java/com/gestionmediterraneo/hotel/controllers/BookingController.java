@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookingController {
 
     @Autowired
@@ -28,7 +29,7 @@ public class BookingController {
         return bookingRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
         Room room = roomRepository.findById(booking.getHabitacion().getId()).orElse(null);
         if (room == null) {
@@ -63,7 +64,7 @@ public class BookingController {
     }
     
     
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "application/json")
     public ResponseEntity<?> updateBooking(@PathVariable Long id, @RequestBody Booking bookingDetails) {
         return bookingRepository.findById(id).map(booking -> {
             booking.setFechaEntrada(bookingDetails.getFechaEntrada());
@@ -88,5 +89,10 @@ public class BookingController {
 
             return ResponseEntity.ok(booking);
         }).orElse(ResponseEntity.notFound().build());
+    }
+    
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        bookingRepository.deleteById(id);
     }
 }

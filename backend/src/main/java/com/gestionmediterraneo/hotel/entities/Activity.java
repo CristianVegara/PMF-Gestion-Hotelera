@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,12 +47,14 @@ public class Activity{
     private byte maxParticipantes;
     
     @ManyToMany
-	@JoinTable(
-	    name = "activities_clients",
-	    joinColumns = @JoinColumn(name = "activity_id"),
-	    inverseJoinColumns = @JoinColumn(name = "client_id")
-	)	
+    @JoinTable(
+        name = "activities_clients",
+        joinColumns = @JoinColumn(name = "activity_id"),
+        inverseJoinColumns = @JoinColumn(name = "client_id")
+    )
+    @JsonIgnoreProperties({"activities", "bookings"}) 
     private List<Client> clients;
+  
 
 
 	public Long getId() {

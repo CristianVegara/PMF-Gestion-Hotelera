@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,7 +43,7 @@ public class Client {
 	String correo;
 	
 	@ManyToMany(mappedBy = "clients")
-    @JsonIgnore
+	@JsonIgnoreProperties("clients")
 	private List<Activity> activities;
 	
 	@ManyToMany(mappedBy = "clients")
@@ -56,9 +54,8 @@ public class Client {
 	@OneToMany(mappedBy = "cliente")
 	private List<Invoice> invoices = new ArrayList<>();
 	
-	
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnoreProperties("cliente")
 	private List<Booking> bookings = new ArrayList<>();
 
 	public void setInvoices(List<Invoice> invoices) {
