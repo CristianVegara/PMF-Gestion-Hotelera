@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar'; 
 import Home from './pages/Home';
-import Clients from './pages/Clients';
-import ClientDetails from './pages/ClientDetails';
+import ClientsManager from './pages/ClientsManager';
 import ClientForm from './pages/ClientForm';
 import Invoice from './pages/Invoice';
 import InvoiceForm from './pages/InvoiceForm';
@@ -44,7 +43,7 @@ function App() {
           <Route path="/activities" element={<Activities />} />
           <Route path="/activities/:id" element={<Activity />} />
 
-          <Route path="/clients" element={<Clients />} />
+          <Route path="/clients" element={<ClientsManager />} />
           <Route path="/clients/form" element={<ClientForm />} />
           <Route path="/clients/edit/:id" element={<ClientForm />} />
           <Route path="/clients/:id" element={<ClientDetails />} />
@@ -62,6 +61,8 @@ function App() {
           
           <Route path="/rooms/price/all" element={<RoomPriceAll />} />
           <Route path="/rooms/price/:type" element={<RoomPriceType />} />
+
+          
 
           <Route path="/shifts" element={<Shifts />} /> 
         </Routes>

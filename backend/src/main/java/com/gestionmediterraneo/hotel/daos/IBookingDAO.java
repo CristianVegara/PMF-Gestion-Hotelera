@@ -27,5 +27,8 @@ public interface IBookingDAO extends JpaRepository<Booking, Long> {
 
     @Query("SELECT COUNT(b) FROM Booking b JOIN b.habitacion r WHERE :fecha BETWEEN b.fechaEntrada AND b.fechaSalida AND r.type = :type AND b.estado != 'CANCELADA'")
     long countOccupiedByDateAndType(@Param("fecha") LocalDate fecha, @Param("type") RoomType type);
+    
+    @Query("SELECT b FROM Booking b WHERE :fecha BETWEEN b.fechaEntrada AND b.fechaSalida AND b.estado != 'CANCELADA'")
+    List<Booking> findBookingsByDate(@Param("fecha") LocalDate fecha);
 	
 }
