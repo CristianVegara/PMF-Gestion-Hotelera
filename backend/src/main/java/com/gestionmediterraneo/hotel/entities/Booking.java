@@ -2,8 +2,7 @@ package com.gestionmediterraneo.hotel.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="booking")
@@ -18,7 +17,7 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("bookings")
     private Client cliente;
 
     @ManyToOne

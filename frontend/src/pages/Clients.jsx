@@ -24,7 +24,6 @@ const Clients = () => {
   const [direction, setDirection] = useState('asc');
   const [dniSearch, setDniSearch] = useState('');
 
-  // Estados para el Modal de Reservas
   const [showModal, setShowModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
 
@@ -52,13 +51,11 @@ const Clients = () => {
     }
   };
 
-  // Abrir ventana de historial de reservas
   const openBookingHistory = (client) => {
     setSelectedClient(client);
     setShowModal(true);
   };
 
-  // Colores para los estados (usando el campo 'estado' de tu JSON)
   const getStatusStyle = (estado) => {
     switch (estado) {
       case 'TERMINADA': return { color: '#6c757d', fontWeight: 'bold' }; // Gris
@@ -171,7 +168,6 @@ const Clients = () => {
     </div>
     </div>
 
-	    {/* VENTANA MODAL DE RESERVAS ACTUALIZADA */}
 	    {showModal && selectedClient && (
 	      <div className="modal-overlay">
 	      <div className="modal-content clients-history-modal">

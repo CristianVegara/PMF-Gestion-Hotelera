@@ -1,0 +1,49 @@
+.manager-container {
+    padding: 20px;
+}
+
+.tabs-container {
+    display: flex;
+    gap: 5px;
+    padding: 0 20px;
+    margin-bottom: 0;
+}
+
+.tab-button {
+    padding: 12px 24px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    background: #e9ecef;
+    cursor: pointer;
+    font-weight: bold;
+    color: #495057;
+    border-radius: 8px 8px 0 0;
+    transition: 0.2s;
+}
+
+.tab-button.active {
+    background: white;
+    color: #007bff;
+    border-top: 3px solid #007bff;
+    position: relative;
+    z-index: 2;
+}
+
+.tab-content {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0 8px 8px 8px;
+    margin-top: -1px;
+}
+
+.date-picker-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-input {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
