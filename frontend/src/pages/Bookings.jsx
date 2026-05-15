@@ -7,7 +7,14 @@ const Bookings = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    // MODALES
+    const [filterClient, setFilterClient] = useState('');
+    const [filterRoom, setFilterRoom] = useState('');
+    
+    const currentYear = new Date().getFullYear().toString();
+    const [filterYear, setFilterYear] = useState(currentYear);
+    const [filterMonth, setFilterMonth] = useState('');
+    const [filterDay, setFilterDay] = useState('');
+
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [currentBooking, setCurrentBooking] = useState(null);
@@ -19,7 +26,7 @@ const Bookings = () => {
     const fetchBookings = async () => {
         try {
             const response = await fetch('http://localhost:8080/api/bookings');
-            if (!response.ok) throw new Error("Error en la respuesta del servidor");
+            if (!response.ok) throw new Error("Error en el servidor");
             const data = await response.json();
             setBookings(data);
             setLoading(false);
@@ -29,7 +36,19 @@ const Bookings = () => {
         }
     };
 
-    // --- ACCIONES ---
+    const filteredBookings = bookings.filter(book => {
+        const matchesClient = book.cliente?.nombre?.toLowerCase().includes(filterClient.toLowerCase());
+        const matchesRoom = filterRoom === '' || book.habitacion?.number?.toString().includes(filterRoom);
+
+        if (!book.fechaEntrada) return false;
+        const [year, month, day] = book.fechaEntrada.split('-');
+
+        const matchesYear = filterYear === '' || year === filterYear;
+        const matchesMonth = filterMonth === '' || month === filterMonth.padStart(2, '0');
+        const matchesDay = filterDay === '' || day === filterDay.padStart(2, '0');
+
+        return matchesClient && matchesRoom && matchesYear && matchesMonth && matchesDay;
+    });
 
     const confirmDelete = async () => {
         try {
@@ -40,45 +59,22 @@ const Bookings = () => {
                 setBookings(prev => prev.filter(b => b.id !== currentBooking.id));
                 setShowDeleteModal(false);
             }
-        } catch (error) {
-            console.error('Error al borrar:', error);
-        }
+        } catch (error) { console.error(error); }
     };
 
     const handleUpdate = async () => {
-        try {
-            // CONSTRUIMOS EL OBJETO LIMPIO PARA EVITAR RECURSIVIDAD
-            const bookingToSend = {
-                id: currentBooking.id,
-                fechaEntrada: currentBooking.fechaEntrada,
-                fechaSalida: currentBooking.fechaSalida,
-                estado: currentBooking.estado,
-                // Enviamos solo la referencia necesaria para que Spring no explote
-                cliente: { id: currentBooking.cliente?.id },
-                habitacion: { id: currentBooking.habitacion?.id }
-            };
-
+        try {           
             const response = await fetch(`http://localhost:8080/api/bookings/${currentBooking.id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(bookingToSend)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(currentBooking)
             });
-
             if (response.ok) {
                 setShowEditModal(false);
-                fetchBookings(); // Refrescar tabla
-            } else {
-                const errorData = await response.text();
-                console.error("Error del servidor al actualizar:", errorData);
+                fetchBookings(); 
             }
-        } catch (error) {
-            console.error('Error en la petición PUT:', error);
-        }
+        } catch (error) { console.error(error); }
     };
-
-    // --- HELPERS ---
 
     const getStatusStyle = (estado) => {
         switch (estado) {
@@ -96,90 +92,117 @@ const Bookings = () => {
         return `${day}/${month}/${year}`;
     };
 
-    if (loading) return <div className="loading">Cargando gestión de reservas...</div>;
+    if (loading) return <div className="loading">Cargando reservas...</div>;
 
     return (
         <div className="bookings-page-wrapper">
             <div className="bookings-container">
                 <div className="header-actions">
-                    <h2 className="title-list">Listado de Reservas</h2>
+                    <h2 className="title-list">Gestión de Reservas</h2>
                 </div>
 
-                <table className="bookings-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Cliente</th>
-                            <th>Habitación</th>
-                            <th>Entrada</th>
-                            <th>Salida</th>
-                            <th>Estado</th>
-                            <th className="text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bookings.map(book => (
-                            <tr key={book.id} className="booking-row">
-                                <td className="clickable" onClick={() => navigate(`/clients/${book.cliente?.id}?highlight=${book.id}`)}>
-                                    #{book.id}
-                                </td>
-                                <td className="clickable" onClick={() => navigate(`/clients/${book.cliente?.id}?highlight=${book.id}`)}>
-                                    <strong>{book.cliente?.nombre || 'Sin Cliente'}</strong>
-                                </td>
-                                <td><span className="badge-room">Hab. {book.habitacion?.number}</span></td>
-                                <td>{formatDate(book.fechaEntrada)}</td>
-                                <td>{formatDate(book.fechaSalida)}</td>
-                                <td>
-                                    <span className="status-pill" style={getStatusStyle(book.estado)}>
-                                        {book.estado}
-                                    </span>
-                                </td>
-                                <td className="actions-cell">
-                                    <button className="btn-action btn-edit" onClick={() => {
-                                        setCurrentBooking({ ...book });
-                                        setShowEditModal(true);
-                                    }}>
-                                        Editar
-                                    </button>
-                                    <button className="btn-action btn-delete" onClick={() => {
-                                        setCurrentBooking(book);
-                                        setShowDeleteModal(true);
-                                    }}>
-                                        Borrar
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <div className="sort-controls">
+                    <input 
+                        type="text" 
+                        placeholder="Buscar cliente..." 
+                        value={filterClient}
+                        onChange={(e) => setFilterClient(e.target.value)}
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Hab..." 
+                        style={{ width: '60px' }}
+                        value={filterRoom}
+                        onChange={(e) => setFilterRoom(e.target.value)}
+                    />
+                    
+                    <div className="date-filter-group" style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+                        <span>Entrada:</span>
+                        <input 
+                            type="number" 
+                            placeholder="Año" 
+                            style={{ width: '70px' }}
+                            value={filterYear}
+                            onChange={(e) => setFilterYear(e.target.value)}
+                        />
+                        <input 
+                            type="number" 
+                            placeholder="Mes" 
+                            min="1" max="12"
+                            style={{ width: '55px' }}
+                            value={filterMonth}
+                            onChange={(e) => setFilterMonth(e.target.value)}
+                        />
+                        <input 
+                            type="number" 
+                            placeholder="Día" 
+                            min="1" max="31"
+                            style={{ width: '55px' }}
+                            value={filterDay}
+                            onChange={(e) => setFilterDay(e.target.value)}
+                        />
+                    </div>
 
-                {/* MODAL EDICIÓN */}
+                    <button className="btn-clear-search" onClick={() => {
+                        setFilterClient('');
+                        setFilterRoom('');
+                        setFilterYear(currentYear);
+                        setFilterMonth('');
+                        setFilterDay('');
+                    }}> Limpiar </button>
+                </div>
+
+                <p className="results-counter">
+                    Filtradas: <strong>{filteredBookings.length}</strong> de {bookings.length}
+                </p>
+
+                <div className="table-responsive">
+                    <table className="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th><th>Cliente</th><th>Habitación</th><th>Entrada</th><th>Salida</th><th>Estado</th><th className="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredBookings.map(book => (
+                                <tr key={book.id} className="booking-row">
+                                    <td className="clickable" onClick={() => navigate(`/clients/${book.cliente?.id}`)}>#{book.id}</td>
+                                    <td className="clickable" onClick={() => navigate(`/clients/${book.cliente?.id}`)}>
+                                        <strong>{book.cliente?.nombre || '---'}</strong>
+                                    </td>
+                                    <td><span className="badge-room">Hab. {book.habitacion?.number}</span></td>
+                                    <td>{formatDate(book.fechaEntrada)}</td>
+                                    <td>{formatDate(book.fechaSalida)}</td>
+                                    <td>
+                                        <span className="status-pill" style={getStatusStyle(book.estado)}>
+                                            {book.estado}
+                                        </span>
+                                    </td>
+                                    <td className="actions-cell">
+                                        <button className="btn-edit" onClick={() => { setCurrentBooking({...book}); setShowEditModal(true); }}>Editar</button>
+                                        <button className="btn-delete" onClick={() => { setCurrentBooking(book); setShowDeleteModal(true); }}>Borrar</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
                 {showEditModal && currentBooking && (
                     <div className="modal-overlay">
                         <div className="modal-content">
                             <h3>Editar Reserva #{currentBooking.id}</h3>
                             <div className="form-group">
-                                <label>Fecha Entrada</label>
-                                <input
-                                    type="date"
-                                    value={currentBooking.fechaEntrada}
-                                    onChange={(e) => setCurrentBooking({ ...currentBooking, fechaEntrada: e.target.value })}
-                                />
+                                <label>Entrada</label>
+                                <input type="date" value={currentBooking.fechaEntrada} onChange={(e) => setCurrentBooking({...currentBooking, fechaEntrada: e.target.value})} />
                             </div>
                             <div className="form-group">
-                                <label>Fecha Salida</label>
-                                <input
-                                    type="date"
-                                    value={currentBooking.fechaSalida}
-                                    onChange={(e) => setCurrentBooking({ ...currentBooking, fechaSalida: e.target.value })}
-                                />
+                                <label>Salida</label>
+                                <input type="date" value={currentBooking.fechaSalida} onChange={(e) => setCurrentBooking({...currentBooking, fechaSalida: e.target.value})} />
                             </div>
                             <div className="form-group">
                                 <label>Estado</label>
-                                <select
-                                    value={currentBooking.estado}
-                                    onChange={(e) => setCurrentBooking({ ...currentBooking, estado: e.target.value })}
-                                >
+                                <select value={currentBooking.estado} onChange={(e) => setCurrentBooking({...currentBooking, estado: e.target.value})}>
                                     <option value="PRÓXIMA">PRÓXIMA</option>
                                     <option value="CONFIRMADA">CONFIRMADA</option>
                                     <option value="TERMINADA">TERMINADA</option>
@@ -187,21 +210,19 @@ const Bookings = () => {
                                 </select>
                             </div>
                             <div className="modal-actions">
-                                <button className="btn-save" onClick={handleUpdate}>Guardar Cambios</button>
+                                <button className="btn-save" onClick={handleUpdate}>Guardar</button>
                                 <button className="btn-cancel" onClick={() => setShowEditModal(false)}>Cerrar</button>
                             </div>
                         </div>
                     </div>
                 )}
-
-                {/* MODAL BORRADO */}
+                
                 {showDeleteModal && currentBooking && (
                     <div className="modal-overlay">
                         <div className="modal-content">
                             <h3>¿Eliminar reserva #{currentBooking.id}?</h3>
-                            <p>Esta acción no se puede deshacer.</p>
                             <div className="modal-actions">
-                                <button className="btn-delete-confirm" onClick={confirmDelete}>Confirmar</button>
+                                <button className="btn-delete-confirm" onClick={confirmDelete}>Eliminar</button>
                                 <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancelar</button>
                             </div>
                         </div>

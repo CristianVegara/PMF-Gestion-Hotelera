@@ -125,6 +125,6 @@ public class BookingController {
     
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        bookingRepository.deleteById(id);
+    	bookingDao.deleteById(id);
     }
 }

@@ -104,15 +104,19 @@ const RoomDetails = () => {
             <div className="details-main-content">
                 <div className="calendar-section">
                     <h3>Disponibilidad</h3>
-                    <div className="datepicker-container">
-                        <DatePicker
-                            selected={startDate}
-                            onChange={(dates) => { const [start, end] = dates; setStartDate(start); setEndDate(end); }}
-                            startDate={startDate} endDate={endDate}
-                            selectsRange inline locale="es"
-                            excludeDateIntervals={occupiedIntervals}
-                        />
-                    </div>
+					<div className="datepicker-container">
+					    <DatePicker
+					        selected={startDate}
+					        onChange={(dates) => { const [start, end] = dates; setStartDate(start); setEndDate(end); }}
+					        startDate={startDate} 
+					        endDate={endDate}
+					        selectsRange 
+					        inline 
+					        locale="es"
+					        excludeDateIntervals={occupiedIntervals}
+					        calendarClassName="full-width-calendar"
+					    />
+					</div>
                     <button className="btn-new-res" onClick={() => setIsModalOpen(true)}>Nueva Reserva</button>
                 </div>
 
@@ -122,8 +126,7 @@ const RoomDetails = () => {
                         {bookings.map(b => (
                             <div 
                                 key={b.id} 
-                                className="history-card" 
-                                /* AQUÍ ESTÁ EL CAMBIO: Pasamos el ID de la reserva por la URL */
+                                className="history-card"                        
                                 onClick={() => navigate(`/clients/${b.cliente?.id}?highlight=${b.id}`)}
                             >
                                 <div className="history-info">
@@ -137,7 +140,6 @@ const RoomDetails = () => {
                 </div>
             </div>
 
-            {/* MODAL (se mantiene igual que tu lógica original) */}
             {isModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">

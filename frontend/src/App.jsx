@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+	import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar'; 
 import Home from './pages/Home';
 import ClientsManager from './pages/ClientsManager';
 import ClientForm from './pages/ClientForm';
+import ClientDetails from './pages/ClientDetails';
 import Invoice from './pages/Invoice';
 import InvoiceForm from './pages/InvoiceForm';
 import Login from './pages/Login';
 import Rooms from './pages/Rooms';
 import RoomForm from './pages/RoomsForm';
+import RoomDetails from './pages/RoomDetails'
 import Bookings from './pages/Bookings';
 import Activities from './pages/Activities';
 import Activity from './pages/Activity';
@@ -31,7 +33,6 @@ function App() {
 
   return (
     <Router>
-      {/* pasamos user al navbar */}
       <Navbar user={user} setUser={setUser} />
 
       <div className="main-content">
