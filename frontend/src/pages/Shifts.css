@@ -89,7 +89,6 @@
   box-shadow: var(--shadow);
 }
 
-/* ESTILO DEL CALENDARIO AMARILLO */
 .highlight-yellow {
   background: var(--accent-yellow) !important;
   color: var(--text) !important;

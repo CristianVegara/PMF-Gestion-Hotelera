@@ -258,7 +258,7 @@ const Invoice = () => {
           </Link>
         </div>
 
-        <div className="sort-controls">
+        <div className="sort-controls">	
           <label>
             Ordenar por:
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>

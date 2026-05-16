@@ -36,7 +36,6 @@
   pointer-events: none;
 }
 
-/* Contenido central */
 .notfound-content {
   position: relative;
   z-index: 1;

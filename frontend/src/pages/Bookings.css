@@ -61,7 +61,6 @@
     vertical-align: middle;
 }
 
-/* Efecto hover en las filas para indicar que son clicables */
 .booking-row:hover {
     background-color: #f9f7ff;
 }
@@ -88,7 +87,6 @@
     font-size: 0.85rem;
 }
 
-/* Overlay que oscurece el fondo */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -102,7 +100,6 @@
     z-index: 1000;
 }
 
-/* Caja blanca del modal */
 .modal-content {
     background: white;
     padding: 30px;
