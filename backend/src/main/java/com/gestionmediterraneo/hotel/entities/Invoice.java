@@ -11,7 +11,6 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relación con cliente
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Client cliente;
@@ -28,7 +27,6 @@ public class Invoice {
     private BigDecimal total;
     private boolean pagada;
 
-    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

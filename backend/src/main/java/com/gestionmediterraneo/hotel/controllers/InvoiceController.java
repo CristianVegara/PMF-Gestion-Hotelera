@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = {"http://localhost:3000"})
@@ -35,143 +33,178 @@ public class InvoiceController {
     @Autowired
     private LoyaltyService loyaltyService;
 
+    private static final Map<String, String> SORT_MAP = Map.of(
+            "id", "id",
+            "total", "total",
+            "cliente", "cliente.nombre"
+    );
+
     @GetMapping
-    public List<Invoice> getInvoices(@RequestParam(defaultValue = "id") String sortBy,
-                                     @RequestParam(defaultValue = "asc") String direction) {
-        return invoiceService.findAllSorted(sortBy, direction);
+    public ResponseEntity<?> getInvoices(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            String mappedSort = SORT_MAP.getOrDefault(sortBy, "id");
+
+            List<Invoice> invoices = invoiceService.findAllSorted(mappedSort, direction);
+
+            response.put("data", invoices);
+            response.put("error", null);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("data", Collections.emptyList());
+            response.put("mensaje", "Error al obtener facturas");
+            response.put("error", e.getMessage());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
-        Invoice invoice;
 
         try {
-            invoice = invoiceService.findById(id).orElse(null);
+            Invoice invoice = invoiceService.findById(id).orElse(null);
+
+            if (invoice == null) {
+                response.put("mensaje", "Factura ID: " + id + " no existe");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            return ResponseEntity.ok(invoice);
+
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al consultar la base de datos");
             response.put("error", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
-        if (invoice == null) {
-            response.put("mensaje", "Factura ID: " + id + " no existe");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(invoice, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Invoice invoice, BindingResult result) {
         Map<String, Object> response = new HashMap<>();
-        Invoice invoiceNew;
 
         if (result.hasErrors()) {
             List<String> errors = result.getFieldErrors()
                     .stream()
                     .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
                     .collect(Collectors.toList());
+
             response.put("errors", errors);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(response);
         }
-
-        Client cliente = clientDao.findById(invoice.getCliente().getId()).orElse(null);
-        if (cliente == null) {
-            response.put("mensaje", "Cliente ID: " + invoice.getCliente().getId() + " no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-
-        invoice.setCliente(cliente);
-
-        applyLoyaltyDiscount(invoice, cliente);
-        invoice.setPagada(false);
 
         try {
-            invoiceNew = invoiceService.save(invoice);
-        } catch (DataAccessException e) {
-            response.put("mensaje", "Error al guardar la factura en la base de datos");
-            response.put("error", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            Client cliente = clientDao.findById(invoice.getCliente().getId()).orElse(null);
 
-        response.put("mensaje", "Factura creada con éxito");
-        response.put("invoice", invoiceNew);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+            if (cliente == null) {
+                response.put("mensaje", "Cliente no existe");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            invoice.setCliente(cliente);
+            applyLoyaltyDiscount(invoice, cliente);
+            invoice.setPagada(false);
+
+            Invoice saved = invoiceService.save(invoice);
+
+            response.put("mensaje", "Factura creada con éxito");
+            response.put("data", saved);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al guardar factura");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
-    // =========================
-    // UPDATE CON DESCUENTOS
-    // =========================
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody Invoice invoiceData, @PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
-        Invoice currentInvoice = invoiceService.findById(id).orElse(null);
-
-        if (currentInvoice == null) {
-            response.put("mensaje", "Factura ID: " + id + " no existe");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-
-        Client cliente = clientDao.findById(invoiceData.getCliente().getId()).orElse(null);
-        if (cliente == null) {
-            response.put("mensaje", "Cliente ID: " + invoiceData.getCliente().getId() + " no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
 
         try {
-            currentInvoice.setCliente(cliente);
-            currentInvoice.setConcepto(invoiceData.getConcepto());
-            currentInvoice.setNoches(invoiceData.getNoches());
-            currentInvoice.setPrecio(invoiceData.getPrecio());
+            Invoice current = invoiceService.findById(id).orElse(null);
 
-            applyLoyaltyDiscount(currentInvoice, cliente);
-            currentInvoice.setPagada(invoiceData.isPagada());
+            if (current == null) {
+                response.put("mensaje", "Factura no existe");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
 
-            invoiceService.save(currentInvoice);
+            Client cliente = clientDao.findById(invoiceData.getCliente().getId()).orElse(null);
+
+            if (cliente == null) {
+                response.put("mensaje", "Cliente no existe");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            current.setCliente(cliente);
+            current.setConcepto(invoiceData.getConcepto());
+            current.setNoches(invoiceData.getNoches());
+            current.setPrecio(invoiceData.getPrecio());
+
+            applyLoyaltyDiscount(current, cliente);
+            current.setPagada(invoiceData.isPagada());
+
+            Invoice updated = invoiceService.save(current);
+
+            response.put("mensaje", "Factura actualizada");
+            response.put("data", updated);
+
+            return ResponseEntity.ok(response);
 
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al actualizar la factura");
+            response.put("mensaje", "Error al actualizar factura");
             response.put("error", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
-        response.put("mensaje", "Factura actualizada con éxito");
-        response.put("invoice", currentInvoice);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
-        Invoice invoiceEliminar = invoiceService.findById(id).orElse(null);
-
-        if (invoiceEliminar == null) {
-            response.put("mensaje", "Factura ID: " + id + " no existe");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
 
         try {
-            invoiceService.delete(id);
-        } catch (DataAccessException e) {
-            response.put("mensaje", "Error al eliminar la factura");
-            response.put("error", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            Invoice invoice = invoiceService.findById(id).orElse(null);
 
-        response.put("mensaje", "Factura eliminada con éxito");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+            if (invoice == null) {
+                response.put("mensaje", "Factura no existe");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            invoiceService.delete(id);
+
+            response.put("mensaje", "Factura eliminada");
+            return ResponseEntity.ok(response);
+
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al eliminar factura");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     private void applyLoyaltyDiscount(Invoice invoice, Client cliente) {
         LoyaltyTier tier = loyaltyService.calculateTier(cliente);
+
         BigDecimal subtotalBeforeDiscount = invoice.getPrecio()
                 .multiply(BigDecimal.valueOf(invoice.getNoches()));
+
         BigDecimal discountPercentage = BigDecimal.valueOf(tier.getDiscountPercentage());
+
         BigDecimal discountAmount = subtotalBeforeDiscount
                 .multiply(discountPercentage)
                 .divide(BigDecimal.valueOf(100));
+
         BigDecimal subtotalWithDiscount = subtotalBeforeDiscount.subtract(discountAmount);
+
         BigDecimal iva = subtotalWithDiscount.multiply(new BigDecimal("0.10"));
 
         invoice.setSubtotalBeforeDiscount(subtotalBeforeDiscount);

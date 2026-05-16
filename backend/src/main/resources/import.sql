@@ -10,6 +10,26 @@ INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp6', '$
 INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp7', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
 INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp8', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
 INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp9', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
+
+--inserts de invocies
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (0.00, 0.00, 21.00, 1, b'1', 85.00, 85.00, 85.00, 102.85, 4, 'Habitación individual estándar', 'BRONZE');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (15.00, 5.00, 21.00, 2, b'1', 140.00, 280.00, 295.00, 338.80, 5, 'Habitación doble superior', 'SILVER');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (40.00, 10.00, 21.00, 4, b'0', 95.00, 380.00, 420.00, 459.80, 6, 'Habitación doble uso individual', 'GOLD');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (0.00, 0.00, 21.00, 3, b'1', 110.00, 330.00, 330.00, 399.30, 7, 'Habitación doble con terraza', 'BRONZE');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (70.00, 15.00, 21.00, 3, b'1', 150.00, 450.00, 520.00, 544.50, 8, 'Suite Junior con desayuno', 'PLATINUM');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (10.00, 5.00, 21.00, 1, b'1', 190.00, 190.00, 200.00, 229.90, 9, 'Suite Ejecutiva', 'SILVER');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (0.00, 0.00, 21.00, 5, b'0', 80.00, 400.00, 400.00, 484.00, 10, 'Habitación individual económica', 'BRONZE');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (120.00, 20.00, 21.00, 4, b'1', 165.00, 660.00, 780.00, 798.60, 11, 'Suite Familiar vista piscina', 'DIAMOND');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (20.00, 5.00, 21.00, 3, b'1', 125.00, 375.00, 395.00, 453.75, 12, 'Habitación doble deluxe', 'SILVER');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (55.00, 10.00, 21.00, 5, b'1', 105.00, 525.00, 580.00, 635.25, 13, 'Habitación triple estándar', 'GOLD');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (0.00, 0.00, 21.00, 2, b'0', 130.00, 260.00, 260.00, 314.60, 14, 'Habitación doble premium', 'BRONZE');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (180.00, 15.00, 21.00, 6, b'1', 195.00, 1170.00, 1350.00, 1415.70, 15, 'Bungalow privado con jacuzzi', 'PLATINUM');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (15.00, 5.00, 21.00, 2, b'1', 115.00, 230.00, 245.00, 278.30, 16, 'Habitación doble vista jardín', 'SILVER');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (0.00, 0.00, 21.00, 1, b'1', 90.00, 90.00, 90.00, 108.90, 17, 'Habitación individual estándar', 'BRONZE');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (90.00, 10.00, 21.00, 3, b'0', 290.00, 870.00, 960.00, 1052.70, 18, 'Suite Presidencial', 'GOLD');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (300.00, 25.00, 21.00, 5, b'1', 230.00, 1150.00, 1450.00, 1391.50, 19, 'Villa exclusiva frente al mar', 'DIAMOND');
+INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (10.00, 5.00, 21.00, 2, b'1', 100.00, 200.00, 210.00, 242.00, 20, 'Habitación doble estándar', 'SILVER');
+
 --Inserts de clientes
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('12345678A', 'Juan Pérez', '600111222', 'juan.perez@email.com');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('23456289B', 'María García', '600222333', 'maria.garcia@email.com');
@@ -143,7 +163,6 @@ INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (318, 1, 
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (319, 1, 1, 75.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (320, 1, 1, 75.0);
 
-
 --Inserts de actividades de prueba
 INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Excursión en 4x4', 45.00, '2026-05-19 10:00:00', '2026-05-19 12:00:00', 10);
 INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Kayak en la costa', 30.00, '2026-05-19 12:30:00', '2026-05-19 14:30:00', 8);
@@ -165,14 +184,9 @@ INSERT INTO activities_clients (activity_id, client_id) VALUES (4, 5);
 INSERT INTO activities_clients (activity_id, client_id) VALUES (5, 1);
 
 -- Inerts de descuentos
-INSERT INTO discounts (concepto, porcentaje, fecha_caducidad)
-VALUES ('Descuento Fidelidad', 10, '2026-12-31');
-
-INSERT INTO discounts (concepto, porcentaje, fecha_caducidad)
-VALUES ('Descuento VIP', 15, '2026-10-31');
-
-INSERT INTO discounts (concepto, porcentaje, fecha_caducidad)
-VALUES ('Promoción Verano', 5, '2026-08-31');
+INSERT INTO discounts (concepto, porcentaje, fecha_caducidad) VALUES ('Descuento Fidelidad', 10, '2026-12-31');
+INSERT INTO discounts (concepto, porcentaje, fecha_caducidad) VALUES ('Descuento VIP', 15, '2026-10-31');
+INSERT INTO discounts (concepto, porcentaje, fecha_caducidad) VALUES ('Promoción Verano', 5, '2026-08-31');
 
 -- Empleados
 INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Juan', 'Pérez', 'Recepción', 1);

@@ -25,7 +25,7 @@ const Clients = () => {
   };
 
   const deleteClient = async (e, id) => {
-    e.stopPropagation(); // Evita que al borrar también se dispare el clic de ir a detalles
+    e.stopPropagation(); 
     if (window.confirm('¿Estás seguro de eliminar este cliente?')) {
       try {
         const res = await fetch(`http://localhost:8080/api/clients/${id}`, { method: 'DELETE' });

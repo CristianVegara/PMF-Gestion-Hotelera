@@ -192,7 +192,7 @@ public class RoomController {
 
         response.put("mensaje", "La habitación ha sido actualizada con éxito");
         response.put("room", roomUpdated);
-        return new ResponseEntity<>(response, HttpStatus.OK); // Cambiado a OK (200)
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

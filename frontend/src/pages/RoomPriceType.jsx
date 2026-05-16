@@ -9,7 +9,6 @@ const RoomPriceByType = () => {
 
   useEffect(() => {
     if (type) {
-      // Forzamos mayúsculas para evitar errores con el Enum de Java
       fetch(`http://localhost:8080/api/dynamic/chart/type/${type.toUpperCase()}`)
         .then(res => {
           if (!res.ok) throw new Error('Error al obtener datos del historial');
@@ -17,7 +16,6 @@ const RoomPriceByType = () => {
         })
         .then(result => {
           if (result && result.labels && result.datasets) {
-            // "Cosemos" las etiquetas con los precios como en el ejemplo del form
             const combined = result.labels.map((label, index) => ({
               mes: label,
               valor: result.datasets[index]
