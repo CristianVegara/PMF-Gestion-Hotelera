@@ -64,29 +64,69 @@ html, body {
     position: relative; 
 }
 
-/* 4. Calendario con Scroll Interno */
+/* 4. Calendario con Ajuste Total al Contenedor */
 .datepicker-container {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; 
     width: 100%;
-    overflow: auto; 
     margin-bottom: 60px;
+    overflow: hidden; 
 }
 
 .react-datepicker {
-    font-size: 1.2rem !important; 
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column;
+    font-size: 1.1rem !important; 
     border: none !important;
     font-family: inherit !important;
 }
 
-.react-datepicker__day-name, .react-datepicker__day {
-    width: 3rem !important;
-    line-height: 3rem !important;
-    margin: 0.1rem !important;
+.react-datepicker__month-container {
+    width: 100% !important;
+    float: none !important;
 }
 
+.react-datepicker__header {
+    background-color: white !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding-top: 10px !important;
+}
+
+.react-datepicker__month {
+    margin: 0.4rem !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.react-datepicker__day-names, 
+.react-datepicker__week {
+    display: flex;
+    justify-content: space-around;
+}
+
+.react-datepicker__day-name, 
+.react-datepicker__day {
+    flex: 1;
+    max-width: none !important;
+    width: auto !important;
+    line-height: 3.5rem !important; 
+    margin: 0.1rem !important;
+    border-radius: 8px !important;
+}
+
+.react-datepicker__day--today {
+    font-weight: bold;
+    color: #3b82f6;
+}
+
+.react-datepicker__day--selected, 
+.react-datepicker__day--in-range {
+    background-color: #3b82f6 !important;
+    color: white !important;
+}
 /* 5. Botón Nueva Reserva (Posicionado abajo a la derecha) */
 .btn-new-res {
     position: absolute;
