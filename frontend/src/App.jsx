@@ -16,6 +16,7 @@ import Activity from './pages/Activity';
 import Shifts  from './pages/Shifts';
 import RoomPriceType from './pages/RoomPriceType';
 import RoomPriceAll from './pages/RoomPriceAll';
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
           
 
           <Route path="/shifts" element={<Shifts />} /> 
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>
