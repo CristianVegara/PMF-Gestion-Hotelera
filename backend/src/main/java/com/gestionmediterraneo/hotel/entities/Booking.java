@@ -1,8 +1,13 @@
 package com.gestionmediterraneo.hotel.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gestionmediterraneo.hotel.enums.BookingStatus;
+import com.gestionmediterraneo.hotel.enums.CheckInStatus;
+import com.gestionmediterraneo.hotel.enums.RoomType;
 
 @Entity
 @Table(name="booking")
@@ -12,10 +17,28 @@ public class Booking {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     
+    @NotNull(message = "no puede ser nulo")
     private LocalDate fechaEntrada;
+    
+    @NotNull(message = "no puede ser nulo")
     private LocalDate fechaSalida;
-    private String estado;
+    
+    @NotNull(message = "no puede ser nulo")
+    @Enumerated(EnumType.ORDINAL) 
+    private BookingStatus estado;
+    
 
+    
+    @NotNull(message = "no puede ser nulo")
+    @Enumerated(EnumType.ORDINAL) 
+    private CheckInStatus checkInStatus;
+
+    @NotNull(message = "no puede ser nulo")
+    @Enumerated(EnumType.ORDINAL) 
+    @Column(name = "room_type")
+    private RoomType roomType;
+    
+    @NotNull(message = "no puede ser nulo")
     @ManyToOne
     @JoinColumn(name = "client_id")
     @JsonIgnoreProperties({"bookings", "activities"})
@@ -25,27 +48,17 @@ public class Booking {
     @JoinColumn(name = "room_id")
     private Room habitacion;
     
-    public enum BookingStatus {
-	    SIN_CONFIRMAR, CONFIRMADA, TERMINADA, CANCELADA
-	}
-    
+   
     @PrePersist
     @PreUpdate 
     public void asignarEstadoAutomatico() {
-        LocalDate hoy = LocalDate.now();
-
         if (this.fechaEntrada == null || this.fechaSalida == null) {
-            this.estado = "PENDIENTE";
-            return;
+            this.estado = BookingStatus.SIN_CONFIRMAR;            
         }
-
-        if (hoy.isAfter(this.fechaSalida)) {
-            this.estado = "TERMINADA";
-        } else if (!hoy.isBefore(this.fechaEntrada)) {
-            this.estado = "CONFIRMADA";
-        } else {
-            this.estado = "PRÓXIMA";
-        }
+        else {
+            this.estado = BookingStatus.CONFIRMADA;
+        }        
+        
     }
 	public Booking() {
 	}
@@ -84,7 +97,7 @@ public class Booking {
 		this.fechaSalida = fechaSalida;
 	}
 
-	public String getEstado() {
+	public BookingStatus getEstado() {
 		return estado;
 	}
 
@@ -104,4 +117,22 @@ public class Booking {
 	public void setHabitacion(Room habitacion) {
 		this.habitacion = habitacion;
 	}
+	public CheckInStatus getCheckInStatus() {
+		return checkInStatus;
+	}
+	public void setCheckInStatus(CheckInStatus checkInStatus) {
+		this.checkInStatus = checkInStatus;
+	}
+	public void setEstado(BookingStatus estado) {
+		this.estado = estado;
+	}
+	public RoomType getRoomType() {
+		return roomType;
+	}
+	
+	public void setRoomType(RoomType roomType) {
+		this.roomType = roomType;
+	}	
+	
+	
 }

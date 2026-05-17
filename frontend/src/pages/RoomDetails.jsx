@@ -28,6 +28,15 @@ const RoomDetails = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedClientId, setSelectedClientId] = useState("");
 
+    const roomStatusMapping = {
+        'LIBRE': 0,
+        'OCUPADA': 1,
+        'SUCIA': 2,
+        'FUERA_DE_SERVICIO': 3
+    };
+
+    const roomTypesOrder = ['INDIVIDUAL', 'DOBLE', 'SUITE'];
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -57,6 +66,50 @@ const RoomDetails = () => {
         c.dni.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const handleUpdateStatus = async (newStatusText) => {
+        const confirmar = window.confirm(`¿Está seguro de cambiar el estado de la habitación a ${newStatusText.replace(/_/g, ' ')}?`);
+        if (!confirmar) return;
+
+        try {
+            const statusValue = roomStatusMapping[newStatusText];
+
+            const roomUpdated = {
+                ...room,
+                status: statusValue
+            };
+
+            const latestBooking = bookings[bookings.length - 1] || {};
+
+            const bookingToUpdate = {
+                ...latestBooking,
+                habitacion: {
+                    ...roomUpdated,
+                    type: roomTypesOrder.indexOf(roomUpdated.type) !== -1 ? roomTypesOrder.indexOf(roomUpdated.type) : roomUpdated.type,
+                    status: typeof roomUpdated.status === 'string' ? roomStatusMapping[roomUpdated.status] : roomUpdated.status
+                }
+            };
+
+            const response = await fetch(`http://localhost:8080/api/rooms/${room.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bookingToUpdate.habitacion)
+            });
+
+            if (response.ok) {
+                setRoom(prevRoom => ({
+                    ...prevRoom,
+                    status: newStatusText
+                }));
+                alert("Estado de la habitación actualizado con éxito.");
+            } else {
+                throw new Error("No se pudo actualizar el estado.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Error al actualizar el estado de la habitación.");
+        }
+    };
+
     const handleCreateBooking = async () => {
         const clientIdNum = parseInt(selectedClientId);
         if (!startDate || !endDate || isNaN(clientIdNum)) {
@@ -79,12 +132,32 @@ const RoomDetails = () => {
             });
 
             if (res.ok) {
-                window.location.reload();
+                const updatedBookingsRes = await fetch(`http://localhost:8080/api/bookings/room/${id}`);
+                const updatedBookingsList = await updatedBookingsRes.json();
+                setBookings(updatedBookingsList);
+                
+                setRoom(prevRoom => ({
+                    ...prevRoom,
+                    status: 'OCUPADA'
+                }));
+                
+                setIsModalOpen(false);
+                setStartDate(null);
+                setEndDate(null);
+                alert("Reserva creada con éxito.");
             } else {
                 alert("La habitación ya está ocupada en esas fechas");
             }
         } catch (err) { alert("Error de conexión."); }
     };
+
+    const currentStatus = useMemo(() => {
+        if (!room) return null;
+        if (typeof room.status === 'number') {
+            return Object.keys(roomStatusMapping).find(key => roomStatusMapping[key] === room.status);
+        }
+        return room.status;
+    }, [room]);
 
     if (loading) return <div className="loading">Cargando...</div>;
 
@@ -93,11 +166,42 @@ const RoomDetails = () => {
             <button className="btn-back" onClick={() => navigate('/rooms')}>❮ Volver</button>
             
             <div className="details-header-card">
-                <h1>Habitación {room?.number}</h1>
+                <div className="header-main-info">
+                    <h1>Habitación {room?.number}</h1>
+                    <div className="room-actions-status-container">
+                        {currentStatus === 'LIBRE' && (
+                            <>
+                                <button className="btn-status-action status-action-dirty" onClick={() => handleUpdateStatus('SUCIA')}>Marcar Sucia</button>
+                                <button className="btn-status-action status-action-maintenance" onClick={() => handleUpdateStatus('FUERA_DE_SERVICIO')}>Fuera de Servicio</button>
+                            </>
+                        )}
+                        {currentStatus === 'SUCIA' && (
+                            <>
+                                <button className="btn-status-action status-action-free" onClick={() => handleUpdateStatus('LIBRE')}>Marcar Libre</button>
+                                <button className="btn-status-action status-action-maintenance" onClick={() => handleUpdateStatus('FUERA_DE_SERVICIO')}>Fuera de Servicio</button>
+                            </>
+                        )}
+                        {currentStatus === 'FUERA_DE_SERVICIO' && (
+                            <>
+                                <button className="btn-status-action status-action-free" onClick={() => handleUpdateStatus('LIBRE')}>Marcar Libre</button>
+                                <button className="btn-status-action status-action-dirty" onClick={() => handleUpdateStatus('SUCIA')}>Marcar Sucia</button>
+                            </>
+                        )}
+                        {currentStatus === 'OCUPADA' && (
+                            <span className="status-locked-notice">🔒 Habitación Ocupada (Gestión desde Reservas)</span>
+                        )}
+                    </div>
+                </div>
+
                 <div className="info-grid">
                     <div className="info-item"><span className="info-label">TIPO</span><span className="info-value">{room?.type}</span></div>
                     <div className="info-item"><span className="info-label">PRECIO</span><span className="info-value">{room?.price}€</span></div>
-                    <div className="info-item"><span className="info-label">ESTADO</span><span className="info-value" style={{ color: '#10b981' }}>{room?.status}</span></div>
+                    <div className="info-item">
+                        <span className="info-label">ESTADO</span>
+                        <span className={`info-value status-text-${currentStatus?.toLowerCase()}`}>
+                            {currentStatus?.replace(/_/g, ' ')}
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -113,7 +217,9 @@ const RoomDetails = () => {
                             excludeDateIntervals={occupiedIntervals}
                         />
                     </div>
-                    <button className="btn-new-res" onClick={() => setIsModalOpen(true)}>Nueva Reserva</button>
+                    {currentStatus === 'LIBRE' && (
+                        <button className="btn-new-res" onClick={() => setIsModalOpen(true)}>Nueva Reserva</button>
+                    )}
                 </div>
 
                 <div className="history-section">
@@ -123,7 +229,6 @@ const RoomDetails = () => {
                             <div 
                                 key={b.id} 
                                 className="history-card" 
-                                /* AQUÍ ESTÁ EL CAMBIO: Pasamos el ID de la reserva por la URL */
                                 onClick={() => navigate(`/clients/${b.cliente?.id}?highlight=${b.id}`)}
                             >
                                 <div className="history-info">
@@ -137,7 +242,6 @@ const RoomDetails = () => {
                 </div>
             </div>
 
-            {/* MODAL (se mantiene igual que tu lógica original) */}
             {isModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">

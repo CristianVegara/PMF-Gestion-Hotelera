@@ -2,13 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Rooms.css';
 
-// Función auxiliar para convertir "FUERA_DE_SERVICIO" -> "Fuera de servicio"
 const formatEnum = (text) => {
   if (!text) return "";
   return text.charAt(0) + text.slice(1).toLowerCase().replace(/_/g, ' ');
 };
 
-// Función para convertir "FUERA_DE_SERVICIO" -> "fuera-de-servicio" (para CSS)
 const enumToClass = (text) => {
   return text ? text.toLowerCase().replace(/_/g, '-') : '';
 };
@@ -29,21 +27,41 @@ const Rooms = () => {
   const [fechaSalida, setFechaSalida] = useState("");
   const [bookingDetail, setBookingDetail] = useState(null);
 
-  useEffect(() => {
+  const fetchRooms = () => {
     fetch('http://localhost:8080/api/rooms')
+      .then(res => res.json())
+      .then(data => setRooms(data))
+      .catch(err => console.error("Error cargando habitaciones:", err));
+  };
+
+  const fetchRoomBookings = (roomId) => {
+    if (!roomId) return;
+    fetch(`http://localhost:8080/api/bookings/room/${roomId}`)
       .then(res => res.json())
       .then(data => {
         const sorted = data.sort((a, b) => new Date(b.fechaEntrada) - new Date(a.fechaEntrada));
         setRoomBookings(sorted);
       })
-      .catch(err => console.error("Error cargando agenda:", err));
+      .catch(err => console.error("Error cargando agenda de la habitación:", err));
   };
 
+  useEffect(() => {
+    fetchRooms();
+  }, []);
+
+  useEffect(() => {
+    if (roomSelected) {
+      fetchRoomBookings(roomSelected.id);
+    }
+  }, [roomSelected]);
+
   const handleStartAssignment = () => {
-    fetch('/api/clients').then(res => res.json()).then(data => {
+    fetch('/api/clients')
+      .then(res => res.json())
+      .then(data => {
         setClients(data);
         setShowSearch(true);
-    });
+      });
   };
 
   const filteredClients = clients.filter(c => 
@@ -124,7 +142,7 @@ const Rooms = () => {
                   {rooms.map(room => (
                     <tr 
                       key={room.id} 
-                      onClick={() => { setRoomSelected(room); fetchRoomBookings(room.id); }} 
+                      onClick={() => setRoomSelected(room)} 
                       className={roomSelected?.id === room.id ? 'row-selected' : ''}
                     >
                       <td>{room.id}</td>
@@ -145,7 +163,7 @@ const Rooms = () => {
                   <div 
                     key={room.id} 
                     className={`room-card ${enumToClass(room.status)} ${roomSelected?.id === room.id ? 'selected' : ''}`}
-                    onClick={() => { setRoomSelected(room); fetchRoomBookings(room.id); }}
+                    onClick={() => setRoomSelected(room)}
                   >
                     <div className="room-card-number">{room.number}</div>
                     <div className="room-card-type">{formatEnum(room.type)}</div>
@@ -157,7 +175,6 @@ const Rooms = () => {
           </div>
         </div>
 
-        {/* COLUMNA DERECHA */}
         <div className="info-column">
           {roomSelected ? (
             <div className="detail-panel sticky-panel">
@@ -167,7 +184,7 @@ const Rooms = () => {
               </div>
 
               <div className="detail-info-basic">
-                <p><strong>Tipo:</strong> {formatEnum(roomSelected.type)} | <strong>Precio:</strong> {roomSelected.price.toFixed(2)}€</p>
+                <p><strong>Tipo:</strong> {formatEnum(roomSelected.type)} | <strong>Precio:</strong> {roomSelected.price?.toFixed(2)}€</p>
                 <p><strong>Estado:</strong> <span className={`status-text ${enumToClass(roomSelected.status)}`}>{formatEnum(roomSelected.status)}</span></p>
               </div>
               
@@ -218,7 +235,6 @@ const Rooms = () => {
         </div>
       </div>
 
-      {/* MODAL HISTORIAL */}
       {showHistory && (
         <div className="modal-overlay" onClick={() => setShowHistory(false)}>
           <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
@@ -249,7 +265,6 @@ const Rooms = () => {
         </div>
       )}
 
-      {/* MODAL EDICIÓN */}
       {bookingDetail && (
         <div className="modal-overlay" onClick={() => setBookingDetail(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>

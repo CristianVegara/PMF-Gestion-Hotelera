@@ -1,5 +1,6 @@
 package com.gestionmediterraneo.hotel.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.gestionmediterraneo.hotel.entities.Client;
@@ -15,5 +16,6 @@ public interface IClientService {
 	
 	public Client delete(Client client);
 	
-	List<Client> findAllSorted(String sortBy, String direction);
+	List<Client> findAllSorted(String sortBy, String direction);	
+
 }

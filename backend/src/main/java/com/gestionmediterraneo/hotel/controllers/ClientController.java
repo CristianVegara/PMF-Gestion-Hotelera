@@ -47,6 +47,8 @@ public class ClientController {
         }
     }
     
+    
+    
     @GetMapping("/{id}")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Client client = null;
@@ -66,7 +68,8 @@ public class ClientController {
         }
         
         return new ResponseEntity<Client>(client, HttpStatus.OK);
-    }
+    }    
+    
     
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Client client, BindingResult result) {
@@ -109,9 +112,9 @@ public class ClientController {
 
         if (result.hasErrors()) {
             List<String> errors = result.getFieldErrors()
-                    .stream()
-                    .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
-                    .collect(Collectors.toList());
+					                    .stream()
+					                    .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+					                    .collect(Collectors.toList());
 
             response.put("Errores en los campos", errors);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
