@@ -16,7 +16,6 @@ export default function RoomsForm() {
 
   const [errors, setErrors] = useState([]);
 
-  // Cargar datos en edición
   useEffect(() => {
     if (!isEdit) return;
 
@@ -128,7 +127,6 @@ export default function RoomsForm() {
         </div>
       </form>
 
-      {/* IMPORTANTE: los tests buscan textos planos */}
       <div>
         {errors.map((e, i) => (
           <p key={i}>{e}</p>

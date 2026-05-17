@@ -13,19 +13,7 @@ const enumToClass = (text) => {
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
-  const [roomSelected, setRoomSelected] = useState(null);
-  const [roomBookings, setRoomBookings] = useState([]); 
-  const [viewMode, setViewMode] = useState('list');
-  const [showHistory, setShowHistory] = useState(false); 
-
-  const [clients, setClients] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [clientSelected, setClientSelected] = useState(null);
-  const [showSearch, setShowSearch] = useState(false); 
-
-  const [fechaEntrada, setFechaEntrada] = useState("");
-  const [fechaSalida, setFechaSalida] = useState("");
-  const [bookingDetail, setBookingDetail] = useState(null);
+  const navigate = useNavigate();
 
   const fetchRooms = () => {
     fetch('http://localhost:8080/api/rooms')
@@ -38,6 +26,8 @@ const Rooms = () => {
     if (!roomId) return;
     fetch(`http://localhost:8080/api/bookings/room/${roomId}`)
       .then(res => res.json())
+      .then(data => setRooms(data));
+  }, []);
       .then(data => {
         const sorted = data.sort((a, b) => new Date(b.fechaEntrada) - new Date(a.fechaEntrada));
         setRoomBookings(sorted);
@@ -121,16 +111,10 @@ const Rooms = () => {
 
   return (
     <div className="rooms-page-wrapper">
-      <div className="rooms-container main-layout">
-        
-        <div className="table-column">
-          <div className="header-actions">
-            <h2 className="title-list">Habitaciones ({rooms.length})</h2>
-            <div className="view-selector">
-              <button className={`view-btn ${viewMode === 'list' ? 'active' : ''}`} onClick={() => setViewMode('list')}>Lista</button>
-              <button className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`} onClick={() => setViewMode('grid')}>Cuadros</button>
-            </div>
-          </div>
+      <div className="rooms-container">
+        <div className="header-actions">
+          <h2 className="title-list">Estado de Habitaciones ({rooms.length})</h2>
+        </div>
 
           <div className="table-responsive scrollable-table">
             {viewMode === 'list' ? (
@@ -231,7 +215,7 @@ const Rooms = () => {
                 )}
               </div>
             </div>
-          ) : <div className="empty-panel">Selecciona una habitación.</div>}
+          ))}
         </div>
       </div>
 

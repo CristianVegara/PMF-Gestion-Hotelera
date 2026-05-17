@@ -5,10 +5,10 @@ import {
 } from 'recharts';
 
 const RoomPriceAll = () => {
-  const [rawData, setRawData] = useState([]); // Datos originales del server
+  const [rawData, setRawData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibility, setVisibility] = useState({}); // Estado de los checkboxes
-  const [showAverage, setShowAverage] = useState(true); // Estado checkbox media
+  const [visibility, setVisibility] = useState({});
+  const [showAverage, setShowAverage] = useState(true);
 
   useEffect(() => {
     fetch('http://localhost:8080/api/rooms/dynamic/chart/all-types')
@@ -22,7 +22,6 @@ const RoomPriceAll = () => {
           return entry;
         });
 
-        // Inicializar visibilidad: todos los tipos activos por defecto
         const initialVisibility = {};
         Object.keys(result.datasets).forEach(type => {
           initialVisibility[type] = true;
@@ -38,7 +37,6 @@ const RoomPriceAll = () => {
       });
   }, []);
 
-  // Calculamos la media dinámicamente según lo que esté visible
   const chartData = useMemo(() => {
     return rawData.map(item => {
       const activeTypes = Object.keys(visibility).filter(type => visibility[type]);
@@ -62,14 +60,13 @@ const RoomPriceAll = () => {
     INDIVIDUAL: '#4f46e5',
     DOBLE: '#10b981',
     SUITE: '#f59e0b',
-    MEDIA: '#ef4444' // Rojo para la media
+    MEDIA: '#ef4444'
   };
 
   return (
     <div style={{ padding: '20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
       <h2 style={{ textAlign: 'center' }}>Análisis Comparativo de Precios</h2>
 
-      {/* PANEL DE CONTROL (Checkboxes) */}
       <div style={{ 
         display: 'flex', 
         justifyContent: 'center', 
@@ -106,7 +103,6 @@ const RoomPriceAll = () => {
             <Tooltip />
             <Legend verticalAlign="top" height={40} />
 
-            {/* Líneas de tipos de habitación (condicionales) */}
             {Object.keys(visibility).map(type => (
               visibility[type] && (
                 <Line
@@ -121,7 +117,6 @@ const RoomPriceAll = () => {
               )
             ))}
 
-            {/* Línea de Media (condicional) */}
             {showAverage && (
               <Line
                 type="stepAfter"

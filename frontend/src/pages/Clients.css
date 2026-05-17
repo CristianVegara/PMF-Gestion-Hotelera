@@ -188,7 +188,6 @@
   background-color: #a93226;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .sort-controls {
     flex-direction: column;

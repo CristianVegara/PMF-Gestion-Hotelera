@@ -85,9 +85,7 @@ const ClientDetails = () => {
   return (
     <div className="client-details-page">
       <div className="details-header">
-        <button onClick={() => navigate('/bookings')} className="btn-back-link">
-          ❮ Volver al listado
-        </button>
+       <button className="btn-back" onClick={() => navigate(-1)}>❮ Volver</button>
       </div>
 
       <div className="details-section-card profile-main-card">

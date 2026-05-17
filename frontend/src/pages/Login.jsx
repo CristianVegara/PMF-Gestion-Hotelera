@@ -13,14 +13,11 @@ const Login = ({ setUser }) => {
     e.preventDefault();
 
     setError("");
-
-    // VALIDACIÓN BÁSICA
     if (username.trim() === "" || password.trim() === "") {
       setError("Rellena todos los campos");
       return;
     }
 
-    // LOGIN SIMULADO
     if (username === "admin" && password === "admin") {
       const user = {
         username,
@@ -29,12 +26,10 @@ const Login = ({ setUser }) => {
 
       localStorage.setItem("user", JSON.stringify(user));
 
-      // 🔥 IMPORTANTE: actualiza estado global
       if (setUser) {
         setUser(user);
       }
 
-      // 🔥 REDIRECCIÓN CORRECTA (NO /home)
       navigate("/clients");
     } else {
       setError("Credenciales incorrectas");

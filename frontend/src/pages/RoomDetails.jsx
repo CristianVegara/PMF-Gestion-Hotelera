@@ -208,15 +208,19 @@ const RoomDetails = () => {
             <div className="details-main-content">
                 <div className="calendar-section">
                     <h3>Disponibilidad</h3>
-                    <div className="datepicker-container">
-                        <DatePicker
-                            selected={startDate}
-                            onChange={(dates) => { const [start, end] = dates; setStartDate(start); setEndDate(end); }}
-                            startDate={startDate} endDate={endDate}
-                            selectsRange inline locale="es"
-                            excludeDateIntervals={occupiedIntervals}
-                        />
-                    </div>
+					<div className="datepicker-container">
+					    <DatePicker
+					        selected={startDate}
+					        onChange={(dates) => { const [start, end] = dates; setStartDate(start); setEndDate(end); }}
+					        startDate={startDate} 
+					        endDate={endDate}
+					        selectsRange 
+					        inline 
+					        locale="es"
+					        excludeDateIntervals={occupiedIntervals}
+					        calendarClassName="full-width-calendar"
+					    />
+					</div>
                     {currentStatus === 'LIBRE' && (
                         <button className="btn-new-res" onClick={() => setIsModalOpen(true)}>Nueva Reserva</button>
                     )}
@@ -228,12 +232,12 @@ const RoomDetails = () => {
                         {bookings.map(b => (
                             <div 
                                 key={b.id} 
-                                className="history-card" 
+                                className="history-card"                        
                                 onClick={() => navigate(`/clients/${b.cliente?.id}?highlight=${b.id}`)}
                             >
                                 <div className="history-info">
                                     <strong>{b.cliente?.nombre}</strong>
-                                    <span>📅 {new Date(b.fechaEntrada).toLocaleDateString()} - {new Date(b.fechaSalida).toLocaleDateString()}</span>
+                                    <span>{new Date(b.fechaEntrada).toLocaleDateString()} - {new Date(b.fechaSalida).toLocaleDateString()}</span>
                                 </div>
                                 <div className="history-arrow">❯</div>
                             </div>

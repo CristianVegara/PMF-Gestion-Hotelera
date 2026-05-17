@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+	import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar'; 
@@ -14,6 +14,7 @@ import InvoiceForm from './pages/InvoiceForm';
 import Login from './pages/Login';
 import Rooms from './pages/Rooms';
 import RoomForm from './pages/RoomsForm';
+import RoomDetails from './pages/RoomDetails'
 
 import Activities from './pages/Activities';
 import Activity from './pages/Activity';
@@ -21,6 +22,7 @@ import Shifts  from './pages/Shifts';
 import RoomPriceType from './pages/RoomPriceType';
 import RoomPriceAll from './pages/RoomPriceAll';
 import RoomDetails from './pages/RoomDetails'
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -36,7 +38,6 @@ function App() {
 
   return (
     <Router>
-      {/* pasamos user al navbar */}
       <Navbar user={user} setUser={setUser} />
 
       <div className="main-content">
@@ -72,6 +73,7 @@ function App() {
           
 
           <Route path="/shifts" element={<Shifts />} /> 
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>

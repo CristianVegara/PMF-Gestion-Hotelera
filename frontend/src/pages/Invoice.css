@@ -15,7 +15,6 @@
     transition: all 0.3s ease;
 }
 
-/* HEADER */
 .header-actions {
     display: flex;
     justify-content: space-between;
@@ -47,7 +46,6 @@
     transform: translateY(-1px);
 }
 
-/* SORT CONTROLS */
 .sort-controls {
     display: flex;
     gap: 20px;
@@ -76,13 +74,16 @@
     transition: all 0.2s ease;
 }
 
+.dni-search-label {
+  flex: 1 1 260px;
+}
+
 .sort-controls select:focus {
     outline: none;
     border-color: #007bff;
     box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
 }
 
-/* TABLE */
 .table-responsive {
     border-radius: 8px;
     overflow-x: auto;
@@ -129,7 +130,6 @@
     text-align: center;
 }
 
-/* ACTION BUTTONS */
 .btn-edit {
     background-color: #f39c12;
     color: white;
@@ -222,7 +222,6 @@
     border-top: 1px dashed #dee2e6;
 }
 
-/* BADGE DESCUENTO */
 .discount-badge {
     display: inline-block;
     padding: 3px 8px;
@@ -254,7 +253,6 @@
     white-space: nowrap;
 }
 
-/* UX EXTRA */
 .invoices-table tr:hover .invoice-breakdown {
     transform: scale(1.01);
     transition: all 0.2s ease;

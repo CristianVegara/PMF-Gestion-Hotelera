@@ -42,7 +42,6 @@
 .stats-badge .current { font-size: 1.5rem; font-weight: bold; }
 .stats-badge .total { font-size: 1.1rem; opacity: 0.8; }
 
-/* Grid de Huecos */
 .slots-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -60,7 +59,6 @@
   border: 2px solid transparent;
 }
 
-/* Slot Ocupado */
 .activity-slot.occupied {
   background: white;
   border-color: #e2e8f0;
@@ -99,7 +97,6 @@
   font-weight: bold;
 }
 
-/* Slot Vacío */
 .activity-slot.available {
   background: #f8fafc;
   border: 2px dashed #cbd5e1;
