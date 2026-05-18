@@ -12,16 +12,17 @@ import ClientDetails from './pages/ClientDetails'
 import Invoice from './pages/Invoice';
 import InvoiceForm from './pages/InvoiceForm';
 import Login from './pages/Login';
+import NotFound from './pages/NotFound'
 import Rooms from './pages/Rooms';
 import RoomForm from './pages/RoomsForm';
-import RoomDetails from './pages/RoomDetails'
-
 import Activities from './pages/Activities';
 import Activity from './pages/Activity';
 import Shifts  from './pages/Shifts';
 import RoomPriceType from './pages/RoomPriceType';
 import RoomPriceAll from './pages/RoomPriceAll';
 import NotFound from './pages/NotFound';
+import RoomDetails from './pages/RoomDetails'
+
 
 
 function App() {

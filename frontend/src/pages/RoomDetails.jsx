@@ -221,9 +221,7 @@ const RoomDetails = () => {
 					        calendarClassName="full-width-calendar"
 					    />
 					</div>
-                    {currentStatus === 'LIBRE' && (
-                        <button className="btn-new-res" onClick={() => setIsModalOpen(true)}>Nueva Reserva</button>
-                    )}
+                    <button className="btn-new-res" onClick={() => setIsModalOpen(true)}>Nueva Reserva</button>
                 </div>
 
                 <div className="history-section">
