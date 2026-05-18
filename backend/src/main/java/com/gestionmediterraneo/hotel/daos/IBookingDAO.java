@@ -2,9 +2,11 @@ package com.gestionmediterraneo.hotel.daos;
 
 
 import com.gestionmediterraneo.hotel.entities.Booking;
+import com.gestionmediterraneo.hotel.enums.BookingStatus;
 import com.gestionmediterraneo.hotel.enums.CheckInStatus;
 import com.gestionmediterraneo.hotel.enums.RoomType;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,8 +31,8 @@ public interface IBookingDAO extends JpaRepository<Booking, Long> {
     @Query("SELECT COUNT(b) FROM Booking b JOIN b.habitacion r WHERE :fecha BETWEEN b.fechaEntrada AND b.fechaSalida AND r.type = :type AND b.estado <> com.gestionmediterraneo.hotel.enums.BookingStatus.CANCELADA")
     long countOccupiedByDateAndType(@Param("fecha") java.time.LocalDate fecha, @Param("type") RoomType type);
     
-    @Query("SELECT b FROM Booking b WHERE :fecha BETWEEN b.fechaEntrada AND b.fechaSalida AND b.estado != 'CANCELADA'")
-    List<Booking> findBookingsByDate(@Param("fecha") LocalDate fecha);
+    @Query("SELECT b FROM Booking b WHERE :fecha BETWEEN b.fechaEntrada AND b.fechaSalida AND b.estado != :estado")
+    List<Booking> findBookingsByDate(@Param("fecha") LocalDate fecha, @Param("estado")BookingStatus estado);
 
     long countByCliente_Id(Long clientId);
 

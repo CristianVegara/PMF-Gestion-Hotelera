@@ -17,7 +17,12 @@ const Rooms = () => {
     if (!roomId) return;
     fetch(`http://localhost:8080/api/bookings/room/${roomId}`)
       .then(res => res.json())
-      .then(data => setRooms(data));
+      .then(data => setRooms(data))
+      .catch(err => console.error("Error cargando reservas:", err));
+  };
+
+  useEffect(() => {
+    fetchRooms();
   }, []);
 
   return (
@@ -32,7 +37,7 @@ const Rooms = () => {
             <div 
               key={room.id} 
               className={`room-card ${room.status.toLowerCase()}`}
-              onClick={() => navigate(`/rooms/${room.id}`)} // Redirige al detalle
+              onClick={() => navigate(`/rooms/${room.id}`)}
             >
               <div className="room-card-number">{room.number}</div>
               <div className="room-card-type">{room.type}</div>

@@ -86,7 +86,7 @@ public class BookingController {
     public ResponseEntity<?> getBookingsByDate(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         try {
-            List<Booking> bookings = bookingDao.findBookingsByDate(date);
+            List<Booking> bookings = bookingDao.findBookingsByDate(date, BookingStatus.CANCELADA);
             
             if (bookings.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
