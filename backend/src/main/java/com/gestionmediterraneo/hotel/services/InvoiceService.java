@@ -6,6 +6,7 @@ import com.gestionmediterraneo.hotel.entities.Invoice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,14 @@ public class InvoiceService {
 
     public Optional<Invoice> findById(Long id) {
         return invoiceDao.findById(id);
+    }
+
+    public List<Invoice> findByDateRange(LocalDate start, LocalDate end) {
+        return invoiceDao.findByFechaEmisionBetween(start, end);
+    }
+
+    public List<Invoice> findByClientBookingDateRange(Long clientId, LocalDate start, LocalDate end) {
+        return invoiceDao.findByClienteIdAndBookingDateRange(clientId, start, end);
     }
 
     public Invoice save(Invoice invoice) {

@@ -49,15 +49,35 @@ public class Client {
 	private List<Discount> discounts;
 	
 	@JsonIgnoreProperties({"cliente", "hibernateLazyInitializer", "handler"}) 
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Invoice> invoices = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnoreProperties("cliente")
 	private List<Booking> bookings = new ArrayList<>();
 
-	public void setInvoices(List<Invoice> invoices) {
-	    this.invoices = invoices;
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnoreProperties({"client", "invoice"})
+	private List<Payment> payments = new ArrayList<>();
+
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnoreProperties({"client", "payment"})
+	private List<Refund> refunds = new ArrayList<>();
+
+	public List<Payment> getPayments() {
+	    return payments;
+	}
+
+	public void setPayments(List<Payment> payments) {
+	    this.payments = payments;
+	}
+
+	public List<Refund> getRefunds() {
+	    return refunds;
+	}
+
+	public void setRefunds(List<Refund> refunds) {
+	    this.refunds = refunds;
 	}
 	
 
@@ -122,11 +142,16 @@ public class Client {
 		return bookings;
 	}
 
-
 	public void setBookings(List<Booking> bookings) {
 		this.bookings = bookings;
 	}
 
-	
-	
+	public List<Invoice> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(List<Invoice> invoices) {
+		this.invoices = invoices;
+	}
+
 }

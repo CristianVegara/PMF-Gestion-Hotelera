@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gestionmediterraneo.hotel.enums.BookingStatus;
 import com.gestionmediterraneo.hotel.enums.CheckInStatus;
@@ -47,6 +50,10 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room habitacion;
+    
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"booking"})
+    private List<Charge> charges = new ArrayList<>();
     
    
     @PrePersist

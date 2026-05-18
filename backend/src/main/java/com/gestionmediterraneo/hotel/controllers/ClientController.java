@@ -68,8 +68,26 @@ public class ClientController {
         }
         
         return new ResponseEntity<Client>(client, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/history")
+    public ResponseEntity<?> history(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        Client client = clientService.findById(id);
+
+        if (client == null) {
+            response.put("mensaje", "El cliente ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+
+        response.put("client", client);
+        response.put("bookings", client.getBookings());
+        response.put("activities", client.getActivities());
+        response.put("invoices", client.getInvoices());
+        response.put("payments", client.getPayments());
+        response.put("refunds", client.getRefunds());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }    
-    
     
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Client client, BindingResult result) {

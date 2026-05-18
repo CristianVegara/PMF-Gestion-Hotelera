@@ -2,9 +2,13 @@ package com.gestionmediterraneo.hotel.controllers;
 
 import com.gestionmediterraneo.hotel.entities.Client;
 import com.gestionmediterraneo.hotel.entities.Invoice;
+import com.gestionmediterraneo.hotel.services.BillingService;
+import com.gestionmediterraneo.hotel.services.InvoiceGenerationRequest;
 import com.gestionmediterraneo.hotel.services.InvoiceService;
 import com.gestionmediterraneo.hotel.services.LoyaltyService;
 import com.gestionmediterraneo.hotel.services.LoyaltyTier;
+import com.gestionmediterraneo.hotel.services.RevenueReportResponse;
+import com.gestionmediterraneo.hotel.services.RevenueReportService;
 import com.gestionmediterraneo.hotel.daos.IClientDAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +38,12 @@ public class InvoiceController {
 
     @Autowired
     private LoyaltyService loyaltyService;
+
+    @Autowired
+    private BillingService billingService;
+
+    @Autowired
+    private RevenueReportService revenueReportService;
 
     private static final Map<String, String> SORT_MAP = Map.of(
             "id", "id",
@@ -65,6 +77,24 @@ public class InvoiceController {
         }
     }
 
+    @PostMapping("/generate")
+    public ResponseEntity<?> generate(@RequestBody InvoiceGenerationRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Invoice invoice = billingService.generateInvoice(request);
+            response.put("mensaje", "Factura generada con éxito");
+            response.put("data", invoice);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (IllegalArgumentException e) {
+            response.put("mensaje", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            response.put("mensaje", "Error al generar la factura");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
@@ -81,6 +111,60 @@ public class InvoiceController {
 
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al consultar la base de datos");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<?> report(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(required = false) Long roomId,
+            @RequestParam(required = false) Long clientId,
+            @RequestParam(required = false) String type) {
+
+        Map<String, Object> response = new HashMap<>();
+        try {
+            RevenueReportResponse report = revenueReportService.calculateRevenue(from, to, roomId, clientId, type);
+            response.put("data", report);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("mensaje", "Error al generar el informe");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/client/{clientId}/expenses")
+    public ResponseEntity<?> clientExpenses(
+            @PathVariable Long clientId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Optional<Client> clientOpt = Optional.ofNullable(clientDao.findById(clientId).orElse(null));
+            if (clientOpt.isEmpty()) {
+                response.put("mensaje", "Cliente no encontrado");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            List<Invoice> invoices = invoiceService.findByClientBookingDateRange(clientId, from, to);
+            BigDecimal totalSpent = invoices.stream()
+                    .map(inv -> inv.getTotal() != null ? inv.getTotal() : BigDecimal.ZERO)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            response.put("client", clientOpt.get());
+            response.put("from", from);
+            response.put("to", to);
+            response.put("invoiceCount", invoices.size());
+            response.put("totalSpent", totalSpent);
+            response.put("invoices", invoices);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("mensaje", "Error al consultar gastos del cliente");
             response.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }

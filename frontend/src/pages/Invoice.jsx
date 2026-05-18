@@ -20,6 +20,20 @@ const Invoice = () => {
   const [sortBy, setSortBy] = useState("id");
   const [direction, setDirection] = useState("asc");
 
+  const [reportFrom, setReportFrom] = useState("");
+  const [reportTo, setReportTo] = useState("");
+  const [reportRoomId, setReportRoomId] = useState("");
+  const [reportClientId, setReportClientId] = useState("");
+  const [reportType, setReportType] = useState("");
+  const [reportData, setReportData] = useState(null);
+  const [reportError, setReportError] = useState(null);
+
+  const [expenseClientId, setExpenseClientId] = useState("");
+  const [expenseFrom, setExpenseFrom] = useState("");
+  const [expenseTo, setExpenseTo] = useState("");
+  const [expenseResult, setExpenseResult] = useState(null);
+  const [expenseError, setExpenseError] = useState(null);
+
   useEffect(() => {
     fetchInvoices();
   }, [sortBy, direction]);
@@ -49,6 +63,59 @@ const Invoice = () => {
         if (res.ok) fetchInvoices();
       });
     }
+  };
+
+  const fetchReport = () => {
+    if (!reportFrom || !reportTo) {
+      setReportError("Debes indicar el rango de fechas desde y hasta.");
+      setReportData(null);
+      return;
+    }
+
+    setReportError(null);
+    setReportData(null);
+
+    let url = `/api/invoice/report?from=${reportFrom}&to=${reportTo}`;
+    if (reportRoomId) url += `&roomId=${encodeURIComponent(reportRoomId)}`;
+    if (reportClientId) url += `&clientId=${encodeURIComponent(reportClientId)}`;
+    if (reportType) url += `&type=${encodeURIComponent(reportType)}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        const data = res?.data ?? res;
+        setReportData(data);
+      })
+      .catch((err) => {
+        setReportError("No se pudo generar el informe. Comprueba el rango y los filtros.");
+        console.error("Error informe:", err);
+      });
+  };
+
+  const fetchClientExpenses = () => {
+    if (!expenseClientId || !expenseFrom || !expenseTo) {
+      setExpenseError("Debes indicar cliente y rango de fechas.");
+      setExpenseResult(null);
+      return;
+    }
+
+    setExpenseError(null);
+    setExpenseResult(null);
+
+    fetch(`/api/invoice/client/${encodeURIComponent(expenseClientId)}/expenses?from=${expenseFrom}&to=${expenseTo}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res?.mensaje) {
+          setExpenseError(res.mensaje);
+          setExpenseResult(null);
+        } else {
+          setExpenseResult(res);
+        }
+      })
+      .catch((err) => {
+        setExpenseError("No se pudieron obtener los gastos del cliente.");
+        console.error("Error gastos cliente:", err);
+      });
   };
 
   const printInvoice = (invoice) => {
@@ -275,6 +342,192 @@ const Invoice = () => {
               <option value="desc">Descendente</option>
             </select>
           </label>
+        </div>
+
+        <div className="reports-wrapper">
+          <div className="section-card">
+            <h3 className="section-title">Informe de facturación</h3>
+
+            <div className="report-grid">
+              <label>
+                Desde
+                <input
+                  type="date"
+                  value={reportFrom}
+                  onChange={(e) => setReportFrom(e.target.value)}
+                />
+              </label>
+
+              <label>
+                Hasta
+                <input
+                  type="date"
+                  value={reportTo}
+                  onChange={(e) => setReportTo(e.target.value)}
+                />
+              </label>
+
+              <label>
+                ID de habitación
+                <input
+                  type="text"
+                  placeholder="Opcional"
+                  value={reportRoomId}
+                  onChange={(e) => setReportRoomId(e.target.value)}
+                />
+              </label>
+
+              <label>
+                ID de cliente
+                <input
+                  type="text"
+                  placeholder="Opcional"
+                  value={reportClientId}
+                  onChange={(e) => setReportClientId(e.target.value)}
+                />
+              </label>
+
+              <label>
+                Tipo de factura
+                <input
+                  type="text"
+                  placeholder="Opcional"
+                  value={reportType}
+                  onChange={(e) => setReportType(e.target.value)}
+                />
+              </label>
+            </div>
+
+            <button className="btn-new" type="button" onClick={fetchReport}>
+              Generar informe
+            </button>
+
+            {reportError && <p className="error-text">{reportError}</p>}
+
+            {reportData && (
+              <div className="report-result">
+                <div className="summary-row">
+                  <div>
+                    <strong>Total bruto:</strong> {formatCurrency(reportData.totalGross ?? reportData.total)}
+                  </div>
+                  <div>
+                    <strong>Total neto:</strong> {formatCurrency(reportData.totalNet ?? reportData.total)}
+                  </div>
+                  <div>
+                    <strong>Total IVA:</strong> {formatCurrency(reportData.totalTax ?? 0)}
+                  </div>
+                </div>
+
+                {Array.isArray(reportData.breakdown) && reportData.breakdown.length > 0 ? (
+                  <div className="table-responsive">
+                    <table className="invoices-table">
+                      <thead>
+                        <tr>
+                          <th>Concepto</th>
+                          <th className="text-center">Importe</th>
+                          <th className="text-center">Neto</th>
+                          <th className="text-center">IVA</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {reportData.breakdown.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item.type || item.description || "Detalle"}</td>
+                            <td className="text-center">{formatCurrency(item.amount ?? item.total ?? 0)}</td>
+                            <td className="text-center">{formatCurrency(item.netAmount ?? item.amount ?? 0)}</td>
+                            <td className="text-center">{formatCurrency(item.tax ?? 0)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p className="empty-message">No hay detalles de desglose para este informe.</p>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="section-card">
+            <h3 className="section-title">Gastos de cliente</h3>
+
+            <div className="report-grid">
+              <label>
+                ID de cliente
+                <input
+                  type="text"
+                  value={expenseClientId}
+                  onChange={(e) => setExpenseClientId(e.target.value)}
+                />
+              </label>
+
+              <label>
+                Desde
+                <input
+                  type="date"
+                  value={expenseFrom}
+                  onChange={(e) => setExpenseFrom(e.target.value)}
+                />
+              </label>
+
+              <label>
+                Hasta
+                <input
+                  type="date"
+                  value={expenseTo}
+                  onChange={(e) => setExpenseTo(e.target.value)}
+                />
+              </label>
+            </div>
+
+            <button className="btn-new" type="button" onClick={fetchClientExpenses}>
+              Buscar gastos
+            </button>
+
+            {expenseError && <p className="error-text">{expenseError}</p>}
+
+            {expenseResult && (
+              <div className="report-result">
+                <p>
+                  <strong>Cliente:</strong> {expenseResult.client?.nombre || "-"} - {expenseResult.client?.dni || "-"}
+                </p>
+                <p>
+                  <strong>Periodo:</strong> {expenseResult.from} / {expenseResult.to}
+                </p>
+                <p>
+                  <strong>Factura(s):</strong> {expenseResult.invoiceCount ?? (expenseResult.invoices?.length ?? 0)}
+                </p>
+                <p>
+                  <strong>Total gastado:</strong> {formatCurrency(expenseResult.totalSpent ?? 0)}
+                </p>
+
+                {Array.isArray(expenseResult.invoices) && expenseResult.invoices.length > 0 && (
+                  <div className="table-responsive">
+                    <table className="invoices-table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Fecha</th>
+                          <th>Concepto</th>
+                          <th className="text-center">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {expenseResult.invoices.map((invoice) => (
+                          <tr key={invoice.id}>
+                            <td>{invoice.id}</td>
+                            <td>{invoice.fecha || invoice.fechaCreacion || invoice.fechaFactura || "-"}</td>
+                            <td>{invoice.concepto || "-"}</td>
+                            <td className="text-center">{formatCurrency(invoice.total)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="table-responsive">
