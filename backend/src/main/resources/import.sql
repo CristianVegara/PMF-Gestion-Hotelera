@@ -31,31 +31,31 @@ INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,prec
 INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (10.00, 5.00, 21.00, 2, b'1', 100.00, 200.00, 210.00, 242.00, 20, 'Habitación doble estándar', 'SILVER');
 
 --Inserts de clientes
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('12345678A', 'Juan Pérez', '600111222', 'juan.perez@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('12342678A', 'Juan Pérez', '600111222', 'juan.perez@email.es');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('23456289B', 'María García', '600222333', 'maria.garcia@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('34563890C', 'Carlos Rodríguez', '600333444', 'carlos.rod@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('45672101D', 'Ana Martínez', '600444555', 'ana.mtz@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('56239012E', 'Luis López', '600555666', 'luis.lopez@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('34516890C', 'Carlos Rodríguez', '600333444', 'carlos.rod@email.es');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('45673201D', 'Ana Martínez', '600444555', 'ana.mtz@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('56239012E', 'Luis López', '600555666', 'luis.lopez@email.es');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('67890123F', 'Elena Sánchez', '600666777', 'elena.sanchez@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('78901234G', 'Javier Gómez', '600777888', 'javier.gomez@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('78909134G', 'Javier Gómez', '600777888', 'javier.gomez@email.es');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('89012345H', 'Lucía Díaz', '600888999', 'lucia.diaz@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('90123456I', 'Diego Torres', '600999000', 'diego.torres@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('90213456I', 'Diego Torres', '600999000', 'diego.torres@email.es');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('01234567J', 'Marta Ruiz', '611111222', 'marta.ruiz@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('11223344K', 'Sergio Hernández', '611222333', 'sergio.h@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('22334455L', 'Paula Jiménez', '611333444', 'paula.j@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('33445566M', 'Andrés Moreno', '611444555', 'andres.moreno@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('44556677N', 'Sara Muñoz', '611555666', 'sara.munoz@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('55667788Ñ', 'Fernando Romero', '611666777', 'fer.romero@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('13423344K', 'Sergio Hernández', '611222333', 'sergio.h@email.es');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('22336665L', 'Paula Jiménez', '611333444', 'paula.j@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('33445566M', 'Andrés Moreno', '611444555', 'andres.moreno@email.es');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('44431677N', 'Sara Muñoz', '611555666', 'sara.munoz@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('55127788Ñ', 'Fernando Romero', '611666777', 'fer.romero@email.es');
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('66778899O', 'Raquel Alonso', '611777888', 'raquel.alonso@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('77889900P', 'Ricardo Navarro', '611888999', 'ricardo.nav@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('88990011Q', 'Silvia Ramos', '611999000', 'silvia.ramos@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('99001122R', 'Alberto Castro', '622111222', 'alberto.castro@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('00112233S', 'Irene Ortega', '622222333', 'irene.ortega@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('12344278A', 'Juan Pérez', '600111222', 'juan.perez@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('23456789B', 'María García', '600222333', 'maria.garcia@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('34567890C', 'Carlos Rodríguez', '600333444', 'carlos.rod@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('45678901D', 'Ana Martínez', '600444555', 'ana.mtz@email.com');
-INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('56789012E', 'Luis López', '600555666', 'luis.lopez@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('77889900P', 'Ricardo Navarro', '611888999', 'ricardo.nav@email.es');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('88961011Q', 'Silvia Ramos', '611999000', 'silvia.ramos@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('99012122R', 'Alberto Castro', '622111222', 'alberto.castro@email.coesm');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('00132233S', 'Irene Ortega', '622222333', 'irene.ortega@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('12344287A', 'Juan Pérez', '600111222', 'juan.perez@email.es');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('23666789B', 'María García', '600222333', 'maria.garcia@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('34567790C', 'Carlos Rodríguez', '600333444', 'carlos.rod@email.es');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('45656901D', 'Ana Martínez', '600444555', 'ana.mtz@email.com');
+INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('567823412E', 'Luis López', '600555666', 'luis.lopez@email.es');
 
 -- PLANTA 1: INDIVIDUALES (Tipo 0) - 40 Habitaciones
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (101, 0, 1, 45.0);
@@ -918,8 +918,8 @@ INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, ro
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 13, 23, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 14, 24, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 15, 25, 0, 2);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-17', '2026-05-20', 1, 16, null, 0, 0);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-16', '2026-05-17', 1, 16, 4, 0, 1);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-18', '2026-05-20', 1, 16, null, 0, 0);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-16', '2026-05-18', 1, 16, 4, 0, 1);
 
 
 SET FOREIGN_KEY_CHECKS = 1;

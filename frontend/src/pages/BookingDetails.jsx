@@ -311,7 +311,8 @@ const BookingDetails = () => {
 
             <button
               className="btn-edit-booking"
-              onClick={() => console.log('Editar booking', booking.id)}>
+              onClick={() => console.log('Editar booking', booking.id)}
+              disabled={checkInStatusMapping[booking.checkInStatus] === 2}>
               Editar reserva
             </button>
           </div>

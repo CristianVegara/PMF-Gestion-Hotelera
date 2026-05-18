@@ -215,6 +215,12 @@
   color: white;
   transition: 0.2s ease;
 }
+.btn-edit-booking:disabled {
+  background-color: #cccccc; 
+  color: #666666;        
+  cursor: not-allowed;       
+  border-color: #b5b5b5;   
+}
 
 .btn-edit-booking {
   background: #007bff;

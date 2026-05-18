@@ -20,7 +20,6 @@ import Activity from './pages/Activity';
 import Shifts  from './pages/Shifts';
 import RoomPriceType from './pages/RoomPriceType';
 import RoomPriceAll from './pages/RoomPriceAll';
-import NotFound from './pages/NotFound';
 import RoomDetails from './pages/RoomDetails'
 
 
