@@ -15,6 +15,7 @@ public class ClientServiceImp implements IClientService {
 	
 	@Autowired
 	private IClientDAO clientDao;
+	
 
 	@Override
 	@Transactional(readOnly = true)
@@ -40,6 +41,7 @@ public class ClientServiceImp implements IClientService {
 	public Client findByDni(String dni) {
 		return clientDao.findByDni(dni);
 	}
+	
 
 	@Override
 	public Client save(Client client) {		

@@ -1,6 +1,8 @@
 package com.gestionmediterraneo.hotel.services;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gestionmediterraneo.hotel.daos.IBookingDAO;
 import com.gestionmediterraneo.hotel.daos.IRoomDAO;
 import com.gestionmediterraneo.hotel.entities.Room;
-
+import com.gestionmediterraneo.hotel.enums.RoomStatus;
 import com.gestionmediterraneo.hotel.enums.RoomType;
 
 import java.time.LocalDate;
@@ -133,4 +135,9 @@ public class RoomServiceImp implements IRoomService {
     public void delete(Room room) {
         roomDao.delete(room);
     }
+
+	@Override
+	public Optional<Room> findFirstByStatusAndType(RoomStatus status, RoomType type) {
+		return roomDao.findFirstByStatusAndType(status, type);
+	}
 }

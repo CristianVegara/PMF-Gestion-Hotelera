@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.gestionmediterraneo.hotel.entities.Room;
+import com.gestionmediterraneo.hotel.enums.RoomStatus;
 import com.gestionmediterraneo.hotel.enums.RoomType;
 import com.gestionmediterraneo.hotel.services.IRoomService;
 
@@ -130,6 +131,27 @@ public class RoomController {
         }
     }
     
+    @GetMapping("/free/{type}")
+    public ResponseEntity<?> getFreeRoom(@PathVariable RoomType type){
+    	Map<String, Object> response = new HashMap<>();
+
+        try{ 
+        	Room room = roomService.findFirstByStatusAndType(RoomStatus.LIBRE, type).orElse(null);
+        	
+        	if(room == null) {
+        		response.put("Mensaje", "No hay habitaciones libres de ese tipo");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        	}            
+            
+        	return new ResponseEntity<>(room, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al hacer la consulta");
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }    	
+    	
+    }
+    
     @GetMapping("/dynamic/chart/all-types")
     public ResponseEntity<?> getCombinedPriceChart() {
         Map<String, Object> response = new LinkedHashMap<>();
@@ -171,6 +193,7 @@ public class RoomController {
         Map<String, Object> response = new HashMap<>();
 
         if (result.hasErrors()) {
+        	System.out.println("result error");
             return validarCampos(result);
         }
 

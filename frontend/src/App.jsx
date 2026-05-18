@@ -3,22 +3,23 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar'; 
 import Home from './pages/Home';
+import Bookings from './pages/Bookings';
+import BookingDetails from './pages/BookingDetails';
+import BookingForm from './pages/BookingForm';
 import ClientsManager from './pages/ClientsManager';
 import ClientForm from './pages/ClientForm';
-import ClientDetails from './pages/ClientDetails';
+import ClientDetails from './pages/ClientDetails'
 import Invoice from './pages/Invoice';
 import InvoiceForm from './pages/InvoiceForm';
 import Login from './pages/Login';
 import Rooms from './pages/Rooms';
 import RoomForm from './pages/RoomsForm';
-import RoomDetails from './pages/RoomDetails'
 import Bookings from './pages/Bookings';
 import Activities from './pages/Activities';
 import Activity from './pages/Activity';
 import Shifts  from './pages/Shifts';
 import RoomPriceType from './pages/RoomPriceType';
 import RoomPriceAll from './pages/RoomPriceAll';
-import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -45,6 +46,10 @@ function App() {
           <Route path="/activities" element={<Activities />} />
           <Route path="/activities/:id" element={<Activity />} />
 
+          <Route path="/bookings" element={<Bookings />} />
+          <Route path="/bookings/:id" element={<BookingDetails/>}/>
+          <Route path="/bookings/form" element={<BookingForm/>}/>
+
           <Route path="/clients" element={<ClientsManager />} />
           <Route path="/clients/form" element={<ClientForm />} />
           <Route path="/clients/edit/:id" element={<ClientForm />} />
@@ -58,8 +63,6 @@ function App() {
           <Route path="/rooms/form" element={<RoomForm />} />
           <Route path="/rooms/edit/:id" element={<RoomForm />} />
           <Route path="/rooms/:id" element={<RoomDetails />} />
-
-          <Route path="/bookings" element={<Bookings />} />
           
           <Route path="/rooms/price/all" element={<RoomPriceAll />} />
           <Route path="/rooms/price/:type" element={<RoomPriceType />} />

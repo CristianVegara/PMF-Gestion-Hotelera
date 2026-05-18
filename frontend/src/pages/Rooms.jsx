@@ -6,8 +6,16 @@ const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchRooms = () => {
     fetch('http://localhost:8080/api/rooms')
+      .then(res => res.json())
+      .then(data => setRooms(data))
+      .catch(err => console.error("Error cargando habitaciones:", err));
+  };
+
+  const fetchRoomBookings = (roomId) => {
+    if (!roomId) return;
+    fetch(`http://localhost:8080/api/bookings/room/${roomId}`)
       .then(res => res.json())
       .then(data => setRooms(data));
   }, []);

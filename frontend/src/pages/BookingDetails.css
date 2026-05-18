@@ -1,0 +1,298 @@
+.booking-page-wrapper {
+  background: #f4f6f9;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.booking-details-container {
+  max-width: 1200px;
+  margin: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 35px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+}
+
+.booking-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+  border-bottom: 2px solid #eef1f4;
+  padding-bottom: 20px;
+}
+
+.booking-title {
+  margin: 0;
+  font-size: 2.2rem;
+  color: #1a252f;
+  font-weight: 800;
+}
+
+.btn-back {
+  background: #1a252f;
+  color: white;
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.btn-back:hover {
+  background: #000;
+  transform: translateY(-2px);
+}
+
+.booking-main-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.booking-card {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+}
+
+.large-card {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #6c757d;
+  margin-bottom: 18px;
+}
+
+.client-name {
+  margin: 0;
+  font-size: 2.4rem;
+  color: #1a252f;
+  font-weight: 800;
+}
+
+.client-dni {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.room-title {
+  font-size: 2rem;
+  margin: 0;
+  color: #1a252f;
+  font-weight: 800;
+}
+
+.room-number {
+  margin-top: 12px;
+  color: #6c757d;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.dates-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.date-box {
+  flex: 1;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.date-title {
+  display: block;
+  margin-bottom: 10px;
+  color: #6c757d;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.date-box strong {
+  color: #1a252f;
+  font-size: 1.1rem;
+}
+
+.date-separator {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #adb5bd;
+}
+
+.status-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.status-badge {
+  padding: 12px 18px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.status-confirmed {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-cancelled {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-finished {
+  background: #eceff1;
+  color: #455a64;
+}
+
+.status-pending {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.status-default {
+  background: #f1f3f5;
+  color: #495057;
+}
+
+.checkin-in {
+  background: #d1f2eb;
+  color: #117864;
+}
+
+.checkin-out {
+  background: #f5b7b1;
+  color: #922b21;
+}
+
+.checkin-pending {
+  background: #fcf3cf;
+  color: #7d6608;
+}
+
+.checkin-default {
+  background: #e2e3e5;
+  color: #41464b;
+}
+
+.edit-action {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+  width: 100%;
+  max-width: 200px;
+}
+
+.btn-edit-booking,
+.btn-checkin-action,
+.btn-checkout-action {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  color: white;
+  transition: 0.2s ease;
+}
+
+.btn-edit-booking {
+  background: #007bff;
+}
+
+.btn-edit-booking:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+.btn-checkin-action {
+  background: #2e7d32;
+}
+
+.btn-checkin-action:hover {
+  background: #1b5e20;
+  transform: translateY(-2px);
+}
+
+.btn-checkout-action {
+  background: #c62828;
+}
+
+.btn-checkout-action:hover {
+  background: #b71c1c;
+  transform: translateY(-2px);
+}
+
+.booking-loading-container,
+.booking-error-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6f9;
+}
+
+.loader {
+  width: 60px;
+  height: 60px;
+  border: 5px solid #dee2e6;
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 18px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .booking-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-topbar {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .edit-action {
+    max-width: 100%;
+  }
+
+  .client-name {
+    font-size: 2rem;
+  }
+
+  .dates-container {
+    flex-direction: column;
+  }
+
+  .date-separator {
+    transform: rotate(90deg);
+  }
+}

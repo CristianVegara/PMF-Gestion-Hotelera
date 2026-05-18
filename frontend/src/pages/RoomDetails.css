@@ -22,6 +22,75 @@ html, body {
     border-left: 8px solid #3b82f6;
 }
 
+.header-main-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.room-actions-status-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-status-action {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.status-action-dirty {
+    background-color: #fef3c7;
+    color: #d97706;
+    border-color: #fcd34d;
+}
+
+.status-action-dirty:hover {
+    background-color: #fde68a;
+}
+
+.status-action-maintenance {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-color: #fca5a5;
+}
+
+.status-action-maintenance:hover {
+    background-color: #fecaca;
+}
+
+.status-action-free {
+    background-color: #d1fae5;
+    color: #059669;
+    border-color: #6ee7b7;
+}
+
+.status-action-free:hover {
+    background-color: #a7f3d0;
+}
+
+.status-locked-notice {
+    font-size: 13px;
+    color: #6b7280;
+    font-style: italic;
+    background-color: #f3f4f6;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+.status-text-libre { color: #10b981 !important; }
+.status-text-ocupada { color: #3b82f6 !important; }
+.status-text-sucia { color: #f59e0b !important; }
+.status-text-fuera_de_servicio { color: #ef4444 !important; }
+
 .info-grid {
     display: flex;
     justify-content: space-between;
@@ -146,7 +215,6 @@ html, body {
     transform: translateY(-2px);
 }
 
-
 .history-list {
     flex: 1;
     overflow-y: auto;
@@ -215,6 +283,22 @@ html, body {
 
 .btn-cancel { background-color: #94a3b8; color: white; }
 .btn-confirm { background-color: #3b82f6; color: white; }
+
+.btn-back {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: color 0.2s;
+}
+
+.btn-back:hover {
+    color: #1e293b;
+}
 
 @media (max-width: 1000px) {
     .details-main-content {

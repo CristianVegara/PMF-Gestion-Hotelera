@@ -2,7 +2,10 @@ package com.gestionmediterraneo.hotel.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 import com.gestionmediterraneo.hotel.entities.Room;
+import com.gestionmediterraneo.hotel.enums.RoomStatus;
 import com.gestionmediterraneo.hotel.enums.RoomType;
 
 public interface IRoomService {
@@ -13,4 +16,5 @@ public interface IRoomService {
     public Room getRoomWithDynamicPrice(Long id, LocalDate date);
     public List<Room> getAllRoomsWithDynamicPrice(LocalDate date);
     public Double getPriceByTypeAndDate(RoomType type, LocalDate date);
+	Optional<Room> findFirstByStatusAndType(RoomStatus status, RoomType type);
 }
