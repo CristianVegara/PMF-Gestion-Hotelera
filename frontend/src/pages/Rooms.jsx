@@ -13,6 +13,17 @@ const enumToClass = (text) => {
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
+  const [viewMode, setViewMode] = useState('list');
+  const [roomSelected, setRoomSelected] = useState(null);
+  const [roomBookings, setRoomBookings] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [clientSelected, setClientSelected] = useState(null);
+  const [showSearch, setShowSearch] = useState(false);
+  const [fechaEntrada, setFechaEntrada] = useState('');
+  const [fechaSalida, setFechaSalida] = useState('');
+  const [bookingDetail, setBookingDetail] = useState(null);
+  const [showHistory, setShowHistory] = useState(false);
   const navigate = useNavigate();
 
   const fetchRooms = () => {
@@ -26,8 +37,6 @@ const Rooms = () => {
     if (!roomId) return;
     fetch(`http://localhost:8080/api/bookings/room/${roomId}`)
       .then(res => res.json())
-      .then(data => setRooms(data));
-  }, []);
       .then(data => {
         const sorted = data.sort((a, b) => new Date(b.fechaEntrada) - new Date(a.fechaEntrada));
         setRoomBookings(sorted);
@@ -54,8 +63,8 @@ const Rooms = () => {
       });
   };
 
-  const filteredClients = clients.filter(c => 
-    (c.nombre && c.nombre.toLowerCase().includes(searchTerm.toLowerCase())) || 
+  const filteredClients = clients.filter(c =>
+    (c.nombre && c.nombre.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (c.dni && c.dni.toLowerCase().includes(searchTerm.toLowerCase()))
   ).slice(0, 10);
 
@@ -84,7 +93,7 @@ const Rooms = () => {
         alert("¡Reserva creada!");
         setClientSelected(null);
         setRoomSelected(null);
-        fetchRooms(); 
+        fetchRooms();
       } else if (res.status === 409) {
         alert("❌ Conflicto de fechas.");
       }
@@ -97,24 +106,25 @@ const Rooms = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(bookingDetail)
     })
-    .then(res => {
-      if (res.ok) {
-        alert("Reserva actualizada correctamente.");
-        setBookingDetail(null);
-        fetchRoomBookings(roomSelected.id);
-        fetchRooms(); 
-      }
-    });
+      .then(res => {
+        if (res.ok) {
+          alert("Reserva actualizada correctamente.");
+          setBookingDetail(null);
+          fetchRoomBookings(roomSelected.id);
+          fetchRooms();
+        }
+      });
   };
 
-  const agendaFutura = roomBookings.filter(b => new Date(b.fechaSalida) >= new Date().setHours(0,0,0,0));
+  const agendaFutura = roomBookings.filter(b => new Date(b.fechaSalida) >= new Date().setHours(0, 0, 0, 0));
 
   return (
     <div className="rooms-page-wrapper">
       <div className="rooms-container">
-        <div className="header-actions">
-          <h2 className="title-list">Estado de Habitaciones ({rooms.length})</h2>
-        </div>
+        <div className="main-content-column">
+          <div className="header-actions">
+            <h2 className="title-list">Estado de Habitaciones ({rooms.length})</h2>
+          </div>
 
           <div className="table-responsive scrollable-table">
             {viewMode === 'list' ? (
@@ -124,9 +134,9 @@ const Rooms = () => {
                 </thead>
                 <tbody>
                   {rooms.map(room => (
-                    <tr 
-                      key={room.id} 
-                      onClick={() => setRoomSelected(room)} 
+                    <tr
+                      key={room.id}
+                      onClick={() => setRoomSelected(room)}
                       className={roomSelected?.id === room.id ? 'row-selected' : ''}
                     >
                       <td>{room.id}</td>
@@ -144,8 +154,8 @@ const Rooms = () => {
             ) : (
               <div className="rooms-grid">
                 {rooms.map(room => (
-                  <div 
-                    key={room.id} 
+                  <div
+                    key={room.id}
                     className={`room-card ${enumToClass(room.status)} ${roomSelected?.id === room.id ? 'selected' : ''}`}
                     onClick={() => setRoomSelected(room)}
                   >
@@ -160,7 +170,7 @@ const Rooms = () => {
         </div>
 
         <div className="info-column">
-          {roomSelected ? (
+          {roomSelected && (
             <div className="detail-panel sticky-panel">
               <div className="panel-header-with-action">
                 <h3 className="panel-title">Habitación {roomSelected.number}</h3>
@@ -171,20 +181,20 @@ const Rooms = () => {
                 <p><strong>Tipo:</strong> {formatEnum(roomSelected.type)} | <strong>Precio:</strong> {roomSelected.price?.toFixed(2)}€</p>
                 <p><strong>Estado:</strong> <span className={`status-text ${enumToClass(roomSelected.status)}`}>{formatEnum(roomSelected.status)}</span></p>
               </div>
-              
+
               <hr className="divider" />
-              
+
               <div className="room-agenda">
                 <p className="agenda-title">📅 Próximas Reservas:</p>
                 {agendaFutura.length > 0 ? (
-                    <ul className="agenda-list">
-                        {agendaFutura.slice(0, 5).map(b => (
-                            <li key={b.id} className="agenda-item clickable-booking" onClick={() => setBookingDetail(b)}>
-                                <div className="agenda-dates">🗓️ <strong>{b.fechaEntrada}</strong> al <strong>{b.fechaSalida}</strong></div>
-                                <div className="agenda-client">👤 <span className="client-name-small">{b.cliente?.nombre}</span></div>
-                            </li>
-                        ))}
-                    </ul>
+                  <ul className="agenda-list">
+                    {agendaFutura.slice(0, 5).map(b => (
+                      <li key={b.id} className="agenda-item clickable-booking" onClick={() => setBookingDetail(b)}>
+                        <div className="agenda-dates">🗓️ <strong>{b.fechaEntrada}</strong> al <strong>{b.fechaSalida}</strong></div>
+                        <div className="agenda-client">👤 <span className="client-name-small">{b.cliente?.nombre}</span></div>
+                      </li>
+                    ))}
+                  </ul>
                 ) : <p className="no-bookings">Sin reservas próximas</p>}
               </div>
 
@@ -215,7 +225,7 @@ const Rooms = () => {
                 )}
               </div>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
@@ -261,11 +271,11 @@ const Rooms = () => {
                 <h4>🗓️ Modificar Periodo</h4>
                 <div className="edit-date-group">
                   <label>Fecha Entrada:</label>
-                  <input type="date" className="date-input-field" value={bookingDetail.fechaEntrada} onChange={(e) => setBookingDetail({...bookingDetail, fechaEntrada: e.target.value})} />
+                  <input type="date" className="date-input-field" value={bookingDetail.fechaEntrada} onChange={(e) => setBookingDetail({ ...bookingDetail, fechaEntrada: e.target.value })} />
                 </div>
                 <div className="edit-date-group">
                   <label>Fecha Salida:</label>
-                  <input type="date" className="date-input-field" value={bookingDetail.fechaSalida} onChange={(e) => setBookingDetail({...bookingDetail, fechaSalida: e.target.value})} />
+                  <input type="date" className="date-input-field" value={bookingDetail.fechaSalida} onChange={(e) => setBookingDetail({ ...bookingDetail, fechaSalida: e.target.value })} />
                 </div>
               </div>
               <hr className="divider" />
