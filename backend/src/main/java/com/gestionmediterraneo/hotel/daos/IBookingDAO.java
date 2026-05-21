@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import java.time.LocalDate;
 
 @Repository
 public interface IBookingDAO extends JpaRepository<Booking, Long> {
@@ -40,4 +39,6 @@ public interface IBookingDAO extends JpaRepository<Booking, Long> {
     long countByCliente_IdAndFechaEntradaBetween(Long clientId, LocalDate startDate, LocalDate endDate);	
 
     List<Booking> findByCheckInStatus(CheckInStatus checkInStatus);		
+    
+    List<Booking> findByHabitacionId(Long id); 
 }

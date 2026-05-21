@@ -9,34 +9,38 @@ const RoomPriceAll = () => {
   const [loading, setLoading] = useState(true);
   const [visibility, setVisibility] = useState({});
   const [showAverage, setShowAverage] = useState(true);
-
+  
   useEffect(() => {
-    fetch('http://localhost:8080/api/rooms/dynamic/chart/all-types')
-      .then(res => res.json())
-      .then(result => {
-        const formattedData = result.labels.map((label, index) => {
-          const entry = { mes: label };
-          Object.keys(result.datasets).forEach(type => {
-            entry[type] = result.datasets[type][index];
-          });
-          return entry;
-        });
-
-        const initialVisibility = {};
+    fetch('http://localhost:8080/api/rooms/dynamic/chart/all-types', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(res => res.json())
+    .then(result => {
+      const formattedData = result.labels.map((label, index) => {
+        const entry = { mes: label };
         Object.keys(result.datasets).forEach(type => {
-          initialVisibility[type] = true;
+          entry[type] = result.datasets[type][index];
         });
-
-        setRawData(formattedData);
-        setVisibility(initialVisibility);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Error:", err);
-        setLoading(false);
+        return entry;
       });
+      
+      const initialVisibility = {};
+      Object.keys(result.datasets).forEach(type => {
+        initialVisibility[type] = true;
+      });
+      
+      setRawData(formattedData);
+      setVisibility(initialVisibility);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      setLoading(false);
+    });
   }, []);
-
+  
   const chartData = useMemo(() => {
     return rawData.map(item => {
       const activeTypes = Object.keys(visibility).filter(type => visibility[type]);
@@ -49,89 +53,89 @@ const RoomPriceAll = () => {
       };
     });
   }, [rawData, visibility]);
-
+  
   const toggleVisibility = (type) => {
     setVisibility(prev => ({ ...prev, [type]: !prev[type] }));
   };
-
+  
   if (loading) return <div style={{ padding: '20px' }}>Cargando análisis dinámico...</div>;
-
+  
   const colors = {
     INDIVIDUAL: '#4f46e5',
     DOBLE: '#10b981',
     SUITE: '#f59e0b',
     MEDIA: '#ef4444'
   };
-
+  
   return (
     <div style={{ padding: '20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-      <h2 style={{ textAlign: 'center' }}>Análisis Comparativo de Precios</h2>
-
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        gap: '20px', 
-        marginBottom: '20px',
-        padding: '10px',
-        background: '#f8f9fa',
-        borderRadius: '8px'
-      }}>
-        {Object.keys(visibility).map(type => (
-          <label key={type} style={{ cursor: 'pointer', fontWeight: 'bold', color: colors[type] || '#333' }}>
-            <input 
-              type="checkbox" 
-              checked={visibility[type]} 
-              onChange={() => toggleVisibility(type)} 
-            /> {type}
-          </label>
-        ))}
-        <label style={{ cursor: 'pointer', fontWeight: 'bold', color: colors.MEDIA }}>
-          <input 
-            type="checkbox" 
-            checked={showAverage} 
-            onChange={() => setShowAverage(!showAverage)} 
-          /> PROMEDIO
-        </label>
-      </div>
-
-      <div style={{ width: '100%', height: 500 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData} margin={{ top: 10, right: 30, left: 10, bottom: 50 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="mes" tick={{ fontSize: 11 }} angle={-45} textAnchor="end" height={60} />
-            <YAxis unit="€" tick={{ fontSize: 12 }} domain={['auto', 'auto']} />
-            <Tooltip />
-            <Legend verticalAlign="top" height={40} />
-
-            {Object.keys(visibility).map(type => (
-              visibility[type] && (
-                <Line
-                  key={type}
-                  type="monotone"
-                  dataKey={type}
-                  stroke={colors[type] || '#ccc'}
-                  strokeWidth={2}
-                  dot={{ r: 3 }}
-                  animationDuration={300}
-                />
-              )
-            ))}
-
-            {showAverage && (
-              <Line
-                type="stepAfter"
-                dataKey="MEDIA"
-                stroke={colors.MEDIA}
-                strokeWidth={4}
-                strokeDasharray="5 5"
-                dot={false}
-                name="MEDIA (Activos)"
-                animationDuration={300}
-              />
-            )}
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+    <h2 style={{ textAlign: 'center' }}>Análisis Comparativo de Precios</h2>
+    
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      gap: '20px', 
+      marginBottom: '20px',
+      padding: '10px',
+      background: '#f8f9fa',
+      borderRadius: '8px'
+    }}>
+    {Object.keys(visibility).map(type => (
+      <label key={type} style={{ cursor: 'pointer', fontWeight: 'bold', color: colors[type] || '#333' }}>
+      <input 
+      type="checkbox" 
+      checked={visibility[type]} 
+      onChange={() => toggleVisibility(type)} 
+      /> {type}
+      </label>
+    ))}
+    <label style={{ cursor: 'pointer', fontWeight: 'bold', color: colors.MEDIA }}>
+    <input 
+    type="checkbox" 
+    checked={showAverage} 
+    onChange={() => setShowAverage(!showAverage)} 
+    /> PROMEDIO
+    </label>
+    </div>
+    
+    <div style={{ width: '100%', height: 500 }}>
+    <ResponsiveContainer width="100%" height="100%">
+    <LineChart data={chartData} margin={{ top: 10, right: 30, left: 10, bottom: 50 }}>
+    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+    <XAxis dataKey="mes" tick={{ fontSize: 11 }} angle={-45} textAnchor="end" height={60} />
+    <YAxis unit="€" tick={{ fontSize: 12 }} domain={['auto', 'auto']} />
+    <Tooltip />
+    <Legend verticalAlign="top" height={40} />
+    
+    {Object.keys(visibility).map(type => (
+      visibility[type] && (
+        <Line
+        key={type}
+        type="monotone"
+        dataKey={type}
+        stroke={colors[type] || '#ccc'}
+        strokeWidth={2}
+        dot={{ r: 3 }}
+        animationDuration={300}
+        />
+      )
+    ))}
+    
+    {showAverage && (
+      <Line
+      type="stepAfter"
+      dataKey="MEDIA"
+      stroke={colors.MEDIA}
+      strokeWidth={4}
+      strokeDasharray="5 5"
+      dot={false}
+      name="MEDIA (Activos)"
+      animationDuration={300}
+      />
+    )}
+    </LineChart>
+    </ResponsiveContainer>
+    </div>
     </div>
   );
 };

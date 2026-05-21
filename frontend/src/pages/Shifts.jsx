@@ -3,38 +3,82 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Shifts.css';
 
-const Shifts = () => {
+const Shifts = ({ token }) => {
   const [shifts, setShifts] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [schedules, setSchedules] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  
   const [newShift, setNewShift] = useState({
     employeeId: '',
     scheduleId: '',
     fecha: '',
     observaciones: ''
   });
-
+  
   useEffect(() => {
+    const controller = new AbortController();
+    
+    const fetchInitialData = async () => {
+      try {
+        const [resShifts, resEmps, resSchs] = await Promise.all([
+          fetch('http://localhost:8080/api/shifts', { 
+            signal: controller.signal,
+            headers: { 'Authorization': `Bearer ${token}` }
+          }),
+          fetch('http://localhost:8080/api/employees', { 
+            signal: controller.signal,
+            headers: { 'Authorization': `Bearer ${token}` }
+          }),
+          fetch('http://localhost:8080/api/schedules', { 
+            signal: controller.signal,
+            headers: { 'Authorization': `Bearer ${token}` }
+          })
+        ]);
+        
+        const dataShifts = await resShifts.json();
+        const dataEmps = await resEmps.json();
+        const dataSchs = await resSchs.json();
+        
+        setShifts(dataShifts || []);
+        setEmployees(dataEmps || []);
+        setSchedules(dataSchs || []);
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          console.error("Error al cargar datos:", error);
+        }
+      }
+    };
+    
     fetchInitialData();
-  }, []);
-
-  const fetchInitialData = async () => {
+    
+    return () => {
+      controller.abort();
+    };
+  }, [token]);
+  
+  const refetchData = async () => {
     try {
       const [resShifts, resEmps, resSchs] = await Promise.all([
-        fetch('http://localhost:8080/api/shifts'),
-        fetch('http://localhost:8080/api/employees'),
-        fetch('http://localhost:8080/api/schedules')
+        fetch('http://localhost:8080/api/shifts', { 
+          headers: { 'Authorization': `Bearer ${token}` }
+        }),
+        fetch('http://localhost:8080/api/employees', { 
+          headers: { 'Authorization': `Bearer ${token}` }
+        }),
+        fetch('http://localhost:8080/api/schedules', { 
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
       ]);
+      
       setShifts(await resShifts.json() || []);
       setEmployees(await resEmps.json() || []);
       setSchedules(await resSchs.json() || []);
     } catch (error) {
-      console.error("Error al cargar datos:", error);
+      console.error("Error al recargar datos:", error);
     }
   };
-
+  
   const createShift = async (e) => {
     e.preventDefault();
     const payload = {
@@ -43,53 +87,61 @@ const Shifts = () => {
       schedule: { id: parseInt(newShift.scheduleId) },
       observaciones: newShift.observaciones
     };
-
+    
     try {
       const response = await fetch('http://localhost:8080/api/shifts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(payload)
       });
       if (response.ok) {
         setNewShift({ employeeId: '', scheduleId: '', fecha: '', observaciones: '' });
-        fetchInitialData();
+        refetchData();
         alert("Turno asignado con éxito");
       }
     } catch (error) {
       console.error(error);
     }
   };
-
+  
   const deleteShift = async (id, e) => {
     e.stopPropagation();
     if (!window.confirm('¿Eliminar este turno?')) return;
     try {
-      const response = await fetch(`http://localhost:8080/api/shifts/${id}`, { method: 'DELETE' });
-      if (response.ok) fetchInitialData();
+      const response = await fetch(`http://localhost:8080/api/shifts/${id}`, { 
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) refetchData();
     } catch (error) {
       console.error(error);
     }
   };
-
+  
   const normalize = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-
+  
   const shiftsOfDay = shifts.filter(s => {
     const shiftDate = new Date(s.fecha);
     return normalize(shiftDate) === normalize(selectedDate);
   });
-
+  
   const hasShift = (date) => {
     const day = normalize(date);
     return shifts.some(s => normalize(new Date(s.fecha)) === day);
   };
-
+  
   return (
     <div className="shifts-page">
       <header className="shifts-header">
         <h1>Gestión de Turnos</h1>
         <p>Planificación de horarios y personal del hotel</p>
       </header>
-
+      
       <section className="shift-form-container">
         <div className="section-title">
           <h2>Asignar Nuevo Turno</h2>
@@ -142,7 +194,7 @@ const Shifts = () => {
           <button type="submit" className="btn-primary">Asignar</button>
         </form>
       </section>
-
+      
       <main className="calendar-grid">
         <div className="calendar-card">
           <Calendar
@@ -153,7 +205,7 @@ const Shifts = () => {
             }
           />
         </div>
-
+        
         <div className="shifts-list-container">
           <div className="section-title">
             <h3>Turnos: {selectedDate.toLocaleDateString()}</h3>

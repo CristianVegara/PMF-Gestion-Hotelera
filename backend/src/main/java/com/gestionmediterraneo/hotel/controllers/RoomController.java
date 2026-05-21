@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import com.gestionmediterraneo.hotel.daos.IBookingDAO;
+import com.gestionmediterraneo.hotel.entities.Booking;
 import com.gestionmediterraneo.hotel.entities.Room;
 import com.gestionmediterraneo.hotel.enums.RoomStatus;
 import com.gestionmediterraneo.hotel.enums.RoomType;
@@ -29,6 +31,9 @@ public class RoomController {
 
     @Autowired
     private IRoomService roomService;
+    
+    @Autowired
+    private IBookingDAO bookingDao;
 
     @GetMapping
     public List<Room> getRooms() {
@@ -54,6 +59,33 @@ public class RoomController {
         }
 
         return new ResponseEntity<>(room, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<?> obtenerDetallesCompletos(@PathVariable Long id) {
+        Room room = null;
+        List<Booking> bookings = null;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            room = roomService.findById(id);
+            if (room != null) {
+                bookings = bookingDao.findByHabitacionId(id);
+            }
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (room == null) {
+            response.put("mensaje", "La habitación ID: " + id + " no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        response.put("room", room);
+        response.put("bookings", bookings != null ? bookings : new ArrayList<>());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
