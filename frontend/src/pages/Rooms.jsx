@@ -7,16 +7,38 @@ const Rooms = () => {
   const navigate = useNavigate();
 
   const fetchRooms = () => {
-    fetch('http://localhost:8080/api/rooms')
-      .then(res => res.json())
+    const token = localStorage.getItem('user_token');
+
+    fetch('http://localhost:8080/api/rooms', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('No autorizado');
+        return res.json();
+      })
       .then(data => setRooms(data))
       .catch(err => console.error("Error cargando habitaciones:", err));
   };
 
   const fetchRoomBookings = (roomId) => {
     if (!roomId) return;
-    fetch(`http://localhost:8080/api/bookings/room/${roomId}`)
-      .then(res => res.json())
+    const token = localStorage.getItem('user_token');
+
+    fetch(`http://localhost:8080/api/bookings/room/${roomId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('No autorizado');
+        return res.json();
+      })
       .then(data => setRooms(data))
       .catch(err => console.error("Error cargando reservas:", err));
   };
@@ -36,7 +58,7 @@ const Rooms = () => {
           {rooms.map(room => (
             <div 
               key={room.id} 
-              className={`room-card ${room.status.toLowerCase()}`}
+              className={`room-card ${room.status ? room.status.toLowerCase() : ''}`}
               onClick={() => navigate(`/rooms/${room.id}`)}
             >
               <div className="room-card-number">{room.number}</div>

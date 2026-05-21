@@ -1,7 +1,6 @@
 package com.gestionmediterraneo.hotel.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name="employees")
@@ -14,7 +13,6 @@ public class Employee {
     private String apellido;
     private String cargo;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true)
     private User user;

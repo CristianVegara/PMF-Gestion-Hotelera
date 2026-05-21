@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../services/authService";
 import "./Login.css";
 
 const Login = ({ setUser }) => {
@@ -9,37 +10,41 @@ const Login = ({ setUser }) => {
 
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
     setError("");
+
     if (username.trim() === "" || password.trim() === "") {
       setError("Rellena todos los campos");
       return;
     }
 
-    if (username === "admin" && password === "admin") {
-      const user = {
-        username,
-        role: "ADMIN"
-      };
+    try {
+      const data = await login(username, password);
 
-      localStorage.setItem("user", JSON.stringify(user));
+      if (data && data.token) {
+        localStorage.setItem("user_token", data.token);
+      }
+
+      const user = {
+        username: username,
+        role: data.role || "USER" 
+      };
 
       if (setUser) {
         setUser(user);
       }
 
-      navigate("/clients");
-    } else {
-      setError("Credenciales incorrectas");
+      navigate("/rooms");
+
+    } catch (err) {
+      setError("Credenciales incorrectas o error de conexión con el servidor");
     }
   };
 
   return (
     <div className="login-page-wrapper">
       <div className="login-container">
-
         <h1>Gestión Mediterráneo</h1>
 
         <div className="login-placeholder">
@@ -73,7 +78,6 @@ const Login = ({ setUser }) => {
               Iniciar Sesión
             </button>
           </form>
-
         </div>
       </div>
     </div>

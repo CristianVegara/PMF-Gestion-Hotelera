@@ -21,4 +21,25 @@ public class UserServiceImp implements IUserService {
     public List<User> findAll() {
         return (List<User>) userDao.findAll();
     }
+
+	@Override
+	public User findByUsername(String username) {
+		return userDao.findByUsername(username);
+	}
+
+	@Override
+	public User save(User user) {
+		return userDao.save(user);
+	}
+
+	@Override
+	public void delete(User user) {
+		userDao.delete(user);
+	}
+
+	@Override
+	public User findByEmployee_Id(Long id) {
+		return userDao.findByEmployee_Id(id);
+	}
+
 }

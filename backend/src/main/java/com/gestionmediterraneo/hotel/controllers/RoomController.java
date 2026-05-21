@@ -22,7 +22,7 @@ import com.gestionmediterraneo.hotel.services.IRoomService;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"})
 @RestController
 @RequestMapping("/api/rooms")
 public class RoomController {

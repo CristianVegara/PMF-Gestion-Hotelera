@@ -38,4 +38,9 @@ public class EmployeeServiceImp implements IEmployeeService {
     public void delete(Long id) {
         employeeDao.deleteById(id);
     }
+
+	@Override
+	public List<Employee> findAllByUserIsNull() {
+		return employeeDao.findAllByUserIsNull();
+	}
 }

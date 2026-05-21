@@ -1,6 +1,5 @@
 package com.gestionmediterraneo.hotel.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

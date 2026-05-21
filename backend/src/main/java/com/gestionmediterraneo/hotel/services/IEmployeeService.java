@@ -9,4 +9,5 @@ public interface IEmployeeService {
     public Employee findById(Long id);
     public Employee save(Employee employee);
     public void delete(Long id);
+    List<Employee> findAllByUserIsNull();
 }

@@ -5,11 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotEmpty;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="users")
@@ -29,9 +28,11 @@ public class User {
 	
 	private String role;
 	
+	@OneToOne(mappedBy = "user")
+	private Employee employee;
+	
 	@Column(name="created_at")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+	private LocalDate createdAt;
 	
 	public Long getId() {
 		return id;
@@ -65,11 +66,20 @@ public class User {
 		this.role = role;
 	}
 
-	public Date getCreatedAt() {
+	public LocalDate getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
 	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}	
+	
 }
