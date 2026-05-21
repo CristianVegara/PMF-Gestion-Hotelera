@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ClientForm.css';
 
+const token = localStorage.getItem('user_token');
+
 const ClientForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();

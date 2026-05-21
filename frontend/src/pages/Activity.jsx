@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './Activity.css';
 
+const token = localStorage.getItem('user_token');
+
+
 const ActivityDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();

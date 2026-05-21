@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+const token = localStorage.getItem('user_token');
+
 export default function RoomsForm() {
   const { id } = useParams();
   const navigate = useNavigate();

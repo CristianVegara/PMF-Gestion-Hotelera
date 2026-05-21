@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Invoice.css";
 
+const token = localStorage.getItem('user_token');
+
 const formatCurrency = (value) => {
   const amount = Number(value || 0);
   return `${amount.toFixed(2)} €`;

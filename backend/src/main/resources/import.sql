@@ -1,15 +1,4 @@
 SET FOREIGN_KEY_CHECKS = 0;
--- Usuarios
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('admin', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'ADMIN', CURRENT_TIMESTAMP);
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp1', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp2', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp3', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp4', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp5', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp6', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp7', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp8', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
-INSERT INTO users (username, password_hash, role, created_at) VALUES ('emp9', '$2a$10$X.f/X8LzX.N2h5rRj/X8LzX.N2h5rRj', 'USER', CURRENT_TIMESTAMP);
 
 --inserts de invocies
 INSERT INTO invoices (discount_amount,discount_percentage,iva,noches,pagada,precio,subtotal,subtotal_before_discount,total,cliente_id,concepto,loyalty_rank) VALUES (0.00, 0.00, 21.00, 1, b'1', 85.00, 85.00, 85.00, 102.85, 4, 'Habitación individual estándar', 'BRONZE');
@@ -911,6 +900,18 @@ INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, ro
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 6, 16, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 7, 17, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 8, 18, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 9, 19, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 10, 20, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 11, 21, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 12, 22, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 13, 23, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 14, 24, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 15, 25, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-18', '2026-05-20', 1, 16, null, 0, 0);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-16', '2026-05-18', 1, 16, 4, 0, 1);
+
+
+SET FOREIGN_KEY_CHECKS = 1;1-15', 1, 8, 18, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 9, 19, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 10, 20, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 11, 21, 0, 2);

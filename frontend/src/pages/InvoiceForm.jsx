@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./InvoiceForm.css";
 
+const token = localStorage.getItem('user_token');
+
 const countBookingsBetween = (bookings, months) => {
   const today = new Date();
   const start = new Date(today);

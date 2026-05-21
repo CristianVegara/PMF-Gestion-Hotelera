@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './Clients.css';
 
+const token = localStorage.getItem('user_token');
+
 const formatDate = (value) => {
     if (!value) return '---';
     const [year, month, day] = value.split('-').map(Number);

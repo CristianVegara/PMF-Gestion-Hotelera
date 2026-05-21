@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Rooms.css';
 
+const token = localStorage.getItem('user_token');
+
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
+const token = localStorage.getItem('user_token');
+
 const RoomPriceByType = () => {
   const { type } = useParams();
   const [data, setData] = useState([]);

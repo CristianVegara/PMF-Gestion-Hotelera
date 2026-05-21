@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Clients.css';
 
+const token = localStorage.getItem('user_token');
+
 const Clients = () => {
   const [clients, setClients] = useState([]);
   const [sortBy, setSortBy] = useState('id');

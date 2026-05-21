@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Bookings.css';
 
+const token = localStorage.getItem('user_token');
+
+
 const Bookings = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);

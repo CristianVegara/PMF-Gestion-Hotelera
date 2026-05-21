@@ -3,6 +3,8 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Shifts.css';
 
+const token = localStorage.getItem('user_token');
+
 const Shifts = ({ token }) => {
   const [shifts, setShifts] = useState([]);
   const [employees, setEmployees] = useState([]);

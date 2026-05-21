@@ -1,6 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
+const token = localStorage.getItem('user_token');
+
+
 const ArrivalsToday = ({ date }) => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);

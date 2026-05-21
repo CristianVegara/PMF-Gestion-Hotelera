@@ -4,6 +4,8 @@ import {
   Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 
+const token = localStorage.getItem('user_token');
+
 const RoomPriceAll = () => {
   const [rawData, setRawData] = useState([]);
   const [loading, setLoading] = useState(true);

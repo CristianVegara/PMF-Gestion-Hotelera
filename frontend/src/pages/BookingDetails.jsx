@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './BookingDetails.css';
 
+const token = localStorage.getItem('user_token');
+
+
 const BookingDetails = () => {
   const { id } = useParams();
   

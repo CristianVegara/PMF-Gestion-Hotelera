@@ -8,6 +8,7 @@ import './RoomDetails.css';
 const RawPicker = DatePickerModule.default || DatePickerModule;
 const DatePicker = (RawPicker.default) ? RawPicker.default : RawPicker;
 const registerLocale = DatePickerModule.registerLocale || DatePicker.registerLocale;
+const token = localStorage.getItem('user_token');
 
 if (registerLocale && es) {
     registerLocale('es', es);

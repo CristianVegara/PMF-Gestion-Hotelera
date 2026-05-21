@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UserForm.css';
 
+const token = localStorage.getItem('user_token');
+
 const UserForm = () => {
   const navigate = useNavigate();
   

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import './ClientDetails.css';
 
+const token = localStorage.getItem('user_token');
+
 const formatDate = (value) => {
   if (!value) return '---';
   const datePart = value.split('T')[0];
