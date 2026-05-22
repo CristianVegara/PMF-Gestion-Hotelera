@@ -52,55 +52,55 @@ const ActivityDetail = () => {
   const totalHuecosVacios = Math.max(0, maxParticipantes - clientes.length);
   
   return (
-    <div className="activity-page">
+  <div className="activity-page">
     <div className="activity-card-header">
-    <div className="header-info">
-    <h1>{nombre}</h1>
-    <p className="fecha-texto">{formatRangoHorario(activity.fechaComienzo, activity.fechaFin)}</p>
-    </div>
-    <div className="stats-badge">
-    <span className="current">{clientes.length}</span>
-    <span className="separator">/</span>
-    <span className="total">{maxParticipantes} plazas</span>
-    </div>
+      <div className="header-info">
+        <h1>{nombre}</h1>
+        <p className="fecha-texto">{formatRangoHorario(activity.fechaComienzo, activity.fechaFin)}</p>
+      </div>
+      <div className="stats-badge">
+        <span className="current">{clientes.length}</span>
+        <span className="separator">/</span>
+        <span className="total">{maxParticipantes} plazas</span>
+      </div>
     </div>
     
     <div className="slots-grid">
-    {clientes.map((cliente) => (
-      <div 
-      key={cliente.id} 
-      className="activity-slot occupied clickable"
-      onClick={() => navigate(`/clients/edit/${cliente.id}`)}
-      >
-      <div className="slot-content">
-      <div className="user-icon">👤</div>
-      <div className="client-data">
-      <span className="client-name">{cliente.nombre}</span>
-      <span className="client-dni">{cliente.dni}</span>
+      {clientes.map((cliente) => (
+        <div 
+        key={cliente.id} 
+        className="activity-slot occupied clickable"
+        onClick={() => navigate(`/clients/edit/${cliente.id}`)}
+        >
+        <div className="slot-content">
+          <div className="user-icon">👤</div>
+          <div className="client-data">
+            <span className="client-name">{cliente.nombre}</span>
+            <span className="client-dni">{cliente.dni}</span>
+          </div>
+        </div>
+        <div className="status-tag">Ocupado</div>
       </div>
+      ))}
+      
+      {[...Array(totalHuecosVacios)].map((_, index) => (
+        <div 
+        key={`empty-${index}`} 
+        className="activity-slot available"
+        onClick={() => console.log("Hueco vacío")}
+        >
+        <div className="slot-content">
+          <span className="plus-icon">+</span>
+          <span className="avail-text">Plaza Libre</span>
+        </div>
       </div>
-      <div className="status-tag">Ocupado</div>
-      </div>
-    ))}
-    
-    {[...Array(totalHuecosVacios)].map((_, index) => (
-      <div 
-      key={`empty-${index}`} 
-      className="activity-slot available"
-      onClick={() => console.log("Hueco vacío")}
-      >
-      <div className="slot-content">
-      <span className="plus-icon">+</span>
-      <span className="avail-text">Plaza Libre</span>
-      </div>
-      </div>
-    ))}
+      ))}
     </div>
     
     <button className="btn-back" onClick={() => navigate(-1)}>
-    ← Volver al listado
+      ← Volver al listado
     </button>
-    </div>
+  </div>
   );
 };
 

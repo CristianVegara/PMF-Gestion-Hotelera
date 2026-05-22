@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./InvoiceForm.css";
 
-const token = localStorage.getItem('user_token');
 
 const countBookingsBetween = (bookings, months) => {
   const today = new Date();
@@ -44,6 +43,8 @@ const InvoiceForm = () => {
   const [clients, setClients] = useState([]);
   const [errors, setErrors] = useState([]);
   
+  const token = localStorage.getItem('user_token');
+  
   useEffect(() => {
     fetch("/api/clients", {
       headers: {
@@ -56,6 +57,8 @@ const InvoiceForm = () => {
   
   useEffect(() => {
     if (id) {
+      const token = localStorage.getItem('user_token');
+      
       fetch(`/api/invoice/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -113,6 +116,8 @@ const InvoiceForm = () => {
     };
     
     try {
+      const token = localStorage.getItem('user_token');
+      
       const response = await fetch(url, {
         method,
         headers: { 
@@ -138,61 +143,62 @@ const InvoiceForm = () => {
   };
   
   return (
-    <div className="form-container">
+  <div className="form-container">
     <h2>{id ? "Editar Factura" : "Nueva Factura"}</h2>
     
     {errors.length > 0 && (
       <div className="alert-errors" role="alert" aria-label="Lista de errores">
-      <ul>
-      {errors.map((err, index) => (
-        <li key={index}>{err}</li>
-      ))}
-      </ul>
-      </div>
-    )}
-    
-    <form onSubmit={handleSubmit}>
-    <div className="form-group">
-    <label htmlFor="clienteId">Cliente</label>
-    <select id="clienteId" name="clienteId" value={invoice.clienteId} onChange={handleChange} required>
-    <option value="">Selecciona un cliente</option>
-    {clients.map(c => (
-      <option key={c.id} value={c.id}>{c.nombre} ({c.dni})</option>
-    ))}
-    </select>
-    </div>
-    
-    <div className="form-group">
-    <label htmlFor="concepto">Concepto</label>
-    <input id="concepto" type="text" name="concepto" value={invoice.concepto} onChange={handleChange} required />
-    </div>
-    
-    <div className="form-group">
-    <label htmlFor="noches">Nº de noches</label>
-    <input id="noches" type="number" name="noches" value={invoice.noches} onChange={handleChange} min="1" required />
-    </div>
-    
-    <div className="form-group">
-    <label htmlFor="precio">Precio por noche (€)</label>
-    <input id="precio" type="number" name="precio" value={invoice.precio} onChange={handleChange} min="0" required />
-    </div>
-    
-    <div className="invoice-summary">
-    <p>Subtotal base: <span data-testid="subtotal-val">{subtotal.toFixed(2)} €</span></p>
-    <p>Rango fidelidad: <span>{loyaltyTier.rank}</span></p>
-    <p>Descuento ({loyaltyTier.discount}%): <span>-{discountAmount.toFixed(2)} €</span></p>
-    <p>Subtotal con descuento: <span>{subtotalWithDiscount.toFixed(2)} €</span></p>
-    <p>IVA 10%: <span>{iva.toFixed(2)} €</span></p>
-    <p>Total: <span data-testid="total-val">{total.toFixed(2)} €</span></p>
-    </div>
-    
-    <div className="button-group">
-    <button type="submit" className="btn-save">{id ? "Actualizar" : "Crear Factura"}</button>
-    <button type="button" className="btn-cancel" onClick={() => navigate("/invoice")}>Cancelar</button>
-    </div>
-    </form>
-    </div>
-  );
-};
-
-export default InvoiceForm;
+        <ul>
+          {errors.map((err, index) => (
+            <li key={index}>{err}</li>
+            ))}
+          </ul>
+        </div>
+        )}
+        
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="clienteId">Cliente</label>
+            <select id="clienteId" name="clienteId" value={invoice.clienteId} onChange={handleChange} required>
+              <option value="">Selecciona un cliente</option>
+              {clients.map(c => (
+                <option key={c.id} value={c.id}>{c.nombre} ({c.dni})</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="concepto">Concepto</label>
+              <input id="concepto" type="text" name="concepto" value={invoice.concepto} onChange={handleChange} required />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="noches">Nº de noches</label>
+              <input id="noches" type="number" name="noches" value={invoice.noches} onChange={handleChange} min="1" required />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="precio">Precio por noche (€)</label>
+              <input id="precio" type="number" name="precio" value={invoice.precio} onChange={handleChange} min="0" required />
+            </div>
+            
+            <div className="invoice-summary">
+              <p>Subtotal base: <span data-testid="subtotal-val">{subtotal.toFixed(2)} €</span></p>
+              <p>Rango fidelidad: <span>{loyaltyTier.rank}</span></p>
+              <p>Descuento ({loyaltyTier.discount}%): <span>-{discountAmount.toFixed(2)} €</span></p>
+              <p>Subtotal con descuento: <span>{subtotalWithDiscount.toFixed(2)} €</span></p>
+              <p>IVA 10%: <span>{iva.toFixed(2)} €</span></p>
+              <p>Total: <span data-testid="total-val">{total.toFixed(2)} €</span></p>
+            </div>
+            
+            <div className="button-group">
+              <button type="submit" className="btn-save">{id ? "Actualizar" : "Crear Factura"}</button>
+              <button type="button" className="btn-cancel" onClick={() => navigate("/invoice")}>Cancelar</button>
+            </div>
+          </form>
+        </div>
+        );
+      };
+      
+      export default InvoiceForm;
+      

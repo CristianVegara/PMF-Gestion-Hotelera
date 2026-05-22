@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const token = localStorage.getItem('user_token');
 
 export default function RoomsForm() {
   const { id } = useParams();
@@ -20,6 +19,7 @@ export default function RoomsForm() {
   
   useEffect(() => {
     if (!isEdit) return;
+    const token = localStorage.getItem('user_token');
     
     fetch(`/rooms/${id}`, {
       headers: {
@@ -63,6 +63,7 @@ export default function RoomsForm() {
     
     const url = isEdit ? `/rooms/${id}` : "/rooms";
     const method = isEdit ? "PUT" : "POST";
+    const token = localStorage.getItem('user_token');
     
     await fetch(url, {
       method,
@@ -78,69 +79,69 @@ export default function RoomsForm() {
   };
   
   return (
-    <div className="form-container">
+  <div className="form-container">
     <h2>{isEdit ? "Editar Habitación" : "Nueva Habitación"}</h2>
     
     <form onSubmit={handleSubmit}>
-    <div className="form-group">
-    <label htmlFor="number">Número</label>
-    <input
-    id="number"
-    name="number"
-    type="number"
-    value={form.number}
-    onChange={handleChange}
-    />
-    </div>
-    
-    <div className="form-group">
-    <label htmlFor="type">Tipo</label>
-    <input
-    id="type"
-    name="type"
-    type="text"
-    value={form.type}
-    onChange={handleChange}
-    />
-    </div>
-    
-    <div className="form-group">
-    <label htmlFor="price">Precio</label>
-    <input
-    id="price"
-    name="price"
-    type="number"
-    step="0.01"
-    value={form.price}
-    onChange={handleChange}
-    />
-    </div>
-    
-    <div className="form-group">
-    <label htmlFor="available">
-    <input
-    id="available"
-    name="available"
-    type="checkbox"
-    checked={form.available}
-    onChange={handleChange}
-    />
-    Disponible
-    </label>
-    </div>
-    
-    <div className="button-group">
-    <button type="submit">
-    {isEdit ? "Actualizar" : "Guardar"}
-    </button>
-    </div>
+      <div className="form-group">
+        <label htmlFor="number">Número</label>
+        <input
+        id="number"
+        name="number"
+        type="number"
+        value={form.number}
+        onChange={handleChange}
+        />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="type">Tipo</label>
+        <input
+        id="type"
+        name="type"
+        type="text"
+        value={form.type}
+        onChange={handleChange}
+        />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="price">Precio</label>
+        <input
+        id="price"
+        name="price"
+        type="number"
+        step="0.01"
+        value={form.price}
+        onChange={handleChange}
+        />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="available">
+          <input
+          id="available"
+          name="available"
+          type="checkbox"
+          checked={form.available}
+          onChange={handleChange}
+          />
+          Disponible
+        </label>
+      </div>
+      
+      <div className="button-group">
+        <button type="submit">
+          {isEdit ? "Actualizar" : "Guardar"}
+        </button>
+      </div>
     </form>
     
     <div>
-    {errors.map((e, i) => (
-      <p key={i}>{e}</p>
-    ))}
+      {errors.map((e, i) => (
+        <p key={i}>{e}</p>
+        ))}
+      </div>
     </div>
-    </div>
-  );
-}
+    );
+  }

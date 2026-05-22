@@ -51,6 +51,7 @@ const RoomDetails = () => {
         
         try {
             const statusValue = roomStatusMapping[newStatusText];
+            const token = localStorage.getItem('user_token');
             
             const response = await fetch(`http://localhost:8080/api/rooms/${room.id}/details`, {
                 method: 'PATCH',

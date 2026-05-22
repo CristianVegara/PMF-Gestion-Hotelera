@@ -9,6 +9,8 @@ const DeparturesToday = ({ date }) => {
     
     useEffect(() => {
         setLoading(true);
+        const token = localStorage.getItem('user_token');
+        
         fetch(`http://localhost:8080/api/bookings/date?date=${date}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -30,38 +32,38 @@ const DeparturesToday = ({ date }) => {
     }, [bookings]);
     
     return (
-        <div className="table-card">
+    <div className="table-card">
         <div className="table-header-custom">
-        <h2>Listado de Salidas</h2>
-        <p>Fecha: {new Date(date).toLocaleDateString()}</p>
+            <h2>Listado de Salidas</h2>
+            <p>Fecha: {new Date(date).toLocaleDateString()}</p>
         </div>
         <table className="modern-table">
-        <thead>
-        <tr>
-        <th>Hab.</th>
-        <th>Huésped</th>
-        <th className="text-center">Estado</th>
-        </tr>
-        </thead>
-        <tbody>
-        {loading ? (
-            <tr><td colSpan="3" className="text-center">Cargando...</td></tr>
-        ) : sortedBookings.map(b => (
-            <tr key={b.id}>
-            <td className="bold">#{b.habitacion?.number}</td>
-            <td>{b.cliente?.nombre}</td>
-            <td className="text-center">
-            <span className={`badge ${b.checkInStatus === 2 ? 'status-cancelada' : 'status-dentro'}`}>
-            {b.checkInStatus === 2 ? 'SALIÓ' : 'EN HABITACIÓN'}
-            </span>
-            </td>
-            <td><Link to={`/bookings/${b.id}`} className="btn-edit">Booking</Link></td>   
-            </tr>
-        ))}
-        </tbody>
-        </table>
+            <thead>
+                <tr>
+                    <th>Hab.</th>
+                    <th>Huésped</th>
+                    <th className="text-center">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {loading ? (
+                    <tr><td colSpan="3" className="text-center">Cargando...</td></tr>
+                    ) : sortedBookings.map(b => (
+                    <tr key={b.id}>
+                        <td className="bold">#{b.habitacion?.number}</td>
+                        <td>{b.cliente?.nombre}</td>
+                        <td className="text-center">
+                            <span className={`badge ${b.checkInStatus === 2 ? 'status-cancelada' : 'status-dentro'}`}>
+                                {b.checkInStatus === 2 ? 'SALIÓ' : 'EN HABITACIÓN'}
+                            </span>
+                        </td>
+                        <td><Link to={`/bookings/${b.id}`} className="btn-edit">Booking</Link></td>   
+                    </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
-    );
-};
-
-export default DeparturesToday;
+        );
+    };
+    
+    export default DeparturesToday;

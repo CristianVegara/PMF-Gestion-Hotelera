@@ -4,7 +4,6 @@ import './BookingDetails.css';
 
 const token = localStorage.getItem('user_token');
 
-
 const BookingDetails = () => {
   const { id } = useParams();
   
@@ -103,7 +102,7 @@ const BookingDetails = () => {
       });
       
       if (!updateRoomResponse.ok) 
-        throw new Error('Error al actualizar la habitación');
+      throw new Error('Error al actualizar la habitación');
       
       const roomData = await updateRoomResponse.json();
       const roomUpdated = roomData.room || roomData;
@@ -168,7 +167,7 @@ const BookingDetails = () => {
       });
       
       if (!updateRoomResponse.ok) 
-        throw new Error('Error al actualizar la habitación');
+      throw new Error('Error al actualizar la habitación');
       
       const roomData = await updateRoomResponse.json();
       const roomUpdated = roomData.room || roomData;
@@ -287,131 +286,131 @@ const BookingDetails = () => {
   
   if (loading) {
     return (
-      <div className="booking-loading-container">
+    <div className="booking-loading-container">
       <div className="loader"></div>
       <p>Cargando reserva...</p>
-      </div>
+    </div>
     );
   }
   
   if (!booking) {
     return (
-      <div className="booking-error-container">
+    <div className="booking-error-container">
       <h2>No se encontró la reserva</h2>
       <Link to="/bookings" className="btn-back">
-      Volver
+        Volver
       </Link>
-      </div>
+    </div>
     );
   }
   
   const currentCheckInStatusText = displayCheckInText(booking.checkInStatus);
   
   return (
-    <div className="booking-page-wrapper">
+  <div className="booking-page-wrapper">
     <div className="booking-details-container">
-    <div className="booking-topbar">
-    <div>
-    <h1 className="booking-title">
-    Detalles de la reserva
-    </h1>
-    </div>
-    
-    <div className="edit-action">
-    {currentCheckInStatusText === 'PENDIENTE' && (
-      <button className="btn-checkin-action" onClick={handleCheckIn}>
-      Dar Entrada (Check-In)
-      </button>
-    )}
-    
-    {currentCheckInStatusText === 'DENTRO' && isToday(booking.fechaSalida) && (
-      <button className="btn-checkout-action" onClick={handleCheckOut}>
-      Dar Salida (Check-Out)
-      </button>
-    )}
-    
-    <button
-    className="btn-edit-booking"
-    onClick={() => console.log('Editar booking', booking.id)}
-    disabled={checkInStatusMapping[booking.checkInStatus] === 2}>
-    Editar reserva
-    </button>
-    </div>
-    
-    <Link to="/bookings" className="btn-back">
-    Volver
-    </Link>
+      <div className="booking-topbar">
+        <div>
+          <h1 className="booking-title">
+            Detalles de la reserva
+          </h1>
+        </div>
+        
+        <div className="edit-action">
+          {currentCheckInStatusText === 'PENDIENTE' && (
+          <button className="btn-checkin-action" onClick={handleCheckIn}>
+            Dar Entrada (Check-In)
+          </button>
+          )}
+          
+          {currentCheckInStatusText === 'DENTRO' && isToday(booking.fechaSalida) && (
+          <button className="btn-checkout-action" onClick={handleCheckOut}>
+            Dar Salida (Check-Out)
+          </button>
+          )}
+          
+          <button
+          className="btn-edit-booking"
+          onClick={() => console.log('Editar booking', booking.id)}
+          disabled={checkInStatusMapping[booking.checkInStatus] === 2}>
+          Editar reserva
+        </button>
+      </div>
+      
+      <Link to="/bookings" className="btn-back">
+        Volver
+      </Link>
     </div>
     
     <div className="booking-main-grid">
-    <div className="booking-card large-card booking-card-clickable">
-    <Link to={booking.cliente?.id ? `/clients/${booking.cliente.id}` : '#'} className="card-link-wrapper">
-    <span className="card-label">CLIENTE</span>
-    <h2 className="client-name">
-    {booking.cliente?.nombre || 'Sin cliente'}
-    </h2>
-    <p className="client-dni">
-    DNI: {booking.cliente?.dni || '---'}
-    </p>
-    </Link>
-    </div>
-    
-    <div className="booking-card">
-    <span className="card-label">ESTANCIA</span>
-    <div className="dates-container">
-    <div className="date-box">
-    <span className="date-title">Entrada</span>
-    <strong className="date-value">{formatDate(booking.fechaEntrada)}</strong>
-    </div>
-    
-    <div className="date-separator">→</div>
-    
-    <div className="date-box">
-    <span className="date-title">Salida</span>
-    <strong className="date-value">{formatDate(booking.fechaSalida)}</strong>
-    </div>
-    </div>
-    </div>
-    
-    <div className={`booking-card ${booking.habitacion?.id ? 'booking-card-clickable' : ''}`}>
-    {booking.habitacion?.id ? (
-      <Link to={`/rooms/${booking.habitacion.id}`} className="card-link-wrapper">
-      <span className="card-label">HABITACIÓN</span>
-      <h3 className="room-title">
-      {displayRoomTypeText(booking.habitacion?.type || booking.roomType || booking.type || 'Sin tipo')}
-      </h3>
-      <p className="room-number">
-      Habitación Nº {booking.habitacion?.number || '---'}
-      </p>
-      </Link>
-    ) : (
-      <div className="card-link-wrapper" style={{ cursor: 'default' }}>
-      <span className="card-label">HABITACIÓN</span>
-      <h3 className="room-title">
-      {displayRoomTypeText(booking.roomType || 'Sin tipo')}
-      </h3>
-      <p className="room-number">
-      Habitación Nº --- (No asignada)
-      </p>
+      <div className="booking-card large-card booking-card-clickable">
+        <Link to={booking.cliente?.id ? `/clients/${booking.cliente.id}` : '#'} className="card-link-wrapper">
+          <span className="card-label">CLIENTE</span>
+          <h2 className="client-name">
+            {booking.cliente?.nombre || 'Sin cliente'}
+          </h2>
+          <p className="client-dni">
+            DNI: {booking.cliente?.dni || '---'}
+          </p>
+        </Link>
       </div>
-    )}
+      
+      <div className="booking-card">
+        <span className="card-label">ESTANCIA</span>
+        <div className="dates-container">
+          <div className="date-box">
+            <span className="date-title">Entrada</span>
+            <strong className="date-value">{formatDate(booking.fechaEntrada)}</strong>
+          </div>
+          
+          <div className="date-separator">→</div>
+          
+          <div className="date-box">
+            <span className="date-title">Salida</span>
+            <strong className="date-value">{formatDate(booking.fechaSalida)}</strong>
+          </div>
+        </div>
+      </div>
+      
+      <div className={`booking-card ${booking.habitacion?.id ? 'booking-card-clickable' : ''}`}>
+        {booking.habitacion?.id ? (
+          <Link to={`/rooms/${booking.habitacion.id}`} className="card-link-wrapper">
+            <span className="card-label">HABITACIÓN</span>
+            <h3 className="room-title">
+              {displayRoomTypeText(booking.habitacion?.type || booking.roomType || booking.type || 'Sin tipo')}
+            </h3>
+            <p className="room-number">
+              Habitación Nº {booking.habitacion?.number || '---'}
+            </p>
+          </Link>
+          ) : (
+          <div className="card-link-wrapper" style={{ cursor: 'default' }}>
+            <span className="card-label">HABITACIÓN</span>
+            <h3 className="room-title">
+              {displayRoomTypeText(booking.roomType || 'Sin tipo')}
+            </h3>
+            <p className="room-number">
+              Habitación Nº --- (No asignada)
+            </p>
+          </div>
+          )}
+        </div>
+        
+        <div className="booking-card">
+          <span className="card-label">ESTADO</span>
+          <div className="status-group">
+            <div className={`status-badge ${getStatusClass(booking.estado)}`}>
+              {displayStatusText(booking.estado)}
+            </div>
+            
+            <div className={`status-badge ${getCheckInClass(booking.checkInStatus)}`}>
+              {displayCheckInText(booking.checkInStatus)}
+            </div>
+          </div>            
+        </div>
+      </div>
     </div>
-    
-    <div className="booking-card">
-    <span className="card-label">ESTADO</span>
-    <div className="status-group">
-    <div className={`status-badge ${getStatusClass(booking.estado)}`}>
-    {displayStatusText(booking.estado)}
-    </div>
-    
-    <div className={`status-badge ${getCheckInClass(booking.checkInStatus)}`}>
-    {displayCheckInText(booking.checkInStatus)}
-    </div>
-    </div>            
-    </div>
-    </div>
-    </div>
-    </div>
+  </div>
   );
 };
 

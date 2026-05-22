@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UserForm.css';
 
-const token = localStorage.getItem('user_token');
 
 const UserForm = () => {
   const navigate = useNavigate();
@@ -18,6 +17,8 @@ const UserForm = () => {
   const [errors, setErrors] = useState([]);
   
   useEffect(() => {
+    const token = localStorage.getItem('user_token');
+    
     fetch('/api/employees/no-user', {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -47,6 +48,8 @@ const UserForm = () => {
     setErrors([]);
     
     try {
+      const token = localStorage.getItem('user_token');
+      
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: { 
@@ -78,83 +81,83 @@ const UserForm = () => {
   };
   
   return (
-    <div className="form-container">
+  <div className="form-container">
     <h2>Nuevo Usuario</h2>
     
     {errors.length > 0 && (
       <div className="alert-errors">
-      <ul>
-      {errors.map((err, index) => (
-        <li key={index}>{err}</li>
-      ))}
-      </ul>
+        <ul>
+          {errors.map((err, index) => (
+            <li key={index}>{err}</li>
+            ))}
+          </ul>
+        </div>
+        )}
+        
+        <form onSubmit={handleSubmit}>
+          
+          <div className="form-group">
+            <label>Username</label>
+            <input
+            type="text"
+            name="username"
+            value={user.username}
+            onChange={handleChange}/>
+          </div>
+          
+          <div className="form-group">
+            <label>Password</label>
+            <input
+            type="password"
+            name="passwordHash"
+            value={user.passwordHash}
+            onChange={handleChange}
+            required/>
+          </div>
+          
+          <div className="form-group">
+            <label>Role</label>
+            <select
+            name="role"
+            value={user.role}
+            onChange={handleChange}
+            required>
+            <option value="">Seleccione un rol</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="USER">USER</option>
+          </select>
+        </div>
+        
+        <div className="form-group">
+          <label>Empleado</label>
+          <select
+          name="employee"
+          value={user.employee}
+          onChange={handleChange}>
+          <option value="">Sin asignar</option>
+          {employees.map(emp => (
+            <option key={emp.id} value={emp.id}>
+              {emp.name || emp.fullName || `Empleado ${emp.id}`}
+            </option>
+            ))}
+          </select>
+        </div>
+        
+        <div className="button-group">
+          <button type="submit" className="btn-save">
+            Guardar
+          </button>
+          
+          <button
+          type="button"
+          className="btn-cancel"
+          onClick={() => navigate('/users')}>
+          Cancelar
+        </button>
       </div>
-    )}
-    
-    <form onSubmit={handleSubmit}>
-    
-    <div className="form-group">
-      <label>Username</label>
-      <input
-      type="text"
-      name="username"
-      value={user.username}
-      onChange={handleChange}/>
-    </div>
-    
-    <div className="form-group">
-      <label>Password</label>
-      <input
-      type="password"
-      name="passwordHash"
-      value={user.passwordHash}
-      onChange={handleChange}
-      required/>
-    </div>
-    
-    <div className="form-group">
-      <label>Role</label>
-        <select
-        name="role"
-        value={user.role}
-        onChange={handleChange}
-        required>
-        <option value="">Seleccione un rol</option>
-        <option value="ADMIN">ADMIN</option>
-        <option value="USER">USER</option>
-      </select>
-    </div>
-    
-    <div className="form-group">
-      <label>Empleado</label>
-      <select
-        name="employee"
-        value={user.employee}
-        onChange={handleChange}>
-        <option value="">Sin asignar</option>
-        {employees.map(emp => (
-          <option key={emp.id} value={emp.id}>
-          {emp.name || emp.fullName || `Empleado ${emp.id}`}
-          </option>
-        ))}
-      </select>
-    </div>
-    
-    <div className="button-group">
-      <button type="submit" className="btn-save">
-        Guardar
-      </button>
       
-      <button
-        type="button"
-        className="btn-cancel"
-        onClick={() => navigate('/users')}>
-        Cancelar
-      </button>
-    </div>
-    
     </form>
-    </div>
+  </div>
   );
 };
 

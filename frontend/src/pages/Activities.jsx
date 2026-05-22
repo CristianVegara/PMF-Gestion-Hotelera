@@ -113,107 +113,107 @@ const Activities = () => {
   };
   
   return (
-    <div className="activities-page">
+  <div className="activities-page">
     <header className="activities-header">
-    <h1>Gestión de Actividades</h1>
-    <p>Organiza y supervisa el calendario de eventos</p>
+      <h1>Gestión de Actividades</h1>
+      <p>Organiza y supervisa el calendario de eventos</p>
     </header>
     
     <section className="activity-form-container">
-    <div className="section-title">
-    <h2>Añadir Nueva Actividad</h2>
-    </div>
-    <form onSubmit={createActivity} className="activity-form">
-    <div className="input-group">
-    <label>Descripción</label>
-    <input
-    type="text"
-    placeholder="Ej: Clase de Yoga"
-    value={newActivity.descripcion}
-    onChange={(e) => setNewActivity({ ...newActivity, descripcion: e.target.value })}
-    required
-    />
-    </div>
-    <div className="input-group">
-    <label>Precio (€)</label>
-    <input
-    type="number"
-    placeholder="0.00"
-    value={newActivity.precio}
-    onChange={(e) => setNewActivity({ ...newActivity, precio: e.target.value })}
-    required
-    />
-    </div>
-    <div className="input-group">
-    <label>Inicio</label>
-    <input
-    type="datetime-local"
-    value={newActivity.fechaComienzo}
-    onChange={(e) => setNewActivity({ ...newActivity, fechaComienzo: e.target.value })}
-    required
-    />
-    </div>
-    <div className="input-group">
-    <label>Fin</label>
-    <input
-    type="datetime-local"
-    value={newActivity.fechaFin}
-    onChange={(e) => setNewActivity({ ...newActivity, fechaFin: e.target.value })}
-    required
-    />
-    </div>
-    <button type="submit" className="btn-primary">Crear actividad</button>
-    </form>
+      <div className="section-title">
+        <h2>Añadir Nueva Actividad</h2>
+      </div>
+      <form onSubmit={createActivity} className="activity-form">
+        <div className="input-group">
+          <label>Descripción</label>
+          <input
+          type="text"
+          placeholder="Ej: Clase de Yoga"
+          value={newActivity.descripcion}
+          onChange={(e) => setNewActivity({ ...newActivity, descripcion: e.target.value })}
+          required
+          />
+        </div>
+        <div className="input-group">
+          <label>Precio (€)</label>
+          <input
+          type="number"
+          placeholder="0.00"
+          value={newActivity.precio}
+          onChange={(e) => setNewActivity({ ...newActivity, precio: e.target.value })}
+          required
+          />
+        </div>
+        <div className="input-group">
+          <label>Inicio</label>
+          <input
+          type="datetime-local"
+          value={newActivity.fechaComienzo}
+          onChange={(e) => setNewActivity({ ...newActivity, fechaComienzo: e.target.value })}
+          required
+          />
+        </div>
+        <div className="input-group">
+          <label>Fin</label>
+          <input
+          type="datetime-local"
+          value={newActivity.fechaFin}
+          onChange={(e) => setNewActivity({ ...newActivity, fechaFin: e.target.value })}
+          required
+          />
+        </div>
+        <button type="submit" className="btn-primary">Crear actividad</button>
+      </form>
     </section>
     
     <main className="calendar-container">
-    <div className="calendar-card">
-    <Calendar
-    onChange={setSelectedDate}
-    value={selectedDate}
-    tileClassName={({ date, view }) =>
-      view === 'month' && hasActivity(date) ? 'highlight' : null
-  }
-  />
-  </div>
-  
-  <div className="activities-day">
-  <div className="section-title">
-  <h3>Actividades del {selectedDate.toLocaleDateString()}</h3>
-  </div>
-  
-  <div className="activities-list">
-  {activitiesOfDay.length === 0 ? (
-    <div className="empty-state">
-    <p>No hay eventos programados para este día.</p>
+      <div className="calendar-card">
+        <Calendar
+        onChange={setSelectedDate}
+        value={selectedDate}
+        tileClassName={({ date, view }) =>
+        view === 'month' && hasActivity(date) ? 'highlight' : null
+      }
+      />
     </div>
-  ) : (
-    activitiesOfDay.map((act) => (
-      <div 
-      key={act.id} 
-      className="activity-card clickable-card" 
-      onClick={() => navigate(`/activities/${act.id}`)} 
-      >
-      <div className="activity-info">
-      <strong>{act.descripcion}</strong>
-      <div className="activity-meta">
-      <span>🕒 {formatTime(act.fechaComienzo)} - {formatTime(act.fechaFin)}</span>
-      <span className="price-tag">{act.precio}€</span>
+    
+    <div className="activities-day">
+      <div className="section-title">
+        <h3>Actividades del {selectedDate.toLocaleDateString()}</h3>
       </div>
+      
+      <div className="activities-list">
+        {activitiesOfDay.length === 0 ? (
+          <div className="empty-state">
+            <p>No hay eventos programados para este día.</p>
+          </div>
+          ) : (
+          activitiesOfDay.map((act) => (
+          <div 
+          key={act.id} 
+          className="activity-card clickable-card" 
+          onClick={() => navigate(`/activities/${act.id}`)} 
+          >
+          <div className="activity-info">
+            <strong>{act.descripcion}</strong>
+            <div className="activity-meta">
+              <span>🕒 {formatTime(act.fechaComienzo)} - {formatTime(act.fechaFin)}</span>
+              <span className="price-tag">{act.precio}€</span>
+            </div>
+          </div>
+          <button
+          className="delete-icon"
+          onClick={(e) => deleteActivity(act.id, e)} 
+          >
+          Eliminar
+        </button>
       </div>
-      <button
-      className="delete-icon"
-      onClick={(e) => deleteActivity(act.id, e)} 
-      >
-      Eliminar
-      </button>
-      </div>
-    ))
-  )}
+      ))
+      )}
+    </div>
   </div>
-  </div>
-  </main>
-  </div>
+</main>
+</div>
 );
 };
 

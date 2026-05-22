@@ -178,15 +178,15 @@ INSERT INTO discounts (concepto, porcentaje, fecha_caducidad) VALUES ('Descuento
 INSERT INTO discounts (concepto, porcentaje, fecha_caducidad) VALUES ('Promoción Verano', 5, '2026-08-31');
 
 -- Empleados
-INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Juan', 'Pérez', 'Recepción', 1);
-INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Ana', 'García', 'Recepción', 2);
-INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Carlos', 'Sánchez', 'Recepción', 3);
-INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Marta', 'López', 'Limpieza', 4);
-INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Luis', 'Gómez', 'Limpieza', 5);
-INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Elena', 'Rivas', 'Limpieza', 6);
-INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Pedro', 'Torres', 'Seguridad', 7);
-INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Sofía', 'Castro', 'Seguridad', 8);
-INSERT INTO employees (nombre, apellido, cargo, user_id) VALUES ('Diego', 'Ruiz', 'Seguridad', 9);
+INSERT INTO employees (nombre, apellido, cargo) VALUES ('Juan', 'Pérez', 'Recepción');
+INSERT INTO employees (nombre, apellido, cargo) VALUES ('Ana', 'García', 'Recepción');
+INSERT INTO employees (nombre, apellido, cargo) VALUES ('Carlos', 'Sánchez', 'Recepción');
+INSERT INTO employees (nombre, apellido, cargo) VALUES ('Marta', 'López', 'Limpieza');
+INSERT INTO employees (nombre, apellido, cargo) VALUES ('Luis', 'Gómez', 'Limpieza');
+INSERT INTO employees (nombre, apellido, cargo) VALUES ('Elena', 'Rivas', 'Limpieza');
+INSERT INTO employees (nombre, apellido, cargo) VALUES ('Pedro', 'Torres', 'Seguridad');
+INSERT INTO employees (nombre, apellido, cargo) VALUES ('Sofía', 'Castro', 'Seguridad');
+INSERT INTO employees (nombre, apellido, cargo) VALUES ('Diego', 'Ruiz', 'Seguridad');
 -- Horarios (Solo los 3 turnos principales)
 INSERT INTO schedules (nombre_turno, hora_entrada, hora_salida) VALUES ('Turno Mañana', '08:00:00', '15:00:00');
 INSERT INTO schedules (nombre_turno, hora_entrada, hora_salida) VALUES ('Turno Tarde', '15:00:00', '22:00:00');

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ClientForm.css';
 
-const token = localStorage.getItem('user_token');
+
 
 const ClientForm = () => {
   const { id } = useParams();
@@ -19,6 +19,8 @@ const ClientForm = () => {
   
   useEffect(() => {
     if (id) {
+      const token = localStorage.getItem('user_token');
+      
       fetch(`/api/clients/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -61,6 +63,8 @@ const ClientForm = () => {
     const url = id ? `/api/clients/${id}` : '/api/clients';
     
     try {
+      const token = localStorage.getItem('user_token');
+      
       const response = await fetch(url, {
         method,
         headers: { 
@@ -86,84 +90,84 @@ const ClientForm = () => {
   };
   
   return (
-    <div className="form-container">
+  <div className="form-container">
     <h2>{id ? 'Editar Cliente' : 'Nuevo Cliente'}</h2>
     
     {errors.length > 0 && (
       <div className="alert-errors">
-      <ul>
-      {errors.map((err, index) => (
-        <li key={index}>{err}</li>
-      ))}
-      </ul>
-      </div>
-    )}
-    
-    <form onSubmit={handleSubmit}>
-    <div className="form-group">
-    <label htmlFor="dni">DNI</label>
-    <input
-    id="dni"
-    type="text"
-    name="dni"
-    value={client.dni}
-    onChange={handleChange}
-    required
-    />
+        <ul>
+          {errors.map((err, index) => (
+            <li key={index}>{err}</li>
+            ))}
+          </ul>
+        </div>
+        )}
+        
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="dni">DNI</label>
+            <input
+            id="dni"
+            type="text"
+            name="dni"
+            value={client.dni}
+            onChange={handleChange}
+            required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="nombre">Nombre Completo</label>
+            <input
+            id="nombre"
+            type="text"
+            name="nombre"
+            value={client.nombre}
+            onChange={handleChange}
+            required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="telefono">Teléfono</label>
+            <input
+            id="telefono"
+            type="text"
+            name="telefono"
+            value={client.telefono}
+            onChange={handleChange}
+            required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="correo">Correo Electrónico</label>
+            <input
+            id="correo"
+            type="email"
+            name="correo"
+            value={client.correo}
+            onChange={handleChange}
+            required
+            />
+          </div>
+          
+          <div className="button-group">
+            <button type="submit" className="btn-save">
+              {id ? 'Actualizar' : 'Guardar'}
+            </button>
+            
+            <button
+            type="button"
+            className="btn-cancel"
+            onClick={() => navigate('/clients')}
+            >
+            Cancelar
+          </button>
+        </div>
+      </form>
     </div>
-    
-    <div className="form-group">
-    <label htmlFor="nombre">Nombre Completo</label>
-    <input
-    id="nombre"
-    type="text"
-    name="nombre"
-    value={client.nombre}
-    onChange={handleChange}
-    required
-    />
-    </div>
-    
-    <div className="form-group">
-    <label htmlFor="telefono">Teléfono</label>
-    <input
-    id="telefono"
-    type="text"
-    name="telefono"
-    value={client.telefono}
-    onChange={handleChange}
-    required
-    />
-    </div>
-    
-    <div className="form-group">
-    <label htmlFor="correo">Correo Electrónico</label>
-    <input
-    id="correo"
-    type="email"
-    name="correo"
-    value={client.correo}
-    onChange={handleChange}
-    required
-    />
-    </div>
-    
-    <div className="button-group">
-    <button type="submit" className="btn-save">
-    {id ? 'Actualizar' : 'Guardar'}
-    </button>
-    
-    <button
-    type="button"
-    className="btn-cancel"
-    onClick={() => navigate('/clients')}
-    >
-    Cancelar
-    </button>
-    </div>
-    </form>
-    </div>
-  );
-};
-
-export default ClientForm;
+    );
+  };
+  
+  export default ClientForm;
