@@ -13,8 +13,10 @@ const ClientsManager = () => {
     <div className="manager-container">
         <header className="dashboard-header">
             <h1>Panel de Recepción</h1>
-            <div className="date-box">                    
-            </div>
+            <div className="date-box"/> 
+            <button type="button" onClick={'/bookings/form'} className="btn-edit">
+                Nueva reserva
+            </button>
         </header>
         
         <div className="tabs-container">

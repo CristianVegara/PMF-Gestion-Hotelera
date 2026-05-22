@@ -42,6 +42,21 @@ public class DataInitializer implements CommandLineRunner {
             adminUser.setEmployee(adminEmployee);
             
             employeeDao.save(adminEmployee);
+            
+            User userUser = new User();
+            userUser.setUsername("user");
+            userUser.setPasswordHash("user");
+            userUser.setRole("USER");
+            
+            Employee userEmployee = new Employee();
+            userEmployee.setNombre("user");
+            userEmployee.setApellido("user");
+            userEmployee.setCargo("USER");
+            
+            userEmployee.setUser(userUser);
+            userUser.setEmployee(userEmployee);
+            
+            employeeDao.save(userEmployee);
         }
     }
 }

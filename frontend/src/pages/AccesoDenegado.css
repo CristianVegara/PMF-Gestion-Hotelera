@@ -1,0 +1,44 @@
+.acceso-denegado-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    font-family: system-ui, sans-serif;
+}
+
+.acceso-denegado-card {
+    text-align: center;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: #fff;
+    max-width: 400px;
+}
+
+.acceso-denegado-icono {
+    font-size: 48px;
+    margin: 0 0 16px 0;
+}
+
+.acceso-denegado-titulo {
+    color: #dc3545;
+    margin: 0 0 12px 0;
+}
+
+.acceso-denegado-texto {
+    color: #6c757d;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.acceso-denegado-boton {
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}

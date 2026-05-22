@@ -38,4 +38,8 @@ public class JwtUtils {
             return false;
         }
     }
+    
+    public String getRoleFromJwtToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("role", String.class);
+    }
 }

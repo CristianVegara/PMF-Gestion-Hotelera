@@ -1,4 +1,4 @@
-	import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar'; 
@@ -8,32 +8,40 @@ import BookingDetails from './pages/BookingDetails';
 import BookingForm from './pages/BookingForm';
 import ClientsManager from './pages/ClientsManager';
 import ClientForm from './pages/ClientForm';
-import ClientDetails from './pages/ClientDetails'
+import ClientDetails from './pages/ClientDetails';
 import Invoice from './pages/Invoice';
 import InvoiceForm from './pages/InvoiceForm';
 import Login from './pages/Login';
-import NotFound from './pages/NotFound'
+import NotFound from './pages/NotFound';
 import Rooms from './pages/Rooms';
 import RoomForm from './pages/RoomsForm';
 import Activities from './pages/Activities';
 import Activity from './pages/Activity';
-import Shifts  from './pages/Shifts';
+import Shifts from './pages/Shifts';
 import RoomPriceType from './pages/RoomPriceType';
 import RoomPriceAll from './pages/RoomPriceAll';
-import RoomDetails from './pages/RoomDetails'
-
-
+import RoomDetails from './pages/RoomDetails';
+import ProtectedLayout from './components/ProtectedLayout';
 
 function App() {
-
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
-    if (savedUser) {
+    const token = localStorage.getItem("token");
+
+    if (savedUser && token) {
       setUser(JSON.parse(savedUser));
+    } else {
+      setUser(null);
     }
+    setLoading(false);
   }, []);
+
+  if (loading) {
+    return <div className="loading-screen">Cargando aplicación...</div>;
+  }
 
   return (
     <Router>
@@ -41,37 +49,77 @@ function App() {
 
       <div className="main-content">
         <Routes>
-
           <Route path="/" element={<Login setUser={setUser} />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
 
-          <Route path="/activities" element={<Activities />} />
-          <Route path="/activities/:id" element={<Activity />} />
-
-          <Route path="/bookings" element={<Bookings />} />
-          <Route path="/bookings/:id" element={<BookingDetails/>}/>
-          <Route path="/bookings/form" element={<BookingForm/>}/>
-
-          <Route path="/clients" element={<ClientsManager />} />
-          <Route path="/clients/form" element={<ClientForm />} />
-          <Route path="/clients/edit/:id" element={<ClientForm />} />
-          <Route path="/clients/:id" element={<ClientDetails />} />
-
-          <Route path="/invoice" element={<Invoice />} />
-          <Route path="/invoice/form" element={<InvoiceForm />} />
-          <Route path="/invoice/edit/:id" element={<InvoiceForm />} />
-
-          <Route path="/rooms" element={<Rooms />} />
-          <Route path="/rooms/form" element={<RoomForm />} />
-          <Route path="/rooms/edit/:id" element={<RoomForm />} />
-          <Route path="/rooms/:id" element={<RoomDetails />} />
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/home" element={<Home />} />
+          </Route>
           
-          <Route path="/rooms/price/all" element={<RoomPriceAll />} />
-          <Route path="/rooms/price/:type" element={<RoomPriceType />} />
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/activities" element={<Activities />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/activities/:id" element={<Activity />} />
+          </Route>
 
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/bookings" element={<Bookings />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/bookings/:id" element={<BookingDetails />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/bookings/form" element={<BookingForm />} />
+          </Route>
+
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/clients" element={<ClientsManager />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/clients/form" element={<ClientForm />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/clients/edit/:id" element={<ClientForm />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/clients/:id" element={<ClientDetails />} />
+          </Route>
+
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/invoice" element={<Invoice />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/invoice/form" element={<InvoiceForm />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/invoice/edit/:id" element={<InvoiceForm />} />
+          </Route>
+
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/rooms" element={<Rooms />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/rooms/form" element={<RoomForm />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/rooms/edit/:id" element={<RoomForm />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/rooms/:id" element={<RoomDetails />} />
+          </Route>
           
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/rooms/price/all" element={<RoomPriceAll />} />
+          </Route>
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/rooms/price/:type" element={<RoomPriceType />} />
+          </Route>          
 
-          <Route path="/shifts" element={<Shifts />} /> 
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/shifts" element={<Shifts />} />
+          </Route>
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

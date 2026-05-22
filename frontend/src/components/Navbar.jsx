@@ -5,8 +5,14 @@ const Navbar = ({ user, setUser }) => {
     const navigate = useNavigate();
 
     const logout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
         localStorage.removeItem("user");
-        setUser(null);
+        
+        if (setUser) {
+            setUser(null);
+        }
+  
         navigate("/login");
     };
 
@@ -26,7 +32,7 @@ const Navbar = ({ user, setUser }) => {
             <div className="brand">Gestion Mediterraneo</div>
 
             <ul>
-                <li><Link to="/clients">Clientes</Link></li>
+                <li><Link to="/clients">Recepción</Link></li>
                 <li><Link to="/invoice">Facturas</Link></li>
                 <li><Link to="/rooms">Habitaciones</Link></li>
                 <li><Link to="/bookings">Reservas</Link></li>

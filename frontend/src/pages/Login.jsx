@@ -23,13 +23,16 @@ const Login = ({ setUser }) => {
       const data = await login(username, password);
       
       if (data && data.token) {
-        localStorage.setItem("user_token", data.token);
+        localStorage.setItem("token", data.token);
       }
       
       const user = {
         username: username,
         role: data.role || "USER" 
       };
+      
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("role", user.role);
       
       if (setUser) {
         setUser(user);
@@ -43,35 +46,35 @@ const Login = ({ setUser }) => {
   };
   
   return (
-  <div className="login-page-wrapper">
-    <div className="login-container">
-      <h1>Gestión Mediterráneo</h1>
-      
-      <div className="login-placeholder">
-        <h2>Bienvenido</h2>
-        <p>Introduce tus credenciales para acceder al sistema</p>
+    <div className="login-page-wrapper">
+      <div className="login-container">
+        <h1>Gestión Mediterráneo</h1>
         
-        {error && (
-          <p style={{ color: "red", marginBottom: "10px" }}>
-            {error}
-          </p>
+        <div className="login-placeholder">
+          <h2>Bienvenido</h2>
+          <p>Introduce tus credenciales para acceder al sistema</p>
+          
+          {error && (
+            <p style={{ color: "red", marginBottom: "10px" }}>
+              {error}
+            </p>
           )}
           
           <form onSubmit={handleLogin}>
             <input
-            type="text"
-            placeholder="Usuario"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            autoComplete="username"
+              type="text"
+              placeholder="Usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
             />
             
             <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
             />
             
             <button type="submit" className="btn-login">
@@ -81,7 +84,7 @@ const Login = ({ setUser }) => {
         </div>
       </div>
     </div>
-    );
-  };
-  
-  export default Login;
+  );
+};
+
+export default Login;
