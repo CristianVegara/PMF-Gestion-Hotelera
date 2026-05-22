@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-const token = localStorage.getItem('user_token');
 
 
 const ArrivalsToday = ({ date }) => {
@@ -10,6 +9,8 @@ const ArrivalsToday = ({ date }) => {
     
     useEffect(() => {
         setLoading(true);
+        const token = localStorage.getItem('user_token');
+
         fetch(`http://localhost:8080/api/bookings/date?date=${date}`, {
             headers: {
                 'Authorization': `Bearer ${token}`

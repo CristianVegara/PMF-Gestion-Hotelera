@@ -1,5 +1,7 @@
 package com.gestionmediterraneo.hotel.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,8 +15,9 @@ public class Employee {
     private String apellido;
     private String cargo;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true)
+    @JoinColumn(name = "user_id")
     private User user;
 
 	public Long getId() {

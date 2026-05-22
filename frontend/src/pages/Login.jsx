@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
 import "./Login.css";
@@ -9,6 +9,13 @@ const Login = ({ setUser }) => {
   const [error, setError] = useState("");
   
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && token !== "undefined" && token.trim() !== "") {
+      navigate("/clients");
+    }
+  }, [navigate]);
   
   const handleLogin = async (e) => {
     e.preventDefault();

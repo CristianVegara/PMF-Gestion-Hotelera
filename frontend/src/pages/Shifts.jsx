@@ -230,7 +230,7 @@ const Shifts = ({ token }) => {
             <div className="shift-info">
               <strong>{shift.employee?.nombre} {shift.employee?.apellido}</strong>
               <div className="shift-meta">
-                <span>🕒 {shift.schedule?.horaEntrada.substring(0,5)} - {shift.schedule?.horaSalida.substring(0,5)}</span>
+                <span>{shift.schedule?.horaEntrada.substring(0,5)} - {shift.schedule?.horaSalida.substring(0,5)}</span>
                 <span className="badge-yellow">{shift.schedule?.nombreTurno}</span>
               </div>
               {shift.observaciones && <small>{shift.observaciones}</small>}

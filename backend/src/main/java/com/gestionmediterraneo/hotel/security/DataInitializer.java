@@ -45,7 +45,7 @@ public class DataInitializer implements CommandLineRunner {
             
             User userUser = new User();
             userUser.setUsername("user");
-            userUser.setPasswordHash("user");
+            userUser.setPasswordHash(passwordEncoder.encode("user"));
             userUser.setRole("USER");
             
             Employee userEmployee = new Employee();
@@ -57,6 +57,36 @@ public class DataInitializer implements CommandLineRunner {
             userUser.setEmployee(userEmployee);
             
             employeeDao.save(userEmployee);
+            
+            User recepcionistaUser = new User();
+            recepcionistaUser.setUsername("recepcionista");
+            recepcionistaUser.setPasswordHash(passwordEncoder.encode("recepcionista"));
+            recepcionistaUser.setRole("RECEPCIONISTA");
+            
+            Employee recepcionistaEmployee = new Employee();
+            recepcionistaEmployee.setNombre("recepcionista");
+            recepcionistaEmployee.setApellido("recepcionista");
+            recepcionistaEmployee.setCargo("RECEPCIONISTA");
+            
+            recepcionistaEmployee.setUser(recepcionistaUser);
+            userUser.setEmployee(recepcionistaEmployee);
+            
+            employeeDao.save(recepcionistaEmployee);
+            
+            User supervisorUser = new User();
+            supervisorUser.setUsername("supervisor");
+            supervisorUser.setPasswordHash(passwordEncoder.encode("supervisor"));
+            supervisorUser.setRole("SUPERVISOR");
+            
+            Employee supervisorEmployee = new Employee();
+            supervisorEmployee.setNombre("supervisor");
+            supervisorEmployee.setApellido("supervisor");
+            supervisorEmployee.setCargo("SUPERVISOR");
+            
+            supervisorEmployee.setUser(recepcionistaUser);
+            userUser.setEmployee(supervisorEmployee);
+            
+            employeeDao.save(supervisorEmployee);
         }
     }
 }

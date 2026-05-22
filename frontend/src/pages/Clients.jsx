@@ -14,6 +14,11 @@ const Clients = () => {
   useEffect(() => {
     fetchClients();
   }, [sortBy, direction]);
+
+  let userRole = localStorage.getItem('role') || '';
+  if (userRole.startsWith("ROLE_")) {
+    userRole = userRole.replace("ROLE_", "");
+  }
   
   const fetchClients = async () => {
     try {
@@ -61,7 +66,9 @@ const Clients = () => {
     <div className="clients-container">
       <div className="header-actions">
         <h2 className="title-list">Listado de Clientes</h2>
-        <Link to="/clients/form" className="btn-new">Nuevo Cliente</Link>
+        {userRole !== 'USER' && (
+          <Link to="/clients/form" className="btn-new">Nuevo Cliente</Link>
+        )}
       </div>
       
       <div className="sort-controls">
@@ -111,21 +118,23 @@ const Clients = () => {
               <td>{client.correo}</td>
               <td className="text-center">
                 <div className="action-group">
-                  <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/clients/edit/${client.id}`);
-                  }} 
-                  className="btn-edit"
-                  >
-                  Editar
-                </button>
+                  {userRole !== 'USER' && (
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/clients/edit/${client.id}`);
+                      }}
+                      className="btn-edit">
+                      Editar
+                    </button>
+                  )}
+                {(userRole == 'ADMIN' || userRole == 'SUPERVISOR') && (
                 <button 
                 onClick={(e) => deleteClient(e, client.id)} 
                 className="btn-delete"
                 >
                 Eliminar
-              </button>
+              </button>)}
             </div>
           </td>
         </tr>

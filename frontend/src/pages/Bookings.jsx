@@ -20,6 +20,11 @@ const Bookings = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [currentBooking, setCurrentBooking] = useState(null);
+
+    let userRole = localStorage.getItem('role') || '';
+    if (userRole.startsWith("ROLE_")) {
+        userRole = userRole.replace("ROLE_", "");
+    }
     
     useEffect(() => {
         fetchBookings();
@@ -196,8 +201,12 @@ const Bookings = () => {
                                     </span>
                                 </td>
                                 <td className="actions-cell">
-                                    <button className="btn-edit" onClick={() => { setCurrentBooking({...book}); setShowEditModal(true); }}>Editar</button>
-                                    <button className="btn-delete" onClick={() => { setCurrentBooking(book); setShowDeleteModal(true); }}>Borrar</button>
+                                    {userRole !== 'USER' && (
+                                        <button className="btn-edit" onClick={() => { setCurrentBooking({...book}); setShowEditModal(true); }}>Editar</button>
+                                    )}
+                                    {(userRole === 'ADMIN' || userRole === 'SUPERVISOR') && (
+                                        <button className="btn-delete" onClick={() => { setCurrentBooking(book); setShowDeleteModal(true); }}>Borrar</button>
+                                    )}
                                 </td>
                             </tr>
                             ))}

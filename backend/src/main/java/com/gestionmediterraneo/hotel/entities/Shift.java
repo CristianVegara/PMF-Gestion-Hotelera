@@ -3,6 +3,8 @@ package com.gestionmediterraneo.hotel.entities;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="shifts")
 public class Shift {
@@ -13,12 +15,12 @@ public class Shift {
     @Column(nullable = false)
     private LocalDate fecha; 
 
+    @JsonIgnoreProperties({"shifts"})
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
+    @JsonIgnoreProperties({"shifts"})
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "schedule_id", nullable = false)
     private Schedule schedule;
 
     private String observaciones;

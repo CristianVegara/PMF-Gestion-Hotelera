@@ -4,7 +4,11 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Activities.css';
 
-const token = localStorage.getItem('user_token');
+
+let userRole = localStorage.getItem('role') || '';
+if (userRole.startsWith("ROLE_")) {
+    userRole = userRole.replace("ROLE_", "");
+}
 
 const Activities = () => {
   const [activities, setActivities] = useState([]);
@@ -24,6 +28,8 @@ const Activities = () => {
   
   const fetchActivities = async () => {
     try {
+      const token = localStorage.getItem('user_token');
+
       const response = await fetch('http://localhost:8080/api/activities', {
         method: 'GET',
         headers: {
@@ -53,6 +59,8 @@ const Activities = () => {
     };
     
     try {
+      const token = localStorage.getItem('user_token');
+
       const response = await fetch('http://localhost:8080/api/activities', {
         method: 'POST',
         headers: { 
@@ -100,6 +108,8 @@ const Activities = () => {
     e.stopPropagation(); 
     if (!window.confirm('¿Eliminar esta actividad?')) return;
     try {
+      const token = localStorage.getItem('user_token');
+
       const response = await fetch(`http://localhost:8080/api/activities/${id}`, { 
         method: 'DELETE',
         headers: {
@@ -162,7 +172,9 @@ const Activities = () => {
           required
           />
         </div>
-        <button type="submit" className="btn-primary">Crear actividad</button>
+        {userRole !== 'USER' && (
+          <button type="submit" className="btn-primary">Crear actividad</button>
+        )}
       </form>
     </section>
     
@@ -197,16 +209,17 @@ const Activities = () => {
           <div className="activity-info">
             <strong>{act.descripcion}</strong>
             <div className="activity-meta">
-              <span>🕒 {formatTime(act.fechaComienzo)} - {formatTime(act.fechaFin)}</span>
+              <span>{formatTime(act.fechaComienzo)} - {formatTime(act.fechaFin)}</span>
               <span className="price-tag">{act.precio}€</span>
             </div>
           </div>
-          <button
-          className="delete-icon"
-          onClick={(e) => deleteActivity(act.id, e)} 
-          >
-          Eliminar
-        </button>
+          {userRole !== 'USER' && (
+            <button
+              className="delete-icon"
+              onClick={(e) => deleteActivity(act.id, e)} >
+              Eliminar
+            </button>
+          )}
       </div>
       ))
       )}

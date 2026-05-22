@@ -19,6 +19,11 @@ const RoomDetails = () => {
 
     const token = localStorage.getItem('user_token');
 
+    let userRole = localStorage.getItem('role') || '';
+    if (userRole.startsWith("ROLE_")) {
+        userRole = userRole.replace("ROLE_", "");
+    }
+
     const [room, setRoom] = useState(null);
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -144,67 +149,67 @@ const RoomDetails = () => {
                 <div className="header-main-info">
                     <h1>Habitación {room?.number}</h1>
 
-                    <div className="room-actions-status-container">
-                        {currentStatus === 'LIBRE' && (
-                            <>
-                                <button
-                                    className="btn-status-action status-action-dirty"
-                                    onClick={() => handleUpdateStatus('SUCIA')}
-                                >
-                                    Marcar Sucia
-                                </button>
+                    {userRole !== 'USER' && (
+                            <div className="room-actions-status-container">
+                            
+                                {currentStatus === 'LIBRE' && (
+                                    <>
+                                        <button
+                                            className="btn-status-action status-action-dirty"
+                                            onClick={() => handleUpdateStatus('SUCIA')}>
+                                            Marcar Sucia
+                                        </button>
 
-                                <button
-                                    className="btn-status-action status-action-maintenance"
-                                    onClick={() => handleUpdateStatus('FUERA_DE_SERVICIO')}
-                                >
-                                    Fuera de Servicio
-                                </button>
-                            </>
-                        )}
+                                        <button
+                                            className="btn-status-action status-action-maintenance"
+                                            onClick={() => handleUpdateStatus('FUERA_DE_SERVICIO')}>
+                                            Fuera de Servicio
+                                        </button>
+                                    </>
+                                )}
 
-                        {currentStatus === 'SUCIA' && (
-                            <>
-                                <button
-                                    className="btn-status-action status-action-free"
-                                    onClick={() => handleUpdateStatus('LIBRE')}
-                                >
-                                    Marcar Libre
-                                </button>
+                                {currentStatus === 'SUCIA' && (
+                                    <>
+                                        <button
+                                            className="btn-status-action status-action-free"
+                                            onClick={() => handleUpdateStatus('LIBRE')}
+                                        >
+                                            Marcar Libre
+                                        </button>
 
-                                <button
-                                    className="btn-status-action status-action-maintenance"
-                                    onClick={() => handleUpdateStatus('FUERA_DE_SERVICIO')}
-                                >
-                                    Fuera de Servicio
-                                </button>
-                            </>
-                        )}
+                                        <button
+                                            className="btn-status-action status-action-maintenance"
+                                            onClick={() => handleUpdateStatus('FUERA_DE_SERVICIO')}
+                                        >
+                                            Fuera de Servicio
+                                        </button>
+                                    </>
+                                )}
 
-                        {currentStatus === 'FUERA_DE_SERVICIO' && (
-                            <>
-                                <button
-                                    className="btn-status-action status-action-free"
-                                    onClick={() => handleUpdateStatus('LIBRE')}
-                                >
-                                    Marcar Libre
-                                </button>
+                                {currentStatus === 'FUERA_DE_SERVICIO' && (
+                                    <>
+                                        <button
+                                            className="btn-status-action status-action-free"
+                                            onClick={() => handleUpdateStatus('LIBRE')}>
+                                            Marcar Libre
+                                        </button>
 
-                                <button
-                                    className="btn-status-action status-action-dirty"
-                                    onClick={() => handleUpdateStatus('SUCIA')}
-                                >
-                                    Marcar Sucia
-                                </button>
-                            </>
-                        )}
+                                        <button
+                                            className="btn-status-action status-action-dirty"
+                                            onClick={() => handleUpdateStatus('SUCIA')}>
+                                            Marcar Sucia
+                                        </button>
+                                    </>
+                                )}
 
-                        {currentStatus === 'OCUPADA' && (
-                            <span className="status-locked-notice">
-                                🔒 Habitación Ocupada (Gestión desde Reservas)
-                            </span>
-                        )}
-                    </div>
+                                {currentStatus === 'OCUPADA' && (
+                                    <span className="status-locked-notice">
+                                        Habitación Ocupada (Gestión desde Reservas)
+                                    </span>
+                                )}
+                                
+                        </div>
+                    )}
                 </div>
 
                 <div className="info-grid">

@@ -41,6 +41,10 @@ const Invoice = () => {
   
   const token = localStorage.getItem('user_token');
   
+  let userRole = localStorage.getItem('role') || '';
+  if (userRole.startsWith("ROLE_")) {
+      userRole = userRole.replace("ROLE_", "");
+  }
   
   const fetchInvoices = () => {
     fetch(`/api/invoice?sortBy=${sortBy}&direction=${direction}`, {
@@ -345,9 +349,10 @@ const Invoice = () => {
         
         <div className="header-actions">
           <h2 className="title-list">Listado de Facturas</h2>
+          {userRole !== 'USER' && (
           <Link to="/invoice/form" className="btn-new">
             Nueva Factura
-          </Link>
+          </Link>)}
         </div>
         
         <div className="sort-controls">	
@@ -589,9 +594,12 @@ const Invoice = () => {
                               
                               <td>
                                 <div className="action-group">
-                                  <Link to={`/invoice/edit/${inv.id}`}>Editar</Link>
-                                  <button onClick={() => printInvoice(inv)}>PDF</button>
-                                  <button onClick={() => deleteInvoice(inv.id)}>Eliminar</button>
+                                  {(userRole == 'ADMIN' || userRole == 'SUPERVISOR') && (
+                                    <Link to={`/invoice/edit/${inv.id}`}>Editar</Link>)}
+                                    <button onClick={() => printInvoice(inv)}>PDF</button>
+                                  {(userRole == 'ADMIN' || userRole == 'SUPERVISOR') && (
+                                    <button onClick={() => deleteInvoice(inv.id)}>Eliminar</button>
+                                  )}
                                 </div>
                               </td>
                             </tr>

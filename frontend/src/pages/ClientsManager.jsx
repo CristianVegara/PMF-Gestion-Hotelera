@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Clients from './Clients';
 import ClientsInHouse from './ClientsInHouse';
 import ArrivalsToday from './ArrivalsToday';
@@ -8,15 +9,24 @@ import './ClientsManager.css';
 const ClientsManager = () => {
     const [activeTab, setActiveTab] = useState('inhouse');
     const [sharedDate, setSharedDate] = useState(new Date().toISOString().split('T')[0]);
+    const navigate = useNavigate();
+
+    let userRole = localStorage.getItem('role') || '';
+    if (userRole.startsWith("ROLE_")) {
+        userRole = userRole.replace("ROLE_", "");
+    }
     
     return (
     <div className="manager-container">
         <header className="dashboard-header">
             <h1>Panel de Recepción</h1>
             <div className="date-box"/> 
-            <button type="button" onClick={'/bookings/form'} className="btn-edit">
-                Nueva reserva
-            </button>
+            
+            {userRole !== 'USER' && (
+                <button type="button" onClick={() => navigate('/bookings/form')} className="btn-edit">
+                    Nueva reserva
+                </button>
+            )}
         </header>
         
         <div className="tabs-container">

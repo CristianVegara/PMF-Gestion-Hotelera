@@ -22,7 +22,7 @@ public class UserDetailsImp implements UserDetails {
     }
 
     public static UserDetailsImp build(User user) {
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole()));
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
         return new UserDetailsImp(
                 user.getId(),
                 user.getUsername(),

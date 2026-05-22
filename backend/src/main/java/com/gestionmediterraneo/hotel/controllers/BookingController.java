@@ -33,6 +33,7 @@ public class BookingController {
 
     
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public List<Booking> getAllBookings() {
         return bookingDao.findAll();
     }
