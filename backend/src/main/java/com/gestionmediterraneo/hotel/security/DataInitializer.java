@@ -69,7 +69,7 @@ public class DataInitializer implements CommandLineRunner {
             recepcionistaEmployee.setCargo("RECEPCIONISTA");
             
             recepcionistaEmployee.setUser(recepcionistaUser);
-            userUser.setEmployee(recepcionistaEmployee);
+            recepcionistaUser.setEmployee(recepcionistaEmployee);
             
             employeeDao.save(recepcionistaEmployee);
             
@@ -83,8 +83,8 @@ public class DataInitializer implements CommandLineRunner {
             supervisorEmployee.setApellido("supervisor");
             supervisorEmployee.setCargo("SUPERVISOR");
             
-            supervisorEmployee.setUser(recepcionistaUser);
-            userUser.setEmployee(supervisorEmployee);
+            supervisorEmployee.setUser(supervisorUser);
+            supervisorUser.setEmployee(supervisorEmployee);
             
             employeeDao.save(supervisorEmployee);
         }
