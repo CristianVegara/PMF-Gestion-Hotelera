@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +36,7 @@ public class ClientController {
     private IClientService clientService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public List<Client> getClients(
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String direction) {
@@ -50,6 +52,7 @@ public class ClientController {
     
     
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Client client = null;
         Map<String, Object> response = new HashMap<>();
@@ -71,6 +74,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}/history")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> history(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         Client client = clientService.findById(id);
@@ -90,6 +94,7 @@ public class ClientController {
     }    
     
     @PostMapping
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Client client, BindingResult result) {
         Client clientNew = null;
         Map<String, Object> response = new HashMap<>();
@@ -124,6 +129,7 @@ public class ClientController {
     
     
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> update(@Valid @RequestBody Client client, BindingResult result, @PathVariable Long id) {
 
         Map<String, Object> response = new HashMap<>();
@@ -173,6 +179,7 @@ public class ClientController {
     
     
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         Client clientEliminar = clientService.findById(id);

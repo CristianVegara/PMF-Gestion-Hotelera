@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +53,7 @@ public class InvoiceController {
     );
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> getInvoices(
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
@@ -78,6 +80,7 @@ public class InvoiceController {
     }
 
     @PostMapping("/generate")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> generate(@RequestBody InvoiceGenerationRequest request) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -96,6 +99,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
 
@@ -117,6 +121,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/report")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> report(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
@@ -137,6 +142,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/client/{clientId}/expenses")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> clientExpenses(
             @PathVariable Long clientId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
@@ -171,6 +177,7 @@ public class InvoiceController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Invoice invoice, BindingResult result) {
         Map<String, Object> response = new HashMap<>();
 
@@ -211,6 +218,7 @@ public class InvoiceController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> update(@RequestBody Invoice invoiceData, @PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
 
@@ -252,6 +260,7 @@ public class InvoiceController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
 

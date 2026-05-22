@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.gestionmediterraneo.hotel.daos.IChargeDAO;
@@ -27,6 +28,7 @@ public class ChargeController {
     private IBookingDAO bookingDao;
 
     @GetMapping("/booking/{bookingId}")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> getChargesByBooking(@PathVariable Long bookingId) {
         try {
             List<Charge> charges = chargeDao.findByBookingId(bookingId);
@@ -40,6 +42,7 @@ public class ChargeController {
     }
 
     @PostMapping("/booking/{bookingId}")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> createCharge(@PathVariable Long bookingId, @RequestBody Charge charge) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -59,6 +62,7 @@ public class ChargeController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> updateCharge(@PathVariable Long id, @RequestBody Charge chargeData) {
         Map<String, Object> response = new HashMap<>();
         return chargeDao.findById(id)
@@ -78,6 +82,7 @@ public class ChargeController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> deleteCharge(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {

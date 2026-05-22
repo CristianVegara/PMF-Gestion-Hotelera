@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.gestionmediterraneo.hotel.entities.Shift;
 import com.gestionmediterraneo.hotel.services.IShiftService;
@@ -17,11 +18,13 @@ public class ShiftController {
     private IShiftService shiftService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public List<Shift> getAllShifts() {
         return shiftService.findAll();
     }
 
     @GetMapping("/range")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public List<Shift> getShiftsByRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
@@ -34,11 +37,13 @@ public class ShiftController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public Shift createShift(@RequestBody Shift shift) {
         return shiftService.save(shift);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     public void deleteShift(@PathVariable Long id) {
         shiftService.delete(id);
     }

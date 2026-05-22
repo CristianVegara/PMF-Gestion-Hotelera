@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -37,6 +38,7 @@ public class BookingController {
     }
     
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> getById(@PathVariable("id") Long id){    	
     	try {
         	Booking booking = bookingDao.findById(id).orElse(null);
@@ -61,6 +63,7 @@ public class BookingController {
     
     
     @GetMapping("/in-house/")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> getInHouseBookings() {
         try {
             List<Booking> bookings = bookingDao.findByCheckInStatus(CheckInStatus.DENTRO);
@@ -83,6 +86,7 @@ public class BookingController {
 
     
     @GetMapping("/date")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> getBookingsByDate(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         try {
@@ -108,6 +112,7 @@ public class BookingController {
     }
 
     @PostMapping(consumes = "application/json")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
         try {
             booking.setEstado(BookingStatus.CONFIRMADA);
@@ -128,12 +133,14 @@ public class BookingController {
     }
     
     @GetMapping("/room/{roomId}")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public List<Booking> getBookingsByRoom(@PathVariable Long roomId) {
         return bookingDao.buscarPorHabitacion(roomId);
     }
     
     
     @PutMapping(value = "/{id}", consumes = "application/json")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> updateBooking(@PathVariable Long id, @RequestBody Booking bookingDetails) {
         return bookingDao.findById(id).map(booking -> {
             booking.setFechaEntrada(bookingDetails.getFechaEntrada());
@@ -176,6 +183,7 @@ public class BookingController {
     }
     
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     public void delete(@PathVariable Long id) {
     	bookingDao.deleteById(id);
     }

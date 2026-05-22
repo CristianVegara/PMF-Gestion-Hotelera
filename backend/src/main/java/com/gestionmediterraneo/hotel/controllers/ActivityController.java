@@ -11,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,6 +38,7 @@ public class ActivityController {
     private IActivityService activityService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public List<Activity> getActivities(
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String direction) {
@@ -50,6 +52,7 @@ public class ActivityController {
     }
 
     @GetMapping("/filter")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> getActivitiesByDate(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin) {
@@ -68,6 +71,7 @@ public class ActivityController {
     
   
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Activity activity = null;
         Map<String, Object> response = new HashMap<>();
@@ -89,6 +93,7 @@ public class ActivityController {
     }
     
     @PostMapping
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Activity activity, BindingResult result) {
         Activity activityNew = null;
         Map<String, Object> response = new HashMap<>();
@@ -117,6 +122,7 @@ public class ActivityController {
     }
     
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> update(@RequestBody Activity activity, @PathVariable Long id) {
         Activity currentActivity = activityService.findById(id);
         Activity activityUpdated = null;
@@ -147,6 +153,7 @@ public class ActivityController {
     }
     
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         Activity activityEliminar = activityService.findById(id);

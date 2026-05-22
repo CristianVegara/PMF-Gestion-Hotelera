@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,6 +40,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> getAllEmployees() {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -52,6 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/{user}")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> getEmployeeByUsername(@PathVariable String user) {
         User usuario = null;
         Map<String, Object> response = new HashMap<>();
@@ -72,6 +75,7 @@ public class UserController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody User user, BindingResult result) {        
         user.setCreatedAt(LocalDate.now());
         User newUser = null;
@@ -101,6 +105,7 @@ public class UserController {
     }
 
     @PutMapping("/{user}")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> updateEmployee(@Valid @RequestBody User user, BindingResult result, @PathVariable("user") String userName) {
     	User currentUser = userService.findByUsername(userName);
         User updatedUser = null;
@@ -143,6 +148,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{user}")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> deleteEmployee(@PathVariable String user) {
         Map<String, Object> response = new HashMap<>();
         try {

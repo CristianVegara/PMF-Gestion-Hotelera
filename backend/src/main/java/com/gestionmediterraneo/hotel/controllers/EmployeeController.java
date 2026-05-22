@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.gestionmediterraneo.hotel.entities.Employee;
 import com.gestionmediterraneo.hotel.entities.User;
@@ -22,6 +23,7 @@ public class EmployeeController {
     private IEmployeeService employeeService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public List<Employee> getEmployees() {
         try {
             return employeeService.findAll();
@@ -32,6 +34,7 @@ public class EmployeeController {
     }
     
     @GetMapping("/no-user")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> getEmployeesWithoutUser() {
 
         Map<String, Object> response = new HashMap<>();
@@ -51,11 +54,13 @@ public class EmployeeController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeService.save(employee);
     }
     
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails) {
         Employee employee = employeeService.findById(id);
         if(employee != null) {
