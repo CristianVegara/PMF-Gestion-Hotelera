@@ -29,7 +29,8 @@ const Invoice = () => {
   const [reportData, setReportData] = useState(null);
   const [reportError, setReportError] = useState(null);
   
-  const [expenseClientId, setExpenseClientId] = useState("");
+  // CHANGED: Tracking client DNI instead of raw ID for internal security
+  const [expenseClientDni, setExpenseClientDni] = useState("");
   const [expenseFrom, setExpenseFrom] = useState("");
   const [expenseTo, setExpenseTo] = useState("");
   const [expenseResult, setExpenseResult] = useState(null);
@@ -117,17 +118,18 @@ const Invoice = () => {
   
   const fetchClientExpenses = () => {
     if (!expenseClientId || !expenseFrom || !expenseTo) {
-      setExpenseError("Debes indicar cliente y rango de fechas.");
+    if (!expenseClientDni || !expenseFrom || !expenseTo) {
+      setExpenseError("Debes indicar el DNI del cliente y el rango de fechas.");
       setExpenseResult(null);
       return;
     }
     
     setExpenseError(null);
     setExpenseResult(null);
-    
+
     const token = localStorage.getItem('user_token');
     
-    fetch(`/api/invoice/client/${encodeURIComponent(expenseClientId)}/expenses?from=${expenseFrom}&to=${expenseTo}`, {
+    fetch(`/api/invoice/client/by-dni/${encodeURIComponent(expenseClientDni.trim())}/expenses?from=${expenseFrom}&to=${expenseTo}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -145,6 +147,153 @@ const Invoice = () => {
       setExpenseError("No se pudieron obtener los gastos del cliente.");
       console.error("Error gastos cliente:", err);
     });
+  };
+
+  const printClientExpenses = (data) => {
+    const printWindow = window.open("", "_blank", "width=900,height=700");
+    if (!printWindow) {
+      window.print();
+      return;
+    }
+
+    const rows = Array.isArray(data.invoices) && data.invoices.length > 0
+      ? data.invoices.map((invoice) => `
+        <tr>
+          <td>${escapeHtml(invoice.id)}</td>
+          <td>${escapeHtml(invoice.fechaEmision || "-")}</td>
+          <td>${escapeHtml(invoice.booking?.fechaEntrada || "-")}</td>
+          <td>${escapeHtml(invoice.booking?.fechaSalida || "-")}</td>
+          <td>${escapeHtml(invoice.concepto || "-")}</td>
+          <td>${invoice.pagada ? "Pagada" : "Pendiente"}</td>
+          <td class="number">${formatCurrency(invoice.total)}</td>
+        </tr>
+      `).join("")
+      : `<tr><td colspan="7" style="text-align:center;" class="muted">No hay gastos en este periodo.</td></tr>`;
+
+    printWindow.document.write(`
+    <!doctype html>
+    <html lang="es">
+    <head>
+      <meta charset="utf-8" />
+      <title>Gastos cliente ${escapeHtml(data.client?.dni || "")}</title>
+      <style>
+        @page { size: A4; margin: 18mm; }
+        * { box-sizing: border-box; }
+        body {
+          margin: 0;
+          color: #1f2933;
+          font-family: Arial, Helvetica, sans-serif;
+          line-height: 1.45;
+        }
+        .header {
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 3px solid #1a252f;
+          margin-bottom: 26px;
+          padding-bottom: 16px;
+        }
+        .brand { font-size: 26px; font-weight: 800; margin: 0; }
+        .title { font-size: 20px; font-weight: 800; text-align: right; }
+        .muted { color: #687483; }
+        .grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 18px;
+          margin-bottom: 24px;
+        }
+        .box {
+          border: 1px solid #d8dee6;
+          border-radius: 8px;
+          padding: 16px;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 10px;
+        }
+        th {
+          background: #1a252f;
+          color: white;
+          padding: 10px;
+          text-align: left;
+        }
+        td {
+          border-bottom: 1px solid #d8dee6;
+          padding: 10px;
+        }
+        .number { text-align: right; }
+        .total {
+          width: 320px;
+          margin-left: auto;
+          margin-top: 22px;
+          border-top: 2px solid #1a252f;
+          padding-top: 12px;
+          display: flex;
+          justify-content: space-between;
+          font-size: 20px;
+          font-weight: 800;
+        }
+      </style>
+    </head>
+    <body>
+      <main>
+        <section class="header">
+          <div>
+            <h1 class="brand">Hotel Mediterráneo</h1>
+            <p class="muted">Resumen de gastos por cliente</p>
+          </div>
+          <div>
+            <div class="title">Gastos del cliente</div>
+            <div class="muted">Fecha: ${new Date().toLocaleDateString("es-ES")}</div>
+          </div>
+        </section>
+
+        <section class="grid">
+          <div class="box">
+            <h3>Cliente</h3>
+            <p><strong>${escapeHtml(data.client?.nombre || "-")}</strong></p>
+            <p>DNI: ${escapeHtml(data.client?.dni || "-")}</p>
+            <p>Teléfono: ${escapeHtml(data.client?.telefono || "-")}</p>
+            <p>Correo: ${escapeHtml(data.client?.correo || "-")}</p>
+          </div>
+          <div class="box">
+            <h3>Periodo</h3>
+            <p>Desde: ${escapeHtml(data.from || "-")}</p>
+            <p>Hasta: ${escapeHtml(data.to || "-")}</p>
+            <p>Facturas: ${escapeHtml(data.invoiceCount ?? data.invoices?.length ?? 0)}</p>
+          </div>
+        </section>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Factura</th>
+              <th>Emisión</th>
+              <th>Entrada</th>
+              <th>Salida</th>
+              <th>Concepto</th>
+              <th>Estado</th>
+              <th class="number">Total</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+
+        <section class="total">
+          <span>Total</span>
+          <span>${formatCurrency(data.totalSpent ?? 0)}</span>
+        </section>
+      </main>
+      <script>
+        window.onload = () => {
+          window.print();
+          window.close();
+        };
+      </script>
+    </body>
+    </html>
+    `);
+    printWindow.document.close();
   };
   
   const printInvoice = (invoice) => {
@@ -343,7 +492,6 @@ const Invoice = () => {
       printWindow.document.close();
   };
 
-  // --- NEW FUNCTION TO PRINT RANGE REPORT LIKE THE INVOICE PDF ---
   const printReport = (data) => {
     const printWindow = window.open("", "_blank", "width=900,height=700");
     if (!printWindow) {
@@ -354,15 +502,14 @@ const Invoice = () => {
     const reportDate = new Date().toLocaleDateString("es-ES");
     const formatDate = (isoString) => isoString ? new Date(isoString).toLocaleDateString("es-ES") : "-";
 
-    // Generate breakdown table rows dynamically
     let tableRows = "";
     if (Array.isArray(data.breakdown) && data.breakdown.length > 0) {
       tableRows = data.breakdown.map(item => `
         <tr>
-          <td>${escapeHtml(item.type || item.description || "Detalle")}</td>
-          <td class="number">${formatCurrency(item.netAmount ?? item.amount ?? 0)}</td>
-          <td class="number">${formatCurrency(item.tax ?? 0)}</td>
-          <td class="number">${formatCurrency(item.amount ?? item.total ?? 0)}</td>
+          <td>${escapeHtml(item.category || item.type || item.description || "Detalle")}</td>
+          <td class="number">${formatCurrency(item.totalNet ?? item.netAmount ?? 0)}</td>
+          <td class="number">${formatCurrency(item.totalTax ?? item.tax ?? 0)}</td>
+          <td class="number">${formatCurrency(item.totalGross ?? item.totalAmount ?? item.amount ?? 0)}</td>
         </tr>
       `).join("");
     } else {
@@ -374,7 +521,7 @@ const Invoice = () => {
     <html lang="es">
     <head>
       <meta charset="utf-8" />
-      <title>Informe Facturación Rango</title>
+	      <title>Informe Ganancias Rango</title>
       <style>
         @page { size: A4; margin: 18mm; }
         * { box-sizing: border-box; }
@@ -455,10 +602,10 @@ const Invoice = () => {
         <section class="report-header">
           <div>
             <h1 class="brand">Hotel Mediterráneo</h1>
-            <p class="muted">Gestión Hotelera - Informes de Ingresos</p>
+	            <p class="muted">Gestión Hotelera - Ganancias cobradas</p>
           </div>
           <div>
-            <div class="report-title">Informe de Ingresos</div>
+	            <div class="report-title">Informe de Ganancias</div>
             <div class="muted">Fecha Emisión: ${reportDate}</div>
           </div>
         </section>
@@ -478,7 +625,7 @@ const Invoice = () => {
           </div>
         </section>
         
-        <h3>Desglose de Facturación</h3>
+	        <h3>Desglose de ganancias</h3>
         <table>
           <thead>
             <tr>
@@ -558,7 +705,7 @@ const Invoice = () => {
       
       <div className="reports-wrapper">
         <div className="section-card">
-          <h3 className="section-title">Informe de facturación</h3>
+	          <h3 className="section-title">Informe de ganancias cobradas</h3>
           
           <div className="report-grid">
             <label>
@@ -628,7 +775,6 @@ const Invoice = () => {
                 <div>
                   <strong>Total IVA:</strong> {formatCurrency(reportData.totalTax ?? 0)}
                 </div>
-                {/* PDF PRINT TRIGGER BUTTON */}
                 <button 
                   className="btn-new" 
                   style={{ marginLeft: '10px', backgroundColor: '#2c3e50' }} 
@@ -652,10 +798,10 @@ const Invoice = () => {
                     <tbody>
                       {reportData.breakdown.map((item, index) => (
                         <tr key={index}>
-                          <td>{item.type || item.description || "Detalle"}</td>
-                          <td className="text-center">{formatCurrency(item.amount ?? item.total ?? 0)}</td>
-                          <td className="text-center">{formatCurrency(item.netAmount ?? item.amount ?? 0)}</td>
-                          <td className="text-center">{formatCurrency(item.tax ?? 0)}</td>
+	                          <td>{item.category || item.type || item.description || "Detalle"}</td>
+	                          <td className="text-center">{formatCurrency(item.totalGross ?? item.totalAmount ?? item.amount ?? 0)}</td>
+	                          <td className="text-center">{formatCurrency(item.totalNet ?? item.netAmount ?? 0)}</td>
+	                          <td className="text-center">{formatCurrency(item.totalTax ?? item.tax ?? 0)}</td>
                         </tr>
                         ))}
                       </tbody>
@@ -673,11 +819,12 @@ const Invoice = () => {
                 
                 <div className="report-grid">
                   <label>
-                    ID de cliente
+                    DNI de cliente
                     <input
                     type="text"
-                    value={expenseClientId}
-                    onChange={(e) => setExpenseClientId(e.target.value)}
+                    placeholder="Ej: 12345678X"
+                    value={expenseClientDni}
+                    onChange={(e) => setExpenseClientDni(e.target.value)}
                     />
                   </label>
                   
@@ -717,12 +864,20 @@ const Invoice = () => {
                     <p>
                       <strong>Factura(s):</strong> {expenseResult.invoiceCount ?? (expenseResult.invoices?.length ?? 0)}
                     </p>
-                    <p>
-                      <strong>Total gastado:</strong> {formatCurrency(expenseResult.totalSpent ?? 0)}
-                    </p>
-                    
-                    {Array.isArray(expenseResult.invoices) && expenseResult.invoices.length > 0 && (
-                      <div className="table-responsive">
+	                    <p>
+	                      <strong>Total gastado:</strong> {formatCurrency(expenseResult.totalSpent ?? 0)}
+	                    </p>
+	                    <button
+	                      className="btn-new"
+	                      style={{ backgroundColor: '#2c3e50' }}
+	                      type="button"
+	                      onClick={() => printClientExpenses(expenseResult)}
+	                    >
+	                      Imprimir PDF
+	                    </button>
+
+	                    {Array.isArray(expenseResult.invoices) && expenseResult.invoices.length > 0 && (
+	                      <div className="table-responsive">
                         <table className="invoices-table">
                           <thead>
                             <tr>
@@ -734,9 +889,9 @@ const Invoice = () => {
                           </thead>
                           <tbody>
                             {expenseResult.invoices.map((invoice) => (
-                              <tr key={invoice.id}>
-                                <td>{invoice.id}</td>
-                                <td>{invoice.fecha || invoice.fechaCreacion || invoice.fechaFactura || "-"}</td>
+	                              <tr key={invoice.id}>
+	                                <td>{invoice.id}</td>
+	                                <td>{invoice.fechaEmision || invoice.fecha || invoice.fechaCreacion || invoice.fechaFactura || "-"}</td>
                                 <td>{invoice.concepto || "-"}</td>
                                 <td className="text-center">{formatCurrency(invoice.total)}</td>
                               </tr>

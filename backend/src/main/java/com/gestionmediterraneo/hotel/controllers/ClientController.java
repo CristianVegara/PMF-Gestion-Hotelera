@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionmediterraneo.hotel.entities.Client;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
 import com.gestionmediterraneo.hotel.services.IClientService;
 
 import jakarta.validation.Valid;
@@ -34,6 +35,9 @@ public class ClientController {
 	
     @Autowired
     private IClientService clientService;
+
+    @Autowired
+    private AuditLogService auditLogService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
@@ -124,6 +128,11 @@ public class ClientController {
 
         response.put("mensaje", "El cliente ha sido creado con éxito");
         response.put("client", clientNew);
+        auditLogService.record(
+                "CLIENTE_CREADO",
+                "Client",
+                clientNew.getId(),
+                "Alta de cliente " + clientNew.getNombre() + " con DNI " + clientNew.getDni());
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
     
@@ -166,6 +175,11 @@ public class ClientController {
 
             response.put("mensaje", "Actualizado con éxito");
             response.put("client", updated);
+            auditLogService.record(
+                    "CLIENTE_ACTUALIZADO",
+                    "Client",
+                    updated.getId(),
+                    "Actualización de cliente " + updated.getNombre() + " con DNI " + updated.getDni());
 
             return new ResponseEntity<>(response, HttpStatus.OK);
 
@@ -198,6 +212,11 @@ public class ClientController {
         }
 
         response.put("mensaje", "El cliente ha sido eliminado con éxito");
+        auditLogService.record(
+                "CLIENTE_ELIMINADO",
+                "Client",
+                id,
+                "Eliminación de cliente " + clientEliminar.getNombre() + " con DNI " + clientEliminar.getDni());
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
     

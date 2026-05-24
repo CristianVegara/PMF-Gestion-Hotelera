@@ -16,6 +16,15 @@ const Shifts = ({ token }) => {
     fecha: '',
     observaciones: ''
   });
+
+  const readJson = async (response, label) => {
+    if (!response.ok) {
+      throw new Error(`${label}: ${response.status}`);
+    }
+
+    const text = await response.text();
+    return text ? JSON.parse(text) : [];
+  };
   
   useEffect(() => {
     const controller = new AbortController();
@@ -39,9 +48,9 @@ const Shifts = ({ token }) => {
         })
         ]);
         
-        const dataShifts = await resShifts.json();
-        const dataEmps = await resEmps.json();
-        const dataSchs = await resSchs.json();
+        const dataShifts = await readJson(resShifts, 'Turnos');
+        const dataEmps = await readJson(resEmps, 'Empleados');
+        const dataSchs = await readJson(resSchs, 'Horarios');
         
         setShifts(dataShifts || []);
         setEmployees(dataEmps || []);
@@ -76,9 +85,9 @@ const Shifts = ({ token }) => {
       })
       ]);
       
-      setShifts(await resShifts.json() || []);
-      setEmployees(await resEmps.json() || []);
-      setSchedules(await resSchs.json() || []);
+      setShifts(await readJson(resShifts, 'Turnos') || []);
+      setEmployees(await readJson(resEmps, 'Empleados') || []);
+      setSchedules(await readJson(resSchs, 'Horarios') || []);
     } catch (error) {
       console.error("Error al recargar datos:", error);
     }

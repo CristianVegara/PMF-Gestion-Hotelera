@@ -7,6 +7,9 @@ import com.gestionmediterraneo.hotel.entities.Room;
 import com.gestionmediterraneo.hotel.enums.BookingStatus;
 import com.gestionmediterraneo.hotel.enums.CheckInStatus;
 import com.gestionmediterraneo.hotel.enums.RoomStatus;
+import com.gestionmediterraneo.hotel.entities.Invoice;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
+import com.gestionmediterraneo.hotel.services.BillingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +33,12 @@ public class BookingController {
 
     @Autowired
     private IRoomDAO roomDao;
+
+    @Autowired
+    private BillingService billingService;
+
+    @Autowired
+    private AuditLogService auditLogService;
 
     
     @GetMapping
@@ -120,6 +129,19 @@ public class BookingController {
             booking.setCheckInStatus(CheckInStatus.PENDIENTE);
             
             Booking savedBooking = bookingDao.save(booking);
+            Invoice pendingInvoice = billingService.createPendingInvoiceForBooking(savedBooking);
+            auditLogService.record(
+                    "RESERVA_CREADA",
+                    "Booking",
+                    savedBooking.getId(),
+                    "Reserva creada para cliente ID " + (savedBooking.getCliente() != null ? savedBooking.getCliente().getId() : "-")
+                            + " del " + savedBooking.getFechaEntrada()
+                            + " al " + savedBooking.getFechaSalida());
+            auditLogService.record(
+                    "FACTURA_PENDIENTE_GENERADA",
+                    "Invoice",
+                    pendingInvoice != null ? pendingInvoice.getId() : null,
+                    "Factura pendiente creada automáticamente para reserva ID " + savedBooking.getId());
             return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
 
         } catch (Exception e) {
@@ -164,6 +186,23 @@ public class BookingController {
             }
             
             bookingDao.save(booking);
+
+            if (booking.getCheckInStatus() == CheckInStatus.FUERA) {
+                billingService.markBookingInvoicesPaid(booking.getId());
+                auditLogService.record(
+                        "CHECKOUT_RESERVA",
+                        "Booking",
+                        booking.getId(),
+                        "Checkout de reserva y marcado de facturas como pagadas");
+            } else {
+                Invoice pendingInvoice = billingService.createPendingInvoiceForBooking(booking);
+                auditLogService.record(
+                        "RESERVA_ACTUALIZADA",
+                        "Booking",
+                        booking.getId(),
+                        "Reserva actualizada; factura pendiente recalculada ID "
+                                + (pendingInvoice != null ? pendingInvoice.getId() : "-"));
+            }
             
             Room room = booking.getHabitacion();
             if (room != null) {

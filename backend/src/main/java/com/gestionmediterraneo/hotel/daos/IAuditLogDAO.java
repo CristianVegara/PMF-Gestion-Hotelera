@@ -1,0 +1,8 @@
+package com.gestionmediterraneo.hotel.daos;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.gestionmediterraneo.hotel.entities.AuditLog;
+
+public interface IAuditLogDAO extends JpaRepository<AuditLog, Long> {
+}

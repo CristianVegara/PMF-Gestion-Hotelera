@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionmediterraneo.hotel.entities.Client;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
 import com.gestionmediterraneo.hotel.services.IClientService;
 
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ class ClientControllerTest {
 
     @MockBean
     private IClientService clientService;
+
+    @MockBean
+    private AuditLogService auditLogService;
 
     @Autowired
     private ObjectMapper objectMapper;

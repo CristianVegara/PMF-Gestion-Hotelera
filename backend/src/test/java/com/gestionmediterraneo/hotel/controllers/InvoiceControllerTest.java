@@ -19,9 +19,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionmediterraneo.hotel.daos.IClientDAO;
 import com.gestionmediterraneo.hotel.entities.Client;
 import com.gestionmediterraneo.hotel.entities.Invoice;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
+import com.gestionmediterraneo.hotel.services.BillingService;
 import com.gestionmediterraneo.hotel.services.InvoiceService;
 import com.gestionmediterraneo.hotel.services.LoyaltyService;
 import com.gestionmediterraneo.hotel.services.LoyaltyTier;
+import com.gestionmediterraneo.hotel.services.RevenueReportService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +47,15 @@ class InvoiceControllerTest {
 
     @MockBean
     private LoyaltyService loyaltyService;
+
+    @MockBean
+    private BillingService billingService;
+
+    @MockBean
+    private RevenueReportService revenueReportService;
+
+    @MockBean
+    private AuditLogService auditLogService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -98,12 +110,12 @@ class InvoiceControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invoice)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.invoice.loyaltyRank").value("Bronze"))
-                .andExpect(jsonPath("$.invoice.discountPercentage").value(5))
-                .andExpect(jsonPath("$.invoice.discountAmount").value(10.0))
-                .andExpect(jsonPath("$.invoice.subtotal").value(190.0))
-                .andExpect(jsonPath("$.invoice.iva").value(19.0))
-                .andExpect(jsonPath("$.invoice.total").value(209.0));
+                .andExpect(jsonPath("$.data.loyaltyRank").value("Bronze"))
+                .andExpect(jsonPath("$.data.discountPercentage").value(5))
+                .andExpect(jsonPath("$.data.discountAmount").value(10.0))
+                .andExpect(jsonPath("$.data.subtotal").value(190.0))
+                .andExpect(jsonPath("$.data.iva").value(19.0))
+                .andExpect(jsonPath("$.data.total").value(209.0));
     }
 
     @Test
@@ -147,7 +159,7 @@ class InvoiceControllerTest {
         mockMvc.perform(put("/api/invoice/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateData)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 
     @Test

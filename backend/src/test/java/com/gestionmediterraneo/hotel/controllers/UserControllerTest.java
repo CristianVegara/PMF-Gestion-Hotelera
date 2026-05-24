@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.gestionmediterraneo.hotel.entities.User;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
 import com.gestionmediterraneo.hotel.services.IUserService;
 
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,9 @@ class UserControllerTest {
 
     @MockBean
     private IUserService userService;
+
+    @MockBean
+    private AuditLogService auditLogService;
 
     @Test
     void shouldReturnListOfUsers() throws Exception {

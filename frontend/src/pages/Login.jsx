@@ -34,7 +34,7 @@ const Login = ({ setUser }) => {
       }
       
       const user = {
-        username: username,
+        username: data.username || username,
         role: data.role || "USER" 
       };
       
