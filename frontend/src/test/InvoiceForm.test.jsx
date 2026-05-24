@@ -28,7 +28,7 @@ describe('Pruebas en InvoiceForm', () => {
     mockParams = {}; 
     vi.spyOn(window, 'alert').mockImplementation(() => {});
 
-    vi.stubGlobal('fetch', vi.fn().mockImplementation((url, config) => {
+    vi.stubGlobal('fetch', vi.fn().mockImplementation((url) => {
       if (url.includes('/api/clients')) {
         return Promise.resolve({ json: () => Promise.resolve(mockClients), ok: true });
       }
@@ -75,7 +75,6 @@ describe('Pruebas en InvoiceForm', () => {
   test('Enviar el payload correcto al backend al enviar el formulario (Creación)', async () => {
       render(<InvoiceForm />);
       
-      // Esperamos la carga asíncrona inicial
       const selectCliente = await screen.findByLabelText('Cliente');
       
       fireEvent.change(selectCliente, { target: { value: '1' } });
@@ -86,9 +85,7 @@ describe('Pruebas en InvoiceForm', () => {
       const btnSubmit = screen.getByRole('button', { name: 'Crear Factura' });
       fireEvent.click(btnSubmit);
 
-      // Esperamos que se resuelva la llamada asíncrona del submit
       await waitFor(() => {
-        // CAMBIO AQUÍ: Usamos window.fetch en lugar de global.fetch
         expect(window.fetch).toHaveBeenCalledWith('/api/invoice', expect.objectContaining({
           method: 'POST',
           body: expect.stringContaining('"concepto":"Hospedaje Suite Ejecutiva"')

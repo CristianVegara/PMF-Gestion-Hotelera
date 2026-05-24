@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import Navbar from '../components/Navbar'; // Asegúrate de que la ruta apunte bien a tu carpeta de componentes
+import Navbar from '../components/Navbar';
 
 describe('Pruebas en el componente Navbar', () => {
     const mockSetUser = vi.fn();
