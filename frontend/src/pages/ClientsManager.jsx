@@ -8,7 +8,7 @@ import './ClientsManager.css';
 
 const ClientsManager = () => {
     const [activeTab, setActiveTab] = useState('inhouse');
-    const [sharedDate, setSharedDate] = useState(new Date().toISOString().split('T')[0]);
+    const [sharedDate] = useState(new Date().toISOString().split('T')[0]);
     const navigate = useNavigate();
 
     let userRole = localStorage.getItem('role') || '';

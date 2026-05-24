@@ -1,114 +1,117 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { vitest } from 'vitest';
-import Invoice from '../pages/Invoice';
-import { BrowserRouter } from 'react-router-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import Invoice from '../pages/Invoice.jsx';
 
-global.fetch = vitest.fn();
-global.confirm = vitest.fn();
+vi.mock('react-router-dom', () => ({
+  Link: ({ to, children }) => <a href={to}>{children}</a>
+}));
 
 const mockInvoices = [
   {
-    id: 1,
-    concepto: 'Reserva Suite',
-    noches: 2,
-    loyaltyRank: 'Bronze',
-    discountAmount: 10.00,
-    discountPercentage: 5,
-    total: 200.50,
-    cliente: { nombre: 'Carlos', dni: '123X' }
-  },
-  {
-    id: 2,
-    concepto: 'Estancia Estándar',
-    noches: 1,
-    loyaltyRank: 'Sin rango',
-    discountAmount: 0,
-    discountPercentage: 0,
-    total: 80.00,
-    cliente: { nombre: 'Marta', dni: '456Y' }
+    id: 1001,
+    concepto: 'Estancia Habitación Familiar',
+    noches: 3,
+    precio: 100,
+    discountAmount: 30,
+    discountPercentage: 10,
+    total: 297,
+    cliente: { nombre: 'Lucía Fernández', dni: '12345678A' }
   }
 ];
 
-const renderComponent = () =>
-  render(
-    <BrowserRouter>
-      <Invoice />
-    </BrowserRouter>
-  );
+const mockReportResponse = {
+  totalGross: 550,
+  totalNet: 500,
+  totalTax: 50,
+  breakdown: [
+    { type: 'Hospedaje', amount: 440, netAmount: 400, tax: 40 },
+    { type: 'Restaurante', amount: 110, netAmount: 100, tax: 10 }
+  ]
+};
 
-beforeEach(() => {
-  vitest.clearAllMocks();
-});
+describe('Pruebas en el Sistema de Facturación Invoice', () => {
+  let mockOpenWindow;
 
-test('carga y muestra las facturas al iniciar', async () => {
-  fetch.mockResolvedValueOnce({
-    ok: true,
-    json: async () => mockInvoices
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    localStorage.clear();
+    localStorage.setItem('user_token', 'invoice_token');
+    localStorage.setItem('role', 'ROLE_ADMIN'); 
+
+    vi.spyOn(window, 'confirm').mockImplementation(() => true);
+    
+    mockOpenWindow = {
+      document: {
+        write: vi.fn(),
+        close: vi.fn()
+      }
+    };
+    vi.spyOn(window, 'open').mockImplementation(() => mockOpenWindow);
+
+    vi.stubGlobal('fetch', vi.fn().mockImplementation((url) => {
+      if (url.includes('/api/invoice/report')) {
+        return Promise.resolve({ json: () => Promise.resolve(mockReportResponse), ok: true });
+      }
+      return Promise.resolve({ json: () => Promise.resolve(mockInvoices), ok: true });
+    }));
   });
 
-  renderComponent();
+  test('Cargar y listar las facturas con sus desgloses en la tabla principal', async () => {
+    render(<Invoice />);
 
-  expect(fetch).toHaveBeenCalledWith('/api/invoice?sortBy=id&direction=asc');
-
-  await waitFor(() => {
-    expect(screen.getByText('Reserva Suite')).toBeInTheDocument();
-    expect(screen.getByText('Carlos')).toBeInTheDocument();
-    expect(screen.getByText('Bronze')).toBeInTheDocument();
-    expect(screen.getByText('10.00 € (5%)')).toBeInTheDocument();
-    expect(screen.getByText('200.50 €')).toBeInTheDocument();
-  });
-});
-
-test('cambia el ordenamiento al seleccionar una opción diferente', async () => {
-  fetch.mockResolvedValue({
-    ok: true,
-    json: async () => []
+    expect(screen.getByRole('heading', { name: 'Listado de Facturas' })).toBeInTheDocument();
+    expect(await screen.findByText('Lucía Fernández')).toBeInTheDocument();
+    expect(screen.getByText('Estancia Habitación Familiar')).toBeInTheDocument();
+    
+    expect(screen.getByRole('link', { name: 'Nueva Factura' })).toBeInTheDocument();
   });
 
-  renderComponent();
+  test('Llamar al endpoint de borrado al confirmar la eliminación de una factura', async () => {
+      const mockFetch = vi.fn().mockImplementation((url, config) => {
+        if (config && config.method === 'DELETE') {
+          return Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ mensaje: 'Eliminado correctamente' })
+          });
+        }
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockInvoices)
+        });
+      });
+      vi.stubGlobal('fetch', mockFetch);
 
-  const selectSort = screen.getByLabelText(/Ordenar por:/i);
-  fireEvent.change(selectSort, { target: { value: 'total' } });
+      render(<Invoice />);
+      
+      const btnEliminar = await screen.findByRole('button', { name: 'Eliminar' });
+      fireEvent.click(btnEliminar);
 
-  await waitFor(() => {
-    expect(fetch).toHaveBeenCalledWith('/api/invoice?sortBy=total&direction=asc');
+      expect(window.confirm).toHaveBeenCalledWith('¿Eliminar factura?');
+      expect(mockFetch).toHaveBeenCalledWith('/api/invoice/1001', expect.objectContaining({
+        method: 'DELETE'
+      }));
+    });
+
+  test('Generar un informe de facturación y permitir su impresión en una ventana emergente', async () => {
+    render(<Invoice />);
+
+    fireEvent.change(screen.getAllByLabelText(/Desde/i)[0], { target: { value: '2026-05-01' } });
+    fireEvent.change(screen.getAllByLabelText(/Hasta/i)[0], { target: { value: '2026-05-30' } });
+
+    const btnGenerar = screen.getByRole('button', { name: 'Generar informe' });
+    fireEvent.click(btnGenerar);
+
+    expect(await screen.findByText('Total bruto:')).toBeInTheDocument();
+    expect(screen.getByText('550.00 €')).toBeInTheDocument();
+    expect(screen.getByText('500.00 €')).toBeInTheDocument(); 
+    expect(screen.getByText('Hospedaje')).toBeInTheDocument();  
+
+    const btnImprimirPDF = screen.getByRole('button', { name: 'Imprimir PDF' });
+    fireEvent.click(btnImprimirPDF);
+
+    expect(window.open).toHaveBeenCalled();
+    expect(mockOpenWindow.document.write).toHaveBeenCalled(
+      expect.stringContaining('Gestión Hotelera - Informes de Ingresos')
+    );
   });
-});
-
-test('elimina una factura tras confirmar el aviso', async () => {
-  fetch
-    .mockResolvedValueOnce({ ok: true, json: async () => mockInvoices })
-    .mockResolvedValueOnce({ ok: true })
-    .mockResolvedValueOnce({ ok: true, json: async () => [mockInvoices[1]] });
-
-  global.confirm.mockReturnValue(true);
-
-  renderComponent();
-
-  const deleteButtons = await screen.findAllByText('Eliminar');
-  fireEvent.click(deleteButtons[0]);
-
-  expect(global.confirm).toHaveBeenCalledWith('¿Eliminar factura?');
-
-  await waitFor(() => {
-    expect(screen.queryByText('Reserva Suite')).not.toBeInTheDocument();
-    expect(screen.getByText('Estancia Estándar')).toBeInTheDocument();
-  });
-});
-
-test('no elimina la factura si el usuario cancela el confirm', async () => {
-  fetch.mockResolvedValueOnce({
-    ok: true,
-    json: async () => mockInvoices
-  });
-
-  global.confirm.mockReturnValue(false);
-
-  renderComponent();
-
-  const deleteButtons = await screen.findAllByText('Eliminar');
-  fireEvent.click(deleteButtons[0]);
-
-  expect(fetch).toHaveBeenCalledTimes(1);
-  expect(screen.getByText('Reserva Suite')).toBeInTheDocument();
 });

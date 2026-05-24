@@ -1,13 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const token = localStorage.getItem('user_token');
 
 const DeparturesToday = ({ date }) => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLoading(true);
         const token = localStorage.getItem('user_token');
         

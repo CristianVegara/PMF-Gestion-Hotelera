@@ -16,7 +16,6 @@ import InvoiceForm from './pages/InvoiceForm';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Rooms from './pages/Rooms';
-import RoomForm from './pages/RoomsForm';
 import Activities from './pages/Activities';
 import Activity from './pages/Activity';
 import Shifts from './pages/Shifts';
@@ -110,12 +109,6 @@ function App() {
 
           <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
             <Route path="/rooms" element={<Rooms />} />
-          </Route>
-          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
-            <Route path="/rooms/form" element={<RoomForm />} />
-          </Route>
-          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
-            <Route path="/rooms/edit/:id" element={<RoomForm />} />
           </Route>
           <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
             <Route path="/rooms/:id" element={<RoomDetails />} />
