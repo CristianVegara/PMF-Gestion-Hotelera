@@ -150,7 +150,6 @@ class BookingControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(booking)))
                 .andExpect(status().isCreated());
-                .andExpect(status().isCreated());
     }
 
     @Test

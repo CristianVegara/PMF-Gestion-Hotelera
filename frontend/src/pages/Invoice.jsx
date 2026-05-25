@@ -117,7 +117,6 @@ const Invoice = () => {
   };
   
   const fetchClientExpenses = () => {
-    if (!expenseClientId || !expenseFrom || !expenseTo) {
     if (!expenseClientDni || !expenseFrom || !expenseTo) {
       setExpenseError("Debes indicar el DNI del cliente y el rango de fechas.");
       setExpenseResult(null);
