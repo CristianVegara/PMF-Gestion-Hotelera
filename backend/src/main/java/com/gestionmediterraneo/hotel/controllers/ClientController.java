@@ -36,23 +36,29 @@ public class ClientController {
     private IClientService clientService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
-    public List<Client> getClients(
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<?> getClients(
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String direction) {
+        List<Client> clients = null;
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            return clientService.findAllSorted(sortBy, direction);
-        } catch(Exception e) {
+            clients = clientService.findAllSorted(sortBy, direction);
+        } catch (Exception e) {
             System.err.println("-- ERROR EN CLIENTES --");
             e.printStackTrace();
-            throw e;
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
     }
     
     
-    
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Client client = null;
         Map<String, Object> response = new HashMap<>();
@@ -74,7 +80,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}/history")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> history(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         Client client = clientService.findById(id);
@@ -94,7 +100,7 @@ public class ClientController {
     }    
     
     @PostMapping
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> create(@Valid @RequestBody Client client, BindingResult result) {
         Client clientNew = null;
         Map<String, Object> response = new HashMap<>();
@@ -129,7 +135,7 @@ public class ClientController {
     
     
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> update(@Valid @RequestBody Client client, BindingResult result, @PathVariable Long id) {
 
         Map<String, Object> response = new HashMap<>();
@@ -179,7 +185,7 @@ public class ClientController {
     
     
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         Client clientEliminar = clientService.findById(id);

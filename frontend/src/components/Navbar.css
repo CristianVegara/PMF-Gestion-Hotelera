@@ -3,31 +3,28 @@ body {
     padding: 0;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: #f8f9fa;
+    height: 100vh;
 }
 
 #root {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     width: 100%;
+    overflow: hidden;
 }
 
-/* SIDEBAR PRINCIPAL */
 .sidebar {
     width: 220px;
+    flex-shrink: 0;
     background-color: #1e3a8a;
     color: white;
     display: flex;
     flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
     padding: 20px 0;
     box-shadow: 2px 0 10px rgba(0,0,0,0.1);
     z-index: 1000;
 }
 
-/* BRAND */
 .sidebar .brand {
     font-size: 1.35rem;
     font-weight: bold;
@@ -36,12 +33,12 @@ body {
     line-height: 1.2;
 }
 
-/* MENU */
 .sidebar ul {
     list-style: none;
     padding: 0;
     margin: 0;
     flex-grow: 1;
+    overflow-y: auto;
 }
 
 .sidebar li {
@@ -62,7 +59,6 @@ body {
     background-color: #3b5ba1;
 }
 
-/* 👤 USUARIO LOGUEADO */
 .user-info {
     color: #ffffff;
     font-weight: 600;
@@ -70,7 +66,6 @@ body {
     margin-bottom: 10px;
 }
 
-/* 🔴 BOTÓN LOGOUT */
 .btn-logout {
     background-color: #c0392b;
     color: white;
@@ -89,28 +84,22 @@ body {
     background-color: #a93226;
 }
 
-/* CONTENIDO PRINCIPAL */
 .main-content {
-    margin-left: 220px; 
-    padding: 24px;
     flex-grow: 1;
+    padding: 24px;
     overflow-y: auto;
-    min-width: 0;
-    width: calc(100% - 220px);
+    width: 100%;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
     #root {
-        display: block;
+        flex-direction: column;
+        overflow-y: auto;
     }
 
     .sidebar {
-        position: sticky;
-        top: 0;
         width: 100%;
         height: auto;
-        max-height: none;
         padding: 12px;
         box-shadow: 0 4px 14px rgba(0,0,0,0.12);
     }
@@ -126,7 +115,8 @@ body {
         gap: 8px;
         overflow-x: auto;
         padding-bottom: 4px;
-        scrollbar-width: thin;
+        flex-grow: 0;
+        overflow-y: visible;
     }
 
     .sidebar li {
@@ -165,18 +155,6 @@ body {
     }
 
     .main-content {
-        margin-left: 0;
         padding: 14px;
-        width: 100%;
-    }
-}
-
-@media (max-width: 420px) {
-    .sidebar {
-        padding: 10px;
-    }
-
-    .main-content {
-        padding: 10px;
     }
 }

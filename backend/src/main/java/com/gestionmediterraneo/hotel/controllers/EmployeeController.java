@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.gestionmediterraneo.hotel.entities.Employee;
-import com.gestionmediterraneo.hotel.entities.User;
 import com.gestionmediterraneo.hotel.services.IEmployeeService;
 
 @CrossOrigin(origins = {"http://localhost:3000"}) 
@@ -23,7 +22,7 @@ public class EmployeeController {
     private IEmployeeService employeeService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public List<Employee> getEmployees() {
         try {
             return employeeService.findAll();
@@ -33,9 +32,22 @@ public class EmployeeController {
         }
     }
     
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER')")
+    public Employee getEmployee( @PathVariable Long id) {
+    	try {
+            return employeeService.findById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
     @GetMapping("/no-user")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getEmployeesWithoutUser() {
+    	
+    	
 
         Map<String, Object> response = new HashMap<>();
 
@@ -54,7 +66,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeService.save(employee);
     }

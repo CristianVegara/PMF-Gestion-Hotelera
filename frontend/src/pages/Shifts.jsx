@@ -235,6 +235,7 @@ const Shifts = ({ token }) => {
               </div>
               {shift.observaciones && <small>{shift.observaciones}</small>}
             </div>
+            
             <button className="btn-delete" onClick={(e) => deleteShift(shift.id, e)}>Eliminar</button>
           </div>
           ))

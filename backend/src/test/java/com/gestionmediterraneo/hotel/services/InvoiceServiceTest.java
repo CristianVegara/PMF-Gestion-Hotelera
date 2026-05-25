@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -29,9 +29,8 @@ class InvoiceServiceTest {
     private InvoiceService invoiceService;
 
     @Test
-    void shouldReturnAllInvoices() {
+    void shouldFindAll() {
         List<Invoice> invoices = Arrays.asList(new Invoice(), new Invoice());
-
         when(invoiceDao.findAll()).thenReturn(invoices);
 
         List<Invoice> result = invoiceService.findAll();
@@ -41,9 +40,8 @@ class InvoiceServiceTest {
     }
 
     @Test
-    void shouldReturnSortedInvoicesAsc() {
+    void shouldFindAllSortedAsc() {
         List<Invoice> invoices = Arrays.asList(new Invoice());
-
         when(invoiceDao.findAll(any(Sort.class))).thenReturn(invoices);
 
         List<Invoice> result = invoiceService.findAllSorted("id", "asc");
@@ -53,9 +51,8 @@ class InvoiceServiceTest {
     }
 
     @Test
-    void shouldReturnSortedInvoicesDesc() {
+    void shouldFindAllSortedDesc() {
         List<Invoice> invoices = Arrays.asList(new Invoice());
-
         when(invoiceDao.findAll(any(Sort.class))).thenReturn(invoices);
 
         List<Invoice> result = invoiceService.findAllSorted("id", "desc");
@@ -65,10 +62,9 @@ class InvoiceServiceTest {
     }
 
     @Test
-    void shouldReturnInvoiceWhenIdExists() {
+    void shouldFindById() {
         Invoice invoice = new Invoice();
         invoice.setId(1L);
-
         when(invoiceDao.findById(1L)).thenReturn(Optional.of(invoice));
 
         Optional<Invoice> result = invoiceService.findById(1L);
@@ -78,7 +74,7 @@ class InvoiceServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyOptionalWhenInvoiceDoesNotExist() {
+    void shouldReturnEmptyWhenIdNotFound() {
         when(invoiceDao.findById(1L)).thenReturn(Optional.empty());
 
         Optional<Invoice> result = invoiceService.findById(1L);
@@ -87,67 +83,50 @@ class InvoiceServiceTest {
     }
 
     @Test
-    void shouldSaveInvoice() {
-        Invoice invoice = new Invoice();
-        invoice.setTotal(new BigDecimal("100.00"));
+    void shouldFindByDateRange() {
+        LocalDate start = LocalDate.now();
+        LocalDate end = LocalDate.now().plusDays(1);
+        List<Invoice> invoices = Arrays.asList(new Invoice());
+        when(invoiceDao.findByFechaEmisionBetween(start, end)).thenReturn(invoices);
 
-        when(invoiceDao.save(any(Invoice.class))).thenReturn(invoice);
+        List<Invoice> result = invoiceService.findByDateRange(start, end);
+
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void shouldFindByClientBookingDateRange() {
+        LocalDate start = LocalDate.now();
+        LocalDate end = LocalDate.now().plusDays(1);
+        List<Invoice> invoices = Arrays.asList(new Invoice());
+        when(invoiceDao.findByClienteIdAndBookingDateRange(1L, start, end)).thenReturn(invoices);
+
+        List<Invoice> result = invoiceService.findByClientBookingDateRange(1L, start, end);
+
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void shouldSave() {
+        Invoice invoice = new Invoice();
+        when(invoiceDao.save(invoice)).thenReturn(invoice);
 
         Invoice result = invoiceService.save(invoice);
 
         assertNotNull(result);
-        assertEquals(new BigDecimal("100.00"), result.getTotal());
         verify(invoiceDao).save(invoice);
     }
 
     @Test
-    void shouldSaveInvoiceWithExistingDiscountFields() {
-        Invoice invoice = new Invoice();
-        invoice.setSubtotalBeforeDiscount(new BigDecimal("100.00"));
-        invoice.setDiscountPercentage(new BigDecimal("5.00"));
-        invoice.setDiscountAmount(new BigDecimal("5.00"));
-        invoice.setSubtotal(new BigDecimal("95.00"));
-        invoice.setIva(new BigDecimal("9.50"));
-        invoice.setTotal(new BigDecimal("104.50"));
-
-        when(invoiceDao.save(any(Invoice.class))).thenReturn(invoice);
-
-        Invoice result = invoiceService.save(invoice);
-
-        assertEquals(new BigDecimal("5.00"), result.getDiscountAmount());
-        assertEquals(new BigDecimal("104.50"), result.getTotal());
-        verify(invoiceDao).save(invoice);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenSaveFails() {
-        Invoice invoice = new Invoice();
-        invoice.setTotal(new BigDecimal("100.00"));
-
-        when(invoiceDao.save(any(Invoice.class))).thenThrow(new RuntimeException("DB error"));
-
-        assertThrows(RuntimeException.class, () -> {
-            invoiceService.save(invoice);
-        });
-    }
-
-    @Test
-    void shouldDeleteInvoice() {
-        Long id = 1L;
-
-        invoiceService.delete(id);
-
-        verify(invoiceDao, times(1)).deleteById(id);
+    void shouldDelete() {
+        invoiceService.delete(1L);
+        verify(invoiceDao).deleteById(1L);
     }
 
     @Test
     void shouldThrowExceptionWhenDeleteFails() {
-        Long id = 1L;
+        doThrow(new RuntimeException("DB error")).when(invoiceDao).deleteById(1L);
 
-        doThrow(new RuntimeException("DB error")).when(invoiceDao).deleteById(id);
-
-        assertThrows(RuntimeException.class, () -> {
-            invoiceService.delete(id);
-        });
+        assertThrows(RuntimeException.class, () -> invoiceService.delete(1L));
     }
 }

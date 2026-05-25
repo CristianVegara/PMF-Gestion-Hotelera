@@ -27,7 +27,7 @@ public class PaymentController {
     private IInvoiceDAO invoiceDao;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> createPayment(@RequestBody Payment payment) {
         Map<String, Object> response = new HashMap<>();
         try {

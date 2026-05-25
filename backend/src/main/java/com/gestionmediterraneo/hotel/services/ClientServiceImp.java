@@ -53,6 +53,12 @@ public class ClientServiceImp implements IClientService {
 		clientDao.delete(client);
 		return client;
 	}
+
+	@Override
+	public List<Client> findAllByIds(List<Long> clientIds) {
+		clientDao.findAllById(clientIds);
+		return null;
+	}
 	
 	
 

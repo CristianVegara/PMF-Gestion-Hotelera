@@ -42,7 +42,7 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Room room = null;
         Map<String, Object> response = new HashMap<>();
@@ -64,7 +64,7 @@ public class RoomController {
     }
 
     @GetMapping("/{id}/details")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> obtenerDetallesCompletos(@PathVariable Long id) {
         Room room = null;
         List<Booking> bookings = null;
@@ -92,7 +92,7 @@ public class RoomController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> create(@Valid @RequestBody Room room, BindingResult result) {
         Room roomNew = null;
         Map<String, Object> response = new HashMap<>();
@@ -114,13 +114,13 @@ public class RoomController {
     }
     
     @GetMapping("/dynamic")
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public List<Room> getAllDynamic() {
         return roomService.getAllRoomsWithDynamicPrice(LocalDate.now());
     }
 
     @GetMapping("/dynamic/{id}")
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> showDynamic(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
 
@@ -138,7 +138,7 @@ public class RoomController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/dynamic/chart/type/{type}")
     public ResponseEntity<?> getPriceChartByType(@PathVariable RoomType type) {
         Map<String, Object> response = new HashMap<>();
@@ -171,7 +171,7 @@ public class RoomController {
     }
     
     @GetMapping("/free/{type}")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getFreeRoom(@PathVariable RoomType type){
     	Map<String, Object> response = new HashMap<>();
 
@@ -193,7 +193,7 @@ public class RoomController {
     }
     
     @GetMapping("/dynamic/chart/all-types")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getCombinedPriceChart() {
         Map<String, Object> response = new LinkedHashMap<>();
         try {
@@ -228,7 +228,7 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> update(@Valid @RequestBody Room room, BindingResult result, @PathVariable Long id) {
         Room currentRoom = roomService.findById(id);
         Room roomUpdated = null;
@@ -261,7 +261,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         Room roomEliminar = roomService.findById(id);

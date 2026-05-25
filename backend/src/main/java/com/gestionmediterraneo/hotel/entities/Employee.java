@@ -16,7 +16,7 @@ public class Employee {
     private String cargo;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 

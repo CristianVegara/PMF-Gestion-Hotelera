@@ -23,7 +23,7 @@ public class RevenueController {
     private RevenueReportService revenueReportService;
 
     @GetMapping("/revenue")
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> getRevenue(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,

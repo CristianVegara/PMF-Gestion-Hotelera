@@ -22,7 +22,7 @@ public class RefundController {
     private IRefundDAO refundDao;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> createRefund(@RequestBody Refund refund) {
         Map<String, Object> response = new HashMap<>();
         try {

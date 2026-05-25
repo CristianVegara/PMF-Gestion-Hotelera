@@ -28,7 +28,7 @@ public class ChargeController {
     private IBookingDAO bookingDao;
 
     @GetMapping("/booking/{bookingId}")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getChargesByBooking(@PathVariable Long bookingId) {
         try {
             List<Charge> charges = chargeDao.findByBookingId(bookingId);
@@ -42,7 +42,7 @@ public class ChargeController {
     }
 
     @PostMapping("/booking/{bookingId}")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> createCharge(@PathVariable Long bookingId, @RequestBody Charge charge) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -62,7 +62,7 @@ public class ChargeController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> updateCharge(@PathVariable Long id, @RequestBody Charge chargeData) {
         Map<String, Object> response = new HashMap<>();
         return chargeDao.findById(id)
@@ -82,7 +82,7 @@ public class ChargeController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
     public ResponseEntity<?> deleteCharge(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {

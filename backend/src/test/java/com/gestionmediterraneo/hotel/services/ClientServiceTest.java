@@ -163,11 +163,11 @@ class ClientServiceTest {
     }
 
     @Test
-    void shouldCallFindAllWithSort() {
-        when(clientDao.findAll(any(Sort.class))).thenReturn(List.of());
+    void shouldThrowExceptionWhenFindAllSortedFails() {
+        when(clientDao.findAll(any(Sort.class))).thenThrow(new RuntimeException("DB error"));
 
-        clientService.findAllSorted("nombre", "desc");
-
-        verify(clientDao).findAll(any(Sort.class));
+        assertThrows(RuntimeException.class, () -> {
+            clientService.findAllSorted("id", "asc");
+        });
     }
 }

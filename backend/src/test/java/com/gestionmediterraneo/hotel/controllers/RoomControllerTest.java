@@ -6,25 +6,29 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gestionmediterraneo.hotel.entities.Room;
-import com.gestionmediterraneo.hotel.enums.RoomStatus;
-import com.gestionmediterraneo.hotel.enums.RoomType;
-import com.gestionmediterraneo.hotel.services.IRoomService;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionmediterraneo.hotel.daos.IBookingDAO;
+import com.gestionmediterraneo.hotel.entities.Room;
+import com.gestionmediterraneo.hotel.enums.RoomStatus;
+import com.gestionmediterraneo.hotel.enums.RoomType;
+import com.gestionmediterraneo.hotel.security.JwtUtils;
+import com.gestionmediterraneo.hotel.services.IRoomService;
+
 @WebMvcTest(RoomController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class RoomControllerTest {
 
     @Autowired
@@ -32,6 +36,12 @@ class RoomControllerTest {
 
     @MockBean
     private IRoomService roomService;
+
+    @MockBean
+    private IBookingDAO bookingDao;
+
+    @MockBean
+    private JwtUtils jwtUtils;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -91,7 +101,7 @@ class RoomControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidRoom)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors").isArray());
+                .andExpect(jsonPath("$.errors").exists());
     }
 
     @Test

@@ -154,4 +154,37 @@ class ActivityServiceTest {
         assertEquals(1, result.size());
         verify(activityDao).findByFechaComienzoBetween(start, end);
     }
+    
+    @Test
+    void shouldThrowExceptionWhenFindAllSortedFails() {
+        when(activityDao.findAll(any(Sort.class))).thenThrow(new RuntimeException("DB error"));
+
+        assertThrows(RuntimeException.class, () -> {
+            activityService.findAllSorted("id", "asc");
+        });
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindByDateBetweenFails() {
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime end = LocalDateTime.now().plusDays(1);
+
+        when(activityDao.findByFechaComienzoBetween(start, end)).thenThrow(new RuntimeException("DB error"));
+
+        assertThrows(RuntimeException.class, () -> {
+            activityService.findByFechaComienzoBetween(start, end);
+        });
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoActivitiesFoundBetweenDates() {
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime end = LocalDateTime.now().plusDays(1);
+
+        when(activityDao.findByFechaComienzoBetween(start, end)).thenReturn(List.of());
+
+        List<Activity> result = activityService.findByFechaComienzoBetween(start, end);
+
+        assertTrue(result.isEmpty());
+    }
 }

@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gestionmediterraneo.hotel.entities.Employee;
 import com.gestionmediterraneo.hotel.entities.User;
 import com.gestionmediterraneo.hotel.services.IUserService;
+import com.gestionmediterraneo.hotel.services.IEmployeeService;
+
 
 import jakarta.validation.Valid;
 
@@ -35,13 +38,16 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+    
+    @Autowired
+    private IEmployeeService employeeService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
-    public ResponseEntity<?> getAllEmployees() {
+    public ResponseEntity<?> getAllUsers() {
         Map<String, Object> response = new HashMap<>();
         try {
             List<User> users = userService.findAll();
@@ -55,7 +61,7 @@ public class UserController {
 
     @GetMapping("/{user}")
     @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
-    public ResponseEntity<?> getEmployeeByUsername(@PathVariable String user) {
+    public ResponseEntity<?> getUserByUsername(@PathVariable String user) {
         User usuario = null;
         Map<String, Object> response = new HashMap<>();
         try {
@@ -76,7 +82,7 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
-    public ResponseEntity<?> createEmployee(@Valid @RequestBody User user, BindingResult result) {        
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result) {        
         user.setCreatedAt(LocalDate.now());
         User newUser = null;
         Map<String, Object> response = new HashMap<>();
@@ -93,6 +99,15 @@ public class UserController {
         try {
             user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
             newUser = userService.save(user);
+
+            if (user.getEmployee() != null && user.getEmployee().getId() != null) {
+                Employee emp = employeeService.findById(user.getEmployee().getId());
+                if (emp != null) {
+                    emp.setUser(newUser);
+                    employeeService.save(emp);
+                }
+            }
+
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al insertar el usuario en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -106,7 +121,7 @@ public class UserController {
 
     @PutMapping("/{user}")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
-    public ResponseEntity<?> updateEmployee(@Valid @RequestBody User user, BindingResult result, @PathVariable("user") String userName) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody User user, BindingResult result, @PathVariable("user") String userName) {
     	User currentUser = userService.findByUsername(userName);
         User updatedUser = null;
         Map<String, Object> response = new HashMap<>();
@@ -149,7 +164,7 @@ public class UserController {
 
     @DeleteMapping("/{user}")
     @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
-    public ResponseEntity<?> deleteEmployee(@PathVariable String user) {
+    public ResponseEntity<?> deleteUser(@PathVariable String user) {
         Map<String, Object> response = new HashMap<>();
         try {
             User usuario = userService.findByUsername(user);

@@ -1,10 +1,9 @@
 package com.gestionmediterraneo.hotel.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 
@@ -102,6 +101,58 @@ class LoyaltyServiceTest {
         assertEquals(0, tier.getDiscountPercentage());
         assertEquals(0, tier.getRecentBookings());
         assertEquals(0, tier.getTotalBookings());
+    }
+
+    @Test
+    void shouldReturnDiamondForTotalBookingsEighteen() {
+        Client client = clientWithId(5L);
+        when(bookingDao.countByCliente_IdAndFechaEntradaBetween(eq(5L), any(LocalDate.class), any(LocalDate.class)))
+                .thenReturn(0L, 0L, 0L);
+        when(bookingDao.countByCliente_Id(5L)).thenReturn(18L);
+
+        LoyaltyTier tier = loyaltyService.calculateTier(client);
+
+        assertEquals("Diamante", tier.getRank());
+        assertEquals(20, tier.getDiscountPercentage());
+        assertEquals(18, tier.getTotalBookings());
+    }
+
+    @Test
+    void shouldReturnGoldForTotalBookingsTen() {
+        Client client = clientWithId(6L);
+        when(bookingDao.countByCliente_IdAndFechaEntradaBetween(eq(6L), any(LocalDate.class), any(LocalDate.class)))
+                .thenReturn(0L, 0L, 0L);
+        when(bookingDao.countByCliente_Id(6L)).thenReturn(10L);
+
+        LoyaltyTier tier = loyaltyService.calculateTier(client);
+
+        assertEquals("Gold", tier.getRank());
+        assertEquals(15, tier.getDiscountPercentage());
+        assertEquals(10, tier.getTotalBookings());
+    }
+
+    @Test
+    void shouldReturnSilverForTotalBookingsSix() {
+        Client client = clientWithId(7L);
+        when(bookingDao.countByCliente_IdAndFechaEntradaBetween(eq(7L), any(LocalDate.class), any(LocalDate.class)))
+                .thenReturn(0L, 0L, 0L);
+        when(bookingDao.countByCliente_Id(7L)).thenReturn(6L);
+
+        LoyaltyTier tier = loyaltyService.calculateTier(client);
+
+        assertEquals("Silver", tier.getRank());
+        assertEquals(10, tier.getDiscountPercentage());
+        assertEquals(6, tier.getTotalBookings());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDatabaseFails() {
+        Client client = clientWithId(8L);
+        when(bookingDao.countByCliente_Id(8L)).thenThrow(new RuntimeException("DB error"));
+
+        assertThrows(RuntimeException.class, () -> {
+            loyaltyService.calculateTier(client);
+        });
     }
 
     private Client clientWithId(Long id) {

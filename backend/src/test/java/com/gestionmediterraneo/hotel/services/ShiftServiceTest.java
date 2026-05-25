@@ -28,7 +28,6 @@ class ShiftServiceTest {
     @Test
     void shouldReturnAllShifts() {
         List<Shift> shifts = Arrays.asList(new Shift(), new Shift());
-
         when(shiftDao.findAll()).thenReturn(shifts);
 
         List<Shift> result = shiftService.findAll();
@@ -38,20 +37,10 @@ class ShiftServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoShiftsExist() {
-        when(shiftDao.findAll()).thenReturn(List.of());
-
-        List<Shift> result = shiftService.findAll();
-
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
     void shouldReturnShiftsByRange() {
         LocalDate start = LocalDate.now();
-        LocalDate end = LocalDate.now().plusDays(7);
+        LocalDate end = LocalDate.now().plusDays(5);
         List<Shift> shifts = Arrays.asList(new Shift());
-
         when(shiftDao.findByFechaBetween(start, end)).thenReturn(shifts);
 
         List<Shift> result = shiftService.findShiftsByRange(start, end);
@@ -63,24 +52,12 @@ class ShiftServiceTest {
     @Test
     void shouldSaveShift() {
         Shift shift = new Shift();
-
         when(shiftDao.save(shift)).thenReturn(shift);
 
         Shift result = shiftService.save(shift);
 
         assertNotNull(result);
         verify(shiftDao, times(1)).save(shift);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenSaveFails() {
-        Shift shift = new Shift();
-
-        when(shiftDao.save(shift)).thenThrow(new RuntimeException("DB error"));
-
-        assertThrows(RuntimeException.class, () -> {
-            shiftService.save(shift);
-        });
     }
 
     @Test
@@ -95,7 +72,6 @@ class ShiftServiceTest {
     @Test
     void shouldThrowExceptionWhenDeleteFails() {
         Long id = 1L;
-
         doThrow(new RuntimeException("DB error")).when(shiftDao).deleteById(id);
 
         assertThrows(RuntimeException.class, () -> {

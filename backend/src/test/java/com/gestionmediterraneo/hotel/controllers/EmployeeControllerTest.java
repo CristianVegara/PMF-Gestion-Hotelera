@@ -1,6 +1,7 @@
 package com.gestionmediterraneo.hotel.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,16 +12,20 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionmediterraneo.hotel.entities.Employee;
+import com.gestionmediterraneo.hotel.security.JwtUtils;
 import com.gestionmediterraneo.hotel.services.IEmployeeService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(EmployeeController.class)
+@WebMvcTest(controllers = EmployeeController.class, properties = "spring.main.allow-bean-definition-overriding=true")
+@AutoConfigureMockMvc(addFilters = false)
 class EmployeeControllerTest {
 
     @Autowired
@@ -29,16 +34,42 @@ class EmployeeControllerTest {
     @MockBean
     private IEmployeeService employeeService;
 
+    @MockBean
+    private JwtUtils jwtUtils;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
     void shouldReturnEmployees() throws Exception {
-        when(employeeService.findAll())
-                .thenReturn(Arrays.asList(new Employee(), new Employee()));
+        when(employeeService.findAll()).thenReturn(Arrays.asList(new Employee(), new Employee()));
 
         mockMvc.perform(get("/api/employees"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenGetEmployeesFails() throws Exception {
+        when(employeeService.findAll()).thenThrow(new RuntimeException("Database error"));
+
+        mockMvc.perform(get("/api/employees"))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void shouldReturnEmployeesWithoutUser() throws Exception {
+        when(employeeService.findAllByUserIsNull()).thenReturn(Arrays.asList(new Employee(), new Employee()));
+
+        mockMvc.perform(get("/api/employees/no-user"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturnInternalServerErrorWhenGetEmployeesWithoutUserThrowsDataAccessException() throws Exception {
+        when(employeeService.findAllByUserIsNull()).thenThrow(new TransientDataAccessResourceException("Error", new RuntimeException("Cause")));
+
+        mockMvc.perform(get("/api/employees/no-user"))
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -78,7 +109,7 @@ class EmployeeControllerTest {
 
     @Test
     void shouldReturnOkWithNullBodyWhenUpdatingNonExistingEmployee() throws Exception {
-        when(employeeService.findById(1L)).thenReturn(null);
+        when(employeeService.findById(anyLong())).thenReturn(null);
 
         Employee details = new Employee();
         details.setNombre("Test");

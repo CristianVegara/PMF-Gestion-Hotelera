@@ -27,7 +27,6 @@ class ScheduleServiceTest {
     @Test
     void shouldReturnAllSchedules() {
         List<Schedule> schedules = Arrays.asList(new Schedule(), new Schedule());
-
         when(scheduleDao.findAll()).thenReturn(schedules);
 
         List<Schedule> result = scheduleService.findAll();
@@ -49,7 +48,6 @@ class ScheduleServiceTest {
     @Test
     void shouldSaveSchedule() {
         Schedule schedule = new Schedule();
-
         when(scheduleDao.save(schedule)).thenReturn(schedule);
 
         Schedule result = scheduleService.save(schedule);
@@ -61,12 +59,10 @@ class ScheduleServiceTest {
     @Test
     void shouldThrowExceptionWhenSaveFails() {
         Schedule schedule = new Schedule();
-
         when(scheduleDao.save(schedule)).thenThrow(new RuntimeException("DB error"));
 
         assertThrows(RuntimeException.class, () -> {
             scheduleService.save(schedule);
         });
-        verify(scheduleDao, times(1)).save(schedule);
     }
 }

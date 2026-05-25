@@ -1,7 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
+
+
+
 const Navbar = ({ user, setUser }) => {
+    let userRole = localStorage.getItem('role') || '';
+if (userRole.startsWith("ROLE_")) {
+  userRole = userRole.replace("ROLE_", "");
+}
     const navigate = useNavigate();
 
     const logout = () => {
@@ -38,6 +45,14 @@ const Navbar = ({ user, setUser }) => {
                 <li><Link to="/bookings">Reservas</Link></li>
                 <li><Link to="/activities">Actividades</Link></li>
                 <li><Link to="/shifts">Turnos</Link></li>
+                <li><Link to="/rooms/price/all">Historial de precios</Link></li>
+                {(userRole == 'ADMIN' || userRole == 'SUPERVISOR') && (
+                    <li><Link to="/user/form">Crear usuario</Link></li>
+                )}
+                {(userRole == 'ADMIN') && (
+                    <li><Link to="/employee/form">Crear empleado</Link></li>                    
+                )}
+
             </ul>
 
             <div className="sidebar-footer">

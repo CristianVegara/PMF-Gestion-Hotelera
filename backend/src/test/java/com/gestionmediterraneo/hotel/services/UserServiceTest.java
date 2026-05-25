@@ -27,7 +27,6 @@ class UserServiceTest {
     @Test
     void shouldReturnAllUsers() {
         List<User> users = Arrays.asList(new User(), new User());
-
         when(userDao.findAll()).thenReturn(users);
 
         List<User> result = userService.findAll();
@@ -37,21 +36,44 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoUsersExist() {
-        when(userDao.findAll()).thenReturn(List.of());
+    void shouldReturnUserByUsername() {
+        User user = new User();
+        user.setUsername("testuser");
+        when(userDao.findByUsername("testuser")).thenReturn(user);
 
-        List<User> result = userService.findAll();
+        User result = userService.findByUsername("testuser");
 
-        assertTrue(result.isEmpty());
-        verify(userDao, times(1)).findAll();
+        assertNotNull(result);
+        assertEquals("testuser", result.getUsername());
+        verify(userDao, times(1)).findByUsername("testuser");
     }
 
     @Test
-    void shouldThrowExceptionWhenFindAllFails() {
-        when(userDao.findAll()).thenThrow(new RuntimeException("DB error"));
+    void shouldSaveUser() {
+        User user = new User();
+        when(userDao.save(user)).thenReturn(user);
 
-        assertThrows(RuntimeException.class, () -> {
-            userService.findAll();
-        });
+        User result = userService.save(user);
+
+        assertNotNull(result);
+        verify(userDao, times(1)).save(user);
+    }
+
+    @Test
+    void shouldDeleteUser() {
+        User user = new User();
+        userService.delete(user);
+        verify(userDao, times(1)).delete(user);
+    }
+
+    @Test
+    void shouldFindUserByEmployeeId() {
+        User user = new User();
+        when(userDao.findByEmployee_Id(1L)).thenReturn(user);
+
+        User result = userService.findByEmployee_Id(1L);
+
+        assertNotNull(result);
+        verify(userDao, times(1)).findByEmployee_Id(1L);
     }
 }

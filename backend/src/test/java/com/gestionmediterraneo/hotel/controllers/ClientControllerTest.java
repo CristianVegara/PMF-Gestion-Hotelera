@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -12,15 +13,18 @@ import java.util.Arrays;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionmediterraneo.hotel.entities.Client;
 import com.gestionmediterraneo.hotel.services.IClientService;
+import com.gestionmediterraneo.hotel.security.JwtUtils;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(ClientController.class)
+@WebMvcTest(controllers = ClientController.class, properties = "spring.main.allow-bean-definition-overriding=true")
+@AutoConfigureMockMvc(addFilters = false)
 class ClientControllerTest {
 
     @Autowired
@@ -28,6 +32,9 @@ class ClientControllerTest {
 
     @MockBean
     private IClientService clientService;
+
+    @MockBean
+    private JwtUtils jwtUtils;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -43,7 +50,7 @@ class ClientControllerTest {
 
     @Test
     void shouldReturnClientByIdWhenExists() throws Exception {
-    	Long id = 1L;
+        Long id = 1L;
         Client client = new Client();
         client.setId(id);       
 
@@ -60,8 +67,6 @@ class ClientControllerTest {
         mockMvc.perform(get("/api/clients/1"))
                 .andExpect(status().isNotFound());
     }
-    
-    
 
     @Test
     void shouldCreateClient() throws Exception {
@@ -80,7 +85,7 @@ class ClientControllerTest {
     }
     
     @Test
-    void shouldReturnBadRequestWhenRequiredBadRequest() throws Exception {
+    void shouldReturnBadRequestWhenRequiredFieldsAreMissing() throws Exception {
         Client client = new Client();
         client.setNombre("");
         client.setDni("");
@@ -126,8 +131,7 @@ class ClientControllerTest {
         when(clientService.findById(1L)).thenReturn(existingClient);
         when(clientService.save(any(Client.class))).thenReturn(updatedClient);
 
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .put("/api/clients/1")
+        mockMvc.perform(put("/api/clients/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedClient)))
                 .andExpect(status().isOk());
@@ -143,8 +147,7 @@ class ClientControllerTest {
 
         when(clientService.findById(1L)).thenReturn(null);
 
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .put("/api/clients/1")
+        mockMvc.perform(put("/api/clients/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedClient)))
                 .andExpect(status().isNotFound());
@@ -158,10 +161,17 @@ class ClientControllerTest {
         invalidClient.setTelefono(""); 
         invalidClient.setCorreo("invalid-email"); 
 
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .put("/api/clients/1")
+        mockMvc.perform(put("/api/clients/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidClient)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnInternalServerErrorWhenGetClientsFails() throws Exception {
+        when(clientService.findAllSorted("id", "asc")).thenThrow(new RuntimeException("Database connection failed"));
+
+        mockMvc.perform(get("/api/clients"))
+                .andExpect(status().isInternalServerError());
     }
 }

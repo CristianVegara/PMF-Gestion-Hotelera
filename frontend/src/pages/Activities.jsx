@@ -4,22 +4,22 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Activities.css';
 
-
-let userRole = localStorage.getItem('role') || '';
-if (userRole.startsWith("ROLE_")) {
-    userRole = userRole.replace("ROLE_", "");
-}
-
 const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const navigate = useNavigate(); 
+
+  let userRole = localStorage.getItem('role') || '';
+  if (userRole.startsWith("ROLE_")) {
+      userRole = userRole.replace("ROLE_", "");
+  }
   
   const [newActivity, setNewActivity] = useState({
     descripcion: '',
     precio: '',
     fechaComienzo: '',
-    fechaFin: ''
+    fechaFin: '',
+    maxParticipantes: ''
   });
   
   useEffect(() => {
@@ -55,7 +55,8 @@ const Activities = () => {
       descripcion: newActivity.descripcion,
       precio: parseFloat(newActivity.precio),
       fechaComienzo: formatForBackend(newActivity.fechaComienzo),
-      fechaFin: formatForBackend(newActivity.fechaFin)
+      fechaFin: formatForBackend(newActivity.fechaFin),
+      maxParticipantes: parseInt(newActivity.maxParticipantes, 10)
     };
     
     try {
@@ -70,7 +71,7 @@ const Activities = () => {
         body: JSON.stringify(payload)
       });
       if (response.ok) {
-        setNewActivity({ descripcion: '', precio: '', fechaComienzo: '', fechaFin: '' });
+        setNewActivity({ descripcion: '', precio: '', fechaComienzo: '', fechaFin: '', maxParticipantes: '' });
         fetchActivities();
       }
     } catch (error) {
@@ -155,6 +156,17 @@ const Activities = () => {
           />
         </div>
         <div className="input-group">
+          <label>Nº de Plazas</label>
+          <input
+          type="number"
+          placeholder="Ej: 20"
+          value={newActivity.maxParticipantes}
+          onChange={(e) => setNewActivity({ ...newActivity, maxParticipantes: e.target.value })}
+          required
+          min="1"
+          />
+        </div>
+        <div className="input-group">
           <label>Inicio</label>
           <input
           type="datetime-local"
@@ -211,6 +223,7 @@ const Activities = () => {
             <div className="activity-meta">
               <span>{formatTime(act.fechaComienzo)} - {formatTime(act.fechaFin)}</span>
               <span className="price-tag">{act.precio}€</span>
+              <span className="places-tag">{act.maxParticipantes} plazas</span>
             </div>
           </div>
           {userRole !== 'USER' && (

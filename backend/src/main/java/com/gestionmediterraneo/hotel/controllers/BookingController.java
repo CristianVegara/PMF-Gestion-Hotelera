@@ -33,13 +33,25 @@ public class BookingController {
 
     
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
-    public List<Booking> getAllBookings() {
-        return bookingDao.findAll();
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<?> getAllBookings() {
+        List<Booking> bookings = null;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            bookings = bookingDao.findAll();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<List<Booking>>(bookings, HttpStatus.OK);
     }
     
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getById(@PathVariable("id") Long id){    	
     	try {
         	Booking booking = bookingDao.findById(id).orElse(null);
@@ -64,7 +76,7 @@ public class BookingController {
     
     
     @GetMapping("/in-house/")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getInHouseBookings() {
         try {
             List<Booking> bookings = bookingDao.findByCheckInStatus(CheckInStatus.DENTRO);
@@ -87,7 +99,7 @@ public class BookingController {
 
     
     @GetMapping("/date")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getBookingsByDate(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         try {
@@ -113,7 +125,7 @@ public class BookingController {
     }
 
     @PostMapping(consumes = "application/json")
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
         try {
             booking.setEstado(BookingStatus.CONFIRMADA);
@@ -134,7 +146,7 @@ public class BookingController {
     }
     
     @GetMapping("/room/{roomId}")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public List<Booking> getBookingsByRoom(@PathVariable Long roomId) {
         return bookingDao.buscarPorHabitacion(roomId);
     }
@@ -184,7 +196,7 @@ public class BookingController {
     }
     
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
     public void delete(@PathVariable Long id) {
     	bookingDao.deleteById(id);
     }

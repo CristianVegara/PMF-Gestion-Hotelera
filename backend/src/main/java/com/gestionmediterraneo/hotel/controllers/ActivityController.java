@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionmediterraneo.hotel.entities.Activity;
+import com.gestionmediterraneo.hotel.entities.Client;
 import com.gestionmediterraneo.hotel.services.IActivityService;
+import com.gestionmediterraneo.hotel.services.IClientService;
 
 import jakarta.validation.Valid;
 
@@ -36,23 +38,51 @@ public class ActivityController {
 	
     @Autowired
     private IActivityService activityService;
+    
+    @Autowired
+    private IClientService clientService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
-    public List<Activity> getActivities(
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<?> getActivities(
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String direction) {
+        List<Activity> activities = null;
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            return activityService.findAllSorted(sortBy, direction);
-        } catch(Exception e) {
-            System.err.println("-- ERROR EN ACTIVITIES --");
-            e.printStackTrace();
-            throw e;
+            activities = activityService.findAllSorted(sortBy, direction);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return new ResponseEntity<List<Activity>>(activities, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{id}/clients")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
+    public ResponseEntity<?> updateActivityClients(@PathVariable Long id, @RequestBody List<Long> clientIds) {
+        Activity currentActivity = activityService.findById(id);
+        if (currentActivity == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Client> clientsToUpdate = clientService.findAllByIds(clientIds);
+        currentActivity.setClients(clientsToUpdate);
+
+        try {
+            activityService.save(currentActivity);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/filter")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getActivitiesByDate(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin) {
@@ -69,9 +99,8 @@ public class ActivityController {
         }
     }
     
-  
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Activity activity = null;
         Map<String, Object> response = new HashMap<>();
@@ -93,7 +122,7 @@ public class ActivityController {
     }
     
     @PostMapping
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> create(@Valid @RequestBody Activity activity, BindingResult result) {
         Activity activityNew = null;
         Map<String, Object> response = new HashMap<>();
@@ -122,11 +151,22 @@ public class ActivityController {
     }
     
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
-    public ResponseEntity<?> update(@RequestBody Activity activity, @PathVariable Long id) {
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
+    public ResponseEntity<?> update(@Valid @RequestBody Activity activity, BindingResult result, @PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+
+        if(result.hasErrors()) {
+            List<String> errors = result.getFieldErrors()
+					                    .stream()
+					                    .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+					                    .collect(Collectors.toList());
+
+            response.put("errors", errors);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+        }
+
         Activity currentActivity = activityService.findById(id);
         Activity activityUpdated = null;
-        Map<String, Object> response = new HashMap<>();
 
         if (currentActivity == null) {
             response.put("mensaje", "Error: no se pudo editar, la actividad ID: ".concat(id.toString().concat(" no existe en la base de datos")));
@@ -138,6 +178,8 @@ public class ActivityController {
             currentActivity.setPrecio(activity.getPrecio());
             currentActivity.setFechaComienzo(activity.getFechaComienzo());
             currentActivity.setFechaFin(activity.getFechaFin());
+            currentActivity.setMaxParticipantes(activity.getMaxParticipantes());
+            currentActivity.setClients(activity.getClients()); 
 
             activityUpdated = activityService.save(currentActivity);
         } catch (DataAccessException e) {
@@ -153,7 +195,7 @@ public class ActivityController {
     }
     
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         Activity activityEliminar = activityService.findById(id);
@@ -174,6 +216,4 @@ public class ActivityController {
         response.put("mensaje", "La actividad ha sido eliminada con éxito");
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
-    
-    
 }

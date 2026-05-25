@@ -11,6 +11,8 @@ public interface IClientService {
 	
 	public Client findById(Long id);
 	
+	public List<Client> findAllByIds(List<Long> clientIds);
+	
 	public Client findByDni(String dni);
 	
 	public Client delete(Client client);

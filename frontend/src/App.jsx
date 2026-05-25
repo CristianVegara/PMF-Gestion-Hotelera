@@ -9,6 +9,8 @@ import BookingForm from './pages/BookingForm';
 import ClientsManager from './pages/ClientsManager';
 import ClientForm from './pages/ClientForm';
 import ClientDetails from './pages/ClientDetails';
+import EmployeeForm from './pages/EmployeeForm';
+import Employees from './pages/Employees';
 import Invoice from './pages/Invoice';
 import InvoiceForm from './pages/InvoiceForm';
 import Login from './pages/Login';
@@ -21,6 +23,8 @@ import Shifts from './pages/Shifts';
 import RoomPriceType from './pages/RoomPriceType';
 import RoomPriceAll from './pages/RoomPriceAll';
 import RoomDetails from './pages/RoomDetails';
+import UserForm from './pages/UserForm'
+
 import ProtectedLayout from './components/ProtectedLayout';
 
 function App() {
@@ -79,11 +83,19 @@ function App() {
           <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
             <Route path="/clients/form" element={<ClientForm />} />
           </Route>
-          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
-            <Route path="/clients/edit/:id" element={<ClientForm />} />
-          </Route>
+          
           <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
             <Route path="/clients/:id" element={<ClientDetails />} />
+          </Route>
+
+          <Route element={<ProtectedLayout rolesPermitidos={['ADMIN']} />} >
+            <Route path="/clients/:id" element={<ClientDetails />} />
+          </Route>
+
+          <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/employees" element={<Employees />} />
+            <Route path="/employees/form" element={<EmployeeForm />} />
+            <Route path="/employees/edit/:id" element={<EmployeeForm />} />
           </Route>
 
           <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
@@ -118,6 +130,10 @@ function App() {
 
           <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
             <Route path="/shifts" element={<Shifts />} />
+          </Route>
+
+          <Route element={<ProtectedLayout rolesPermitidos={['ADMIN']} />} >
+            <Route path="/user/form" element={<UserForm />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

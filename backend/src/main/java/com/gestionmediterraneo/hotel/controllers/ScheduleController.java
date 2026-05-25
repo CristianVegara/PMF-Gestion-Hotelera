@@ -16,19 +16,19 @@ public class ScheduleController {
     private IScheduleService scheduleService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public List<Schedule> getSchedules() {
         return scheduleService.findAll();
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public Schedule createSchedule(@RequestBody Schedule schedule) {
         return scheduleService.save(schedule);
     }
     
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public Schedule updateSchedule(@PathVariable Long id, @RequestBody Schedule scheduleDetails) {
         return scheduleService.save(scheduleDetails); 
     }

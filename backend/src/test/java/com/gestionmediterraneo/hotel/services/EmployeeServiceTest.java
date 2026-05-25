@@ -112,4 +112,15 @@ class EmployeeServiceTest {
             employeeService.delete(id);
         });
     }
+
+    @Test
+    void shouldFindAllByUserIsNull() {
+        List<Employee> employees = Arrays.asList(new Employee());
+        when(employeeDao.findAllByUserIsNull()).thenReturn(employees);
+
+        List<Employee> result = employeeService.findAllByUserIsNull();
+
+        assertEquals(1, result.size());
+        verify(employeeDao, times(1)).findAllByUserIsNull();
+    }
 }
