@@ -212,7 +212,7 @@ INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('202
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 7, 3, 'Sin cambios');
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 8, 3, 'Sin cambios');
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 9, 3, 'Sin cambios');
--- Miércoles 29 (Rotación de ejemplo)
+-- Miércoles 29 
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 7, 1, 'Rotación');
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 8, 1, 'Rotación');
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 9, 1, 'Rotación');
@@ -908,5 +908,114 @@ INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, ro
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 14, 24, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 15, 25, 0, 2);
 
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1, 1, null, 0, 0);
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 2, null, 1, 0);
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 5 DAY), CURDATE(), 1, 3, 1, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 1;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), CURDATE(), 1, 4, 2, 2, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 2;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 5, 3, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 3;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), DATE_ADD(CURDATE(), INTERVAL 2 DAY), 1, 6, 4, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 4;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1, 7, 5, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 5;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 4 DAY), DATE_ADD(CURDATE(), INTERVAL 1 DAY), 1, 8, 6, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 6;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 9, 7, 2, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 7;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 10, 8, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 8;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 2 DAY), 1, 11, 9, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 9;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 2 DAY), 1, 12, 10, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 10;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1, 13, 11, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 11;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 14, 12, 2, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 12;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 6 DAY), 1, 15, 13, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 13;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 4 DAY), DATE_ADD(CURDATE(), INTERVAL 2 DAY), 1, 16, 14, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 14;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 17, 15, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 15;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1, 18, 16, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 16;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 19, 17, 2, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 17;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 4 DAY), DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 20, 18, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 18;
+
+INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Tour Gastronómico', 35.00, CONCAT(CURDATE(), ' 11:00:00'), CONCAT(CURDATE(), ' 13:00:00'), 12);
+INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Clase de Surf', 40.00, CONCAT(DATE_ADD(CURDATE(), INTERVAL 3 DAY), ' 16:00:00'), CONCAT(DATE_ADD(CURDATE(), INTERVAL 3 DAY), ' 18:00:00'), 10);
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 7, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 8, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 9, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 7, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 8, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 9, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 7, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 8, 3, 'Noche');
 
 SET FOREIGN_KEY_CHECKS = 1;
