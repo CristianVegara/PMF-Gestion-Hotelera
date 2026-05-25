@@ -46,11 +46,11 @@ if (userRole.startsWith("ROLE_")) {
                 <li><Link to="/activities">Actividades</Link></li>
                 <li><Link to="/shifts">Turnos</Link></li>
                 <li><Link to="/rooms/price/all">Historial de precios</Link></li>
-                {(userRole == 'ADMIN' || userRole == 'SUPERVISOR') && (
+                {(userRole == 'ADMIN') && (
                     <li><Link to="/user/form">Crear usuario</Link></li>
                 )}
-                {(userRole == 'ADMIN') && (
-                    <li><Link to="/employee/form">Crear empleado</Link></li>                    
+                {(userRole == 'ADMIN' || userRole == 'SUPERVISOR') && (
+                    <li><Link to="/employees">Empleados</Link></li>                    
                 )}
 
             </ul>

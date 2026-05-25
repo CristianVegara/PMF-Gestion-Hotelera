@@ -10,4 +10,5 @@ public interface IShiftService {
     public List<Shift> findShiftsByRange(LocalDate start, LocalDate end);
     public Shift save(Shift shift);
     public void delete(Long id);
+    List<Shift> findAllWithDetails();
 }

@@ -29,7 +29,7 @@ public class ShiftController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            shifts = shiftService.findAll();
+            shifts = shiftService.findAllWithDetails();
         } catch (Exception e) {
             System.err.println("-- ERROR EN SHIFTS --");
             e.printStackTrace();

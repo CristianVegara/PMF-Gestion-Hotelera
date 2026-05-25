@@ -329,12 +329,7 @@ const BookingDetails = () => {
           </button>
           )}
           
-          <button
-          className="btn-edit-booking"
-          onClick={() => console.log('Editar booking', booking.id)}
-          disabled={checkInStatusMapping[booking.checkInStatus] === 2}>
-          Editar reserva
-        </button>
+          
       </div>
       
       <Link to="/bookings" className="btn-back">

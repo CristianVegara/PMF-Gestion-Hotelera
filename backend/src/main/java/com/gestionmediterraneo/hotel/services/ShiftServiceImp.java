@@ -40,4 +40,9 @@ public class ShiftServiceImp implements IShiftService {
     public void delete(Long id) {
         shiftDao.deleteById(id);
     }
+
+	@Override
+	public List<Shift> findAllWithDetails() {
+		return shiftDao.findAllWithDetails();
+	}
 }

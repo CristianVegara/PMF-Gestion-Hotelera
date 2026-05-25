@@ -1,6 +1,11 @@
 package com.gestionmediterraneo.hotel.entities;
 
 import jakarta.persistence.Column;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +34,7 @@ public class User {
 	private String role;
 	
 	@OneToOne(mappedBy = "user")
+	@JsonIgnoreProperties({"user"})
 	private Employee employee;
 	
 	@Column(name="created_at")

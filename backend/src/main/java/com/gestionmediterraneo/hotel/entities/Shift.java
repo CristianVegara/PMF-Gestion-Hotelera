@@ -15,8 +15,8 @@ public class Shift {
     @Column(nullable = false)
     private LocalDate fecha; 
 
-    @JsonIgnoreProperties({"shifts"})
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Employee employee;
 
     @JsonIgnoreProperties({"shifts"})
