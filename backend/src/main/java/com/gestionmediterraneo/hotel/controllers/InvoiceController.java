@@ -2,6 +2,7 @@ package com.gestionmediterraneo.hotel.controllers;
 
 import com.gestionmediterraneo.hotel.entities.Client;
 import com.gestionmediterraneo.hotel.entities.Invoice;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
 import com.gestionmediterraneo.hotel.services.BillingService;
 import com.gestionmediterraneo.hotel.services.InvoiceGenerationRequest;
 import com.gestionmediterraneo.hotel.services.InvoiceService;
@@ -46,9 +47,13 @@ public class InvoiceController {
     @Autowired
     private RevenueReportService revenueReportService;
 
+    @Autowired
+    private AuditLogService auditLogService;
+
     private static final Map<String, String> SORT_MAP = Map.of(
             "id", "id",
             "total", "total",
+            "cliente.nombre", "cliente.nombre",
             "cliente", "cliente.nombre"
     );
 
@@ -87,6 +92,12 @@ public class InvoiceController {
             Invoice invoice = billingService.generateInvoice(request);
             response.put("mensaje", "Factura generada con éxito");
             response.put("data", invoice);
+            auditLogService.record(
+                    "FACTURA_GENERADA",
+                    "Invoice",
+                    invoice.getId(),
+                    "Factura generada para reserva ID " + request.getBookingId()
+                            + " por total " + invoice.getTotal());
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (IllegalArgumentException e) {
             response.put("mensaje", e.getMessage());
@@ -161,12 +172,57 @@ public class InvoiceController {
                     .map(inv -> inv.getTotal() != null ? inv.getTotal() : BigDecimal.ZERO)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            response.put("client", clientOpt.get());
+            Client client = clientOpt.get();
+            Map<String, Object> clientData = new HashMap<>();
+            clientData.put("id", client.getId());
+            clientData.put("dni", client.getDni());
+            clientData.put("nombre", client.getNombre());
+            clientData.put("telefono", client.getTelefono());
+            clientData.put("correo", client.getCorreo());
+
+            List<Map<String, Object>> invoiceData = invoices.stream()
+                    .map(invoice -> {
+                        Map<String, Object> item = new HashMap<>();
+                        item.put("id", invoice.getId());
+                        item.put("fechaEmision", invoice.getFechaEmision());
+                        item.put("concepto", invoice.getConcepto());
+                        item.put("noches", invoice.getNoches());
+                        item.put("precio", invoice.getPrecio());
+                        item.put("subtotalBeforeDiscount", invoice.getSubtotalBeforeDiscount());
+                        item.put("discountPercentage", invoice.getDiscountPercentage());
+                        item.put("discountAmount", invoice.getDiscountAmount());
+                        item.put("loyaltyRank", invoice.getLoyaltyRank());
+                        item.put("subtotal", invoice.getSubtotal());
+                        item.put("iva", invoice.getIva());
+                        item.put("total", invoice.getTotal());
+                        item.put("pagada", invoice.isPagada());
+                        item.put("status", invoice.getStatus());
+
+                        if (invoice.getBooking() != null) {
+                            Map<String, Object> bookingData = new HashMap<>();
+                            bookingData.put("id", invoice.getBooking().getId());
+                            bookingData.put("fechaEntrada", invoice.getBooking().getFechaEntrada());
+                            bookingData.put("fechaSalida", invoice.getBooking().getFechaSalida());
+                            item.put("booking", bookingData);
+                        }
+
+                        if (invoice.getHabitacion() != null) {
+                            Map<String, Object> roomData = new HashMap<>();
+                            roomData.put("id", invoice.getHabitacion().getId());
+                            roomData.put("number", invoice.getHabitacion().getNumber());
+                            item.put("habitacion", roomData);
+                        }
+
+                        return item;
+                    })
+                    .collect(Collectors.toList());
+
+            response.put("client", clientData);
             response.put("from", from);
             response.put("to", to);
             response.put("invoiceCount", invoices.size());
             response.put("totalSpent", totalSpent);
-            response.put("invoices", invoices);
+            response.put("invoices", invoiceData);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -174,6 +230,23 @@ public class InvoiceController {
             response.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    @GetMapping("/client/by-dni/{dni}/expenses")
+    @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
+    public ResponseEntity<?> clientExpensesByDni(
+            @PathVariable String dni,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+
+        Client client = clientDao.findByDni(dni);
+        if (client == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensaje", "Cliente no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        return clientExpenses(client.getId(), from, to);
     }
 
     @PostMapping
@@ -207,6 +280,12 @@ public class InvoiceController {
 
             response.put("mensaje", "Factura creada con éxito");
             response.put("data", saved);
+            auditLogService.record(
+                    "FACTURA_CREADA",
+                    "Invoice",
+                    saved.getId(),
+                    "Factura manual creada para cliente ID " + cliente.getId()
+                            + " por total " + saved.getTotal());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
@@ -249,6 +328,12 @@ public class InvoiceController {
 
             response.put("mensaje", "Factura actualizada");
             response.put("data", updated);
+            auditLogService.record(
+                    "FACTURA_ACTUALIZADA",
+                    "Invoice",
+                    updated.getId(),
+                    "Factura actualizada para cliente ID " + cliente.getId()
+                            + " por total " + updated.getTotal());
 
             return ResponseEntity.ok(response);
 
@@ -275,6 +360,11 @@ public class InvoiceController {
             invoiceService.delete(id);
 
             response.put("mensaje", "Factura eliminada");
+            auditLogService.record(
+                    "FACTURA_ELIMINADA",
+                    "Invoice",
+                    id,
+                    "Factura eliminada");
             return ResponseEntity.ok(response);
 
         } catch (DataAccessException e) {

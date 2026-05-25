@@ -1,5 +1,7 @@
 const API_URL = 'http://localhost:8080/api/auth';
 
+const normalizeRole = (role) => (role || 'USER').replace('ROLE_', '');
+
 export const login = async (username, password) => {
   try {
     const response = await fetch(`${API_URL}/login`, {
@@ -17,10 +19,20 @@ export const login = async (username, password) => {
     const data = await response.json();
 
     if (data.token) {
+      const role = normalizeRole(data.role);
+      const user = {
+        username: data.username || username,
+        role
+      };
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('role', role);
+      localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('user_token', data.token);
-      if (data.role) {
-        localStorage.setItem('user_role', data.role);
-      }
+      localStorage.setItem('user_role', role);
+
+      data.role = role;
+      data.username = user.username;
     }
 
     return data;
@@ -31,6 +43,9 @@ export const login = async (username, password) => {
 };
 
 export const logout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('role');
+  localStorage.removeItem('user');
   localStorage.removeItem('user_token');
   localStorage.removeItem('user_role');
 };

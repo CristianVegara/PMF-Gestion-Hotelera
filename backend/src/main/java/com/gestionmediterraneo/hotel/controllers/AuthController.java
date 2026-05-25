@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gestionmediterraneo.hotel.security.JwtUtils;
 import com.gestionmediterraneo.hotel.security.LoginRequest;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -30,12 +29,8 @@ public class AuthController {
     private JwtUtils jwtUtils;
 
     @PostMapping("/login")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         try {
-            System.out.println("LOG INCOMING -> Usuario enviado desde React: " + loginRequest.getUsername());
-            System.out.println("LOG INCOMING -> Contraseña enviada desde React: " + loginRequest.getPassword());
-            
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -46,6 +41,7 @@ public class AuthController {
             Map<String, Object> response = new HashMap<>();
             response.put("token", jwt);
             response.put("role", authentication.getAuthorities().iterator().next().getAuthority());
+            response.put("username", authentication.getName());
             
             return ResponseEntity.ok(response);
             

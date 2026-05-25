@@ -13,5 +13,6 @@ import com.gestionmediterraneo.hotel.enums.RoomType;
 public interface IRoomDAO extends JpaRepository<Room, Long> {
 	long countByStatus(RoomStatus status);
 	long countByTypeAndStatus(RoomType type, RoomStatus status);
+	Optional<Room> findFirstByType(RoomType type);
 	Optional<Room> findFirstByStatusAndType(RoomStatus status, RoomType type);
-}  
+}
