@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Bookings.css';
 
-const token = localStorage.getItem('user_token');
-
 const Bookings = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -33,17 +31,15 @@ const Bookings = () => {
     const fetchBookings = async () => {
         try {
             const token = localStorage.getItem('user_token');
-
             const response = await fetch('http://localhost:8080/api/bookings', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });            if (!response.ok) throw new Error("Error en el servidor");
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error("Error en el servidor");
             const data = await response.json();
             setBookings(data);
             setLoading(false);
         } catch (error) {
-            console.error('Error al cargar reservas:', error);
+            console.error(error);
             setLoading(false);
         }
     };
@@ -65,12 +61,9 @@ const Bookings = () => {
     const confirmDelete = async () => {
         try {
             const token = localStorage.getItem('user_token');
-
             const response = await fetch(`http://localhost:8080/api/bookings/${currentBooking.id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.ok) {
                 setBookings(prev => prev.filter(b => b.id !== currentBooking.id));
@@ -80,8 +73,14 @@ const Bookings = () => {
     };
     
     const handleUpdate = async () => {
-        try {           
+        try {          
             const token = localStorage.getItem('user_token');
+            const bookingToUpdate = {
+                fechaEntrada: currentBooking.fechaEntrada,
+                fechaSalida: currentBooking.fechaSalida,
+                estado: currentBooking.estado,
+                checkInStatus: currentBooking.checkInStatus
+            };
 
             const response = await fetch(`http://localhost:8080/api/bookings/${currentBooking.id}`, {
                 method: 'PUT',
@@ -89,22 +88,28 @@ const Bookings = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                  },
-                body: JSON.stringify(currentBooking)
+                body: JSON.stringify(bookingToUpdate)
             });
+            
             if (response.ok) {
+                alert("Reserva actualizada con éxito");
                 setShowEditModal(false);
                 fetchBookings(); 
+            } else {
+                alert("Error al actualizar: Asegúrate de que los campos sean válidos.");
             }
-        } catch (error) { console.error(error); }
+        } catch (error) { 
+            console.error(error); 
+            alert("Error de conexión");
+        }
     };
     
     const getStatusStyle = (estado) => {
         switch (estado) {
-            case 'TERMINADA': return { backgroundColor: '#e9ecef', color: '#6c757d' };
             case 'CONFIRMADA': return { backgroundColor: '#d4edda', color: '#155724' };
-            case 'PRÓXIMA': return { backgroundColor: '#cce5ff', color: '#004085' };
             case 'CANCELADA': return { backgroundColor: '#f8d7da', color: '#721c24' };
-            default: return { backgroundColor: '#fff3cd', color: '#856404' };
+            case 'SIN_CONFIRMAR': return { backgroundColor: '#fff3cd', color: '#856404' };
+            default: return { backgroundColor: '#e9ecef', color: '#6c757d' };
         }
     };
     
@@ -124,45 +129,14 @@ const Bookings = () => {
             </div>
             
             <div className="sort-controls">
-                <input 
-                type="text" 
-                placeholder="Buscar cliente..." 
-                value={filterClient}
-                onChange={(e) => setFilterClient(e.target.value)}
-                />
-                <input 
-                type="text" 
-                placeholder="Hab..." 
-                style={{ width: '60px' }}
-                value={filterRoom}
-                onChange={(e) => setFilterRoom(e.target.value)}
-                />
+                <input type="text" placeholder="Buscar cliente..." value={filterClient} onChange={(e) => setFilterClient(e.target.value)} />
+                <input type="text" placeholder="Hab..." style={{ width: '60px' }} value={filterRoom} onChange={(e) => setFilterRoom(e.target.value)} />
                 
                 <div className="date-filter-group" style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
                     <span>Entrada:</span>
-                    <input 
-                    type="number" 
-                    placeholder="Año" 
-                    style={{ width: '70px' }}
-                    value={filterYear}
-                    onChange={(e) => setFilterYear(e.target.value)}
-                    />
-                    <input 
-                    type="number" 
-                    placeholder="Mes" 
-                    min="1" max="12"
-                    style={{ width: '55px' }}
-                    value={filterMonth}
-                    onChange={(e) => setFilterMonth(e.target.value)}
-                    />
-                    <input 
-                    type="number" 
-                    placeholder="Día" 
-                    min="1" max="31"
-                    style={{ width: '55px' }}
-                    value={filterDay}
-                    onChange={(e) => setFilterDay(e.target.value)}
-                    />
+                    <input type="number" placeholder="Año" style={{ width: '70px' }} value={filterYear} onChange={(e) => setFilterYear(e.target.value)} />
+                    <input type="number" placeholder="Mes" min="1" max="12" style={{ width: '55px' }} value={filterMonth} onChange={(e) => setFilterMonth(e.target.value)} />
+                    <input type="number" placeholder="Día" min="1" max="31" style={{ width: '55px' }} value={filterDay} onChange={(e) => setFilterDay(e.target.value)} />
                 </div>
                 
                 <button className="btn-clear-search" onClick={() => {
@@ -174,32 +148,25 @@ const Bookings = () => {
                 }}> Limpiar </button>
             </div>
             
-            <p className="results-counter">
-                Filtradas: <strong>{filteredBookings.length}</strong> de {bookings.length}
-            </p>
+            <p className="results-counter">Filtradas: <strong>{filteredBookings.length}</strong> de {bookings.length}</p>
             
             <div className="table-responsive">
                 <table className="bookings-table">
                     <thead>
                         <tr>
-                            <th>ID</th><th>Cliente</th><th>Habitación</th><th>Entrada</th><th>Salida</th><th>Estado</th><th className="text-center">Acciones</th>
+                            <th>ID</th><th>Cliente</th><th>Habitación</th><th>Entrada</th><th>Salida</th><th>Estado</th><th>Check-In</th><th className="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredBookings.map(book => (
                             <tr key={book.id} className="booking-row">
                                 <td className="clickable" onClick={() => navigate(`/clients/${book.cliente?.id}`)}>#{book.id}</td>
-                                <td className="clickable" onClick={() => navigate(`/clients/${book.cliente?.id}`)}>
-                                    <strong>{book.cliente?.nombre || '---'}</strong>
-                                </td>
+                                <td className="clickable" onClick={() => navigate(`/clients/${book.cliente?.id}`)}><strong>{book.cliente?.nombre || '---'}</strong></td>
                                 <td><span className="badge-room">Hab. {book.habitacion?.number}</span></td>
                                 <td>{formatDate(book.fechaEntrada)}</td>
                                 <td>{formatDate(book.fechaSalida)}</td>
-                                <td>
-                                    <span className="status-pill" style={getStatusStyle(book.estado)}>
-                                        {book.estado}
-                                    </span>
-                                </td>
+                                <td><span className="status-pill" style={getStatusStyle(book.estado)}>{book.estado}</span></td>
+                                <td>{book.checkInStatus}</td>
                                 <td className="actions-cell">
                                     {userRole !== 'USER' && (
                                         <button className="btn-edit" onClick={() => { setCurrentBooking({...book}); setShowEditModal(true); }}>Editar</button>
@@ -209,54 +176,61 @@ const Bookings = () => {
                                     )}
                                 </td>
                             </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-                
-                {showEditModal && currentBooking && (
-                    <div className="modal-overlay">
-                        <div className="modal-content">
-                            <h3>Editar Reserva #{currentBooking.id}</h3>
-                            <div className="form-group">
-                                <label>Entrada</label>
-                                <input type="date" value={currentBooking.fechaEntrada} onChange={(e) => setCurrentBooking({...currentBooking, fechaEntrada: e.target.value})} />
-                            </div>
-                            <div className="form-group">
-                                <label>Salida</label>
-                                <input type="date" value={currentBooking.fechaSalida} onChange={(e) => setCurrentBooking({...currentBooking, fechaSalida: e.target.value})} />
-                            </div>
-                            <div className="form-group">
-                                <label>Estado</label>
-                                <select value={currentBooking.estado} onChange={(e) => setCurrentBooking({...currentBooking, estado: e.target.value})}>
-                                    <option value="PRÓXIMA">PRÓXIMA</option>
-                                    <option value="CONFIRMADA">CONFIRMADA</option>
-                                    <option value="TERMINADA">TERMINADA</option>
-                                    <option value="CANCELADA">CANCELADA</option>
-                                </select>
-                            </div>
-                            <div className="modal-actions">
-                                <button className="btn-save" onClick={handleUpdate}>Guardar</button>
-                                <button className="btn-cancel" onClick={() => setShowEditModal(false)}>Cerrar</button>
-                            </div>
-                        </div>
-                    </div>
-                    )}
-                    
-                    {showDeleteModal && currentBooking && (
-                        <div className="modal-overlay">
-                            <div className="modal-content">
-                                <h3>¿Eliminar reserva #{currentBooking.id}?</h3>
-                                <div className="modal-actions">
-                                    <button className="btn-delete-confirm" onClick={confirmDelete}>Eliminar</button>
-                                    <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                        )}
-                    </div>
-                </div>
-                );
-            };
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             
-            export default Bookings;
+            {showEditModal && currentBooking && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>Editar Reserva #{currentBooking.id}</h3>
+                        <div className="form-group">
+                            <label>Entrada</label>
+                            <input type="date" value={currentBooking.fechaEntrada} onChange={(e) => setCurrentBooking({...currentBooking, fechaEntrada: e.target.value})} />
+                        </div>
+                        <div className="form-group">
+                            <label>Salida</label>
+                            <input type="date" value={currentBooking.fechaSalida} onChange={(e) => setCurrentBooking({...currentBooking, fechaSalida: e.target.value})} />
+                        </div>
+                        <div className="form-group">
+                            <label>Estado</label>
+                            <select value={currentBooking.estado} onChange={(e) => setCurrentBooking({...currentBooking, estado: e.target.value})}>
+                                <option value="SIN_CONFIRMAR">SIN_CONFIRMAR</option>
+                                <option value="CONFIRMADA">CONFIRMADA</option>
+                                <option value="CANCELADA">CANCELADA</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>Check-In Status</label>
+                            <select value={currentBooking.checkInStatus} onChange={(e) => setCurrentBooking({...currentBooking, checkInStatus: e.target.value})}>
+                                <option value="PENDIENTE">PENDIENTE</option>
+                                <option value="DENTRO">DENTRO</option>
+                                <option value="FUERA">FUERA</option>
+                            </select>
+                        </div>
+                        <div className="modal-actions">
+                            <button className="btn-save" onClick={handleUpdate}>Guardar</button>
+                            <button className="btn-cancel" onClick={() => setShowEditModal(false)}>Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            
+            {showDeleteModal && currentBooking && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>¿Eliminar reserva #{currentBooking.id}?</h3>
+                        <div className="modal-actions">
+                            <button className="btn-delete-confirm" onClick={confirmDelete}>Eliminar</button>
+                            <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    </div>
+    );
+};
+
+export default Bookings;

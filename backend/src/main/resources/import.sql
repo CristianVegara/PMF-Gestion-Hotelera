@@ -48,45 +48,45 @@ INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('567823412E', 'Luis 
 
 -- PLANTA 1: INDIVIDUALES (Tipo 0) - 40 Habitaciones
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (101, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (102, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (102, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (103, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (104, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (105, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (106, 0, 2, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (107, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (108, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (104, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (105, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (106, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (107, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (108, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (109, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (110, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (111, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (112, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (113, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (110, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (111, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (112, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (113, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (114, 0, 2, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (115, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (116, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (115, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (116, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (117, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (118, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (119, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (118, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (119, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (120, 0, 3, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (121, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (122, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (123, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (121, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (122, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (123, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (124, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (125, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (126, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (127, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (125, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (126, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (127, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (128, 0, 2, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (129, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (130, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (131, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (129, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (130, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (131, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (132, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (133, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (134, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (135, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (136, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (137, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (133, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (134, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (135, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (136, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (137, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (138, 0, 2, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (139, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (140, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (139, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (140, 0, 0, 45.0);
 
 -- PLANTA 2: DOBLES (Tipo 1) - 40 Habitaciones
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (201, 1, 3, 75.0);
@@ -907,8 +907,6 @@ INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, ro
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 13, 23, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 14, 24, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 15, 25, 0, 2);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-22', '2026-05-25', 1, 16, null, 0, 0);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-25', '2026-05-27', 1, 16, 4, 0, 1);
 
 
 SET FOREIGN_KEY_CHECKS = 1;
