@@ -1,179 +1,128 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { vitest } from 'vitest';
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import Shifts from '../pages/Shifts';
-import { BrowserRouter } from 'react-router-dom';
-
-vitest.mock('react-calendar', () => ({
-  default: (props) => (
-    <div>
-      <button onClick={() => props.onChange(new Date(2026, 0, 1))}>
-        change
-      </button>
-    </div>
-  )
-}));
 
 const mockShifts = [
   {
     id: 1,
-    fecha: '2026-01-01T00:00:00',
-    employee: { nombre: 'Juan', apellido: 'Pérez' },
-    schedule: {
-      horaEntrada: '08:00',
-      horaSalida: '16:00',
-      nombreTurno: 'Mañana'
-    },
-    observaciones: 'Test'
+    fecha: '2026-05-24T00:00:00',
+    observaciones: 'Cubrir recepción principal',
+    employee: { id: 10, nombre: 'Ana', apellido: 'García' },
+    schedule: { id: 2, nombreTurno: 'Mañana', horaEntrada: '07:00:00', horaSalida: '15:00:00' }
   }
 ];
 
-const mockEmployees = [{ id: 1, nombre: 'Juan', apellido: 'Pérez' }];
-const mockSchedules = [
-  { id: 1, nombreTurno: 'Mañana', horaEntrada: '08:00', horaSalida: '16:00' }
+const mockEmployees = [
+  { id: 10, name: 'Ana', apellido: 'García' },
+  { id: 20, nombre: 'Luis', apellido: 'Pérez' }
 ];
 
-beforeEach(() => {
-  global.fetch = vitest.fn((url) => {
-    if (url.includes('/api/shifts')) {
-      return Promise.resolve({
-        ok: true,
-        json: async () => mockShifts
-      });
-    }
+const mockSchedules = [
+  { id: 2, nombreTurno: 'Mañana', horaEntrada: '07:00:00', horaSalida: '15:00:00' }
+];
 
-    if (url.includes('/api/employees')) {
-      return Promise.resolve({
-        ok: true,
-        json: async () => mockEmployees
-      });
-    }
+describe('Pruebas en el componente <Shifts />', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    localStorage.clear();
+    vi.spyOn(window, 'alert').mockImplementation(() => {});
+    vi.spyOn(window, 'confirm').mockImplementation(() => true);
 
-    if (url.includes('/api/schedules')) {
-      return Promise.resolve({
-        ok: true,
-        json: async () => mockSchedules
-      });
-    }
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-05-24T12:00:00'));
 
-    return Promise.resolve({
-      ok: true,
-      json: async () => []
+    vi.stubGlobal('fetch', vi.fn().mockImplementation((url) => {
+      if (url.includes('/api/shifts')) return Promise.resolve({ json: () => Promise.resolve(mockShifts) });
+      if (url.includes('/api/employees')) return Promise.resolve({ json: () => Promise.resolve(mockEmployees) });
+      if (url.includes('/api/schedules')) return Promise.resolve({ json: () => Promise.resolve(mockSchedules) });
+      return Promise.resolve({ json: () => Promise.resolve([]) });
+    }));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  test('Debe cargar y renderizar los turnos, empleados y horarios del día seleccionado', async () => {
+    const { container } = render(<Shifts token="mock_token" />);
+
+    expect(screen.getByRole('heading', { name: 'Gestión de Turnos' })).toBeInTheDocument();
+
+    await screen.findByRole('button', { name: /asignar/i });
+
+    const empleadoTurno = container.querySelector('.shift-info strong');
+    expect(empleadoTurno).toHaveTextContent('Ana García');
+    
+    expect(screen.getByText('07:00 - 15:00')).toBeInTheDocument();
+    expect(screen.getByText('Cubrir recepción principal')).toBeInTheDocument();
+  });
+
+  test('Debe enviar el payload correcto al asignar un nuevo turno con éxito', async () => {
+    const mockFetch = vi.fn()
+      .mockResolvedValueOnce({ json: () => Promise.resolve(mockShifts) })    
+      .mockResolvedValueOnce({ json: () => Promise.resolve(mockEmployees) }) 
+      .mockResolvedValueOnce({ json: () => Promise.resolve(mockSchedules) }) 
+      .mockResolvedValueOnce({ ok: true })                                   
+      .mockResolvedValue({ json: () => Promise.resolve([]) });               
+    vi.stubGlobal('fetch', mockFetch);
+
+    const { container } = render(<Shifts token="mock_token" />);
+
+    await screen.findByRole('button', { name: /asignar/i });
+
+    const inputs = container.querySelectorAll('.input-group');
+    let selectEmpleado, selectTurno, inputFecha, inputNotas;
+
+    inputs.forEach(group => {
+      const labelText = group.querySelector('label')?.textContent;
+      if (labelText?.includes('Empleado')) selectEmpleado = group.querySelector('select');
+      if (labelText?.includes('Turno')) selectTurno = group.querySelector('select');
+      if (labelText?.includes('Fecha')) inputFecha = group.querySelector('input');
+      if (labelText?.includes('Notas')) inputNotas = group.querySelector('input');
     });
-  });
-});
 
-afterEach(() => {
-  vitest.clearAllMocks();
-});
+    fireEvent.change(selectEmpleado, { target: { value: '20' } });
+    fireEvent.change(selectTurno, { target: { value: '2' } });
+    fireEvent.change(inputFecha, { target: { value: '2026-05-25' } });
+    fireEvent.change(inputNotas, { target: { value: 'Refuerzo de cocina' } });
 
-const renderUI = () =>
-  render(
-    <BrowserRouter>
-      <Shifts />
-    </BrowserRouter>
-  );
+    const btnAsignar = screen.getByRole('button', { name: /asignar/i });
+    fireEvent.click(btnAsignar);
 
-test('renderiza correctamente la página', async () => {
-  renderUI();
-  expect(await screen.findByText(/Gestión de Turnos/i)).toBeInTheDocument();
-});
-
-test('carga datos desde API y los muestra', async () => {
-  renderUI();
-  expect(await screen.findByText(/Juan Pérez/i)).toBeInTheDocument();
-  expect(await screen.findByText(/Mañana/i)).toBeInTheDocument();
-});
-
-test('permite rellenar formulario', async () => {
-  renderUI();
-
-  await screen.findByText(/Gestión de Turnos/i);
-
-  const selects = screen.getAllByRole('combobox');
-
-  fireEvent.change(selects[0], { target: { value: '1' } });
-  fireEvent.change(selects[1], { target: { value: '1' } });
-
-  const dateInput = screen.getByRole('textbox', { hidden: true });
-  const notesInput = screen.getByPlaceholderText(/Opcional/i);
-
-  fireEvent.change(dateInput, {
-    target: { value: '2026-01-01' }
-  });
-
-  fireEvent.change(notesInput, {
-    target: { value: 'Notas test' }
-  });
-
-  expect(selects[0].value).toBe('1');
-  expect(selects[1].value).toBe('1');
-});
-
-test('muestra estado vacío', async () => {
-  global.fetch = vitest.fn(() =>
-    Promise.resolve({ ok: true, json: async () => [] })
-  );
-
-  renderUI();
-
-  expect(
-    await screen.findByText(/Sin turnos asignados/i)
-  ).toBeInTheDocument();
-});
-
-test('envía formulario correctamente', async () => {
-  global.fetch = vitest.fn((url) => {
-    if (url.includes('/api/shifts')) {
-      return Promise.resolve({
-        ok: true,
-        json: async () => mockShifts
-      });
-    }
-
-    if (url.includes('/api/employees')) {
-      return Promise.resolve({
-        ok: true,
-        json: async () => mockEmployees
-      });
-    }
-
-    if (url.includes('/api/schedules')) {
-      return Promise.resolve({
-        ok: true,
-        json: async () => mockSchedules
-      });
-    }
-
-    // POST /api/shifts
-    return Promise.resolve({
-      ok: true,
-      json: async () => ({})
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith('http://localhost:8080/api/shifts', expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          fecha: '2026-05-25T00:00:00',
+          employee: { id: 20 },
+          schedule: { id: 2 },
+          observaciones: 'Refuerzo de cocina'
+         })
+      }));
+      expect(window.alert).toHaveBeenCalledWith("Turno asignado con éxito");
     });
   });
 
-  renderUI();
+  test('Debe llamar al endpoint de eliminación si el usuario confirma la acción', async () => {
+    const mockFetch = vi.fn()
+      .mockResolvedValueOnce({ json: () => Promise.resolve(mockShifts) })
+      .mockResolvedValueOnce({ json: () => Promise.resolve(mockEmployees) })
+      .mockResolvedValueOnce({ json: () => Promise.resolve(mockSchedules) })
+      .mockResolvedValueOnce({ ok: true })
+      .mockResolvedValue({ json: () => Promise.resolve([]) });
+    vi.stubGlobal('fetch', mockFetch);
 
-  await screen.findByText(/Gestión de Turnos/i);
+    render(<Shifts token="mock_token" />);
 
-  const selects = screen.getAllByRole('combobox');
+    const btnEliminar = await screen.findByRole('button', { name: /eliminar/i });
+    fireEvent.click(btnEliminar);
 
-  fireEvent.change(selects[0], { target: { value: '1' } });
-  fireEvent.change(selects[1], { target: { value: '1' } });
-
-  const dateInput = screen.getByRole('textbox', { hidden: true });
-
-  fireEvent.change(dateInput, {
-    target: { value: '2026-01-01' }
-  });
-
-  const submitButton = screen.getByRole('button', {
-    name: /Asignar/i
-  });
-
-  fireEvent.click(submitButton);
-
-  await waitFor(() => {
-    expect(global.fetch).toHaveBeenCalled();
+    expect(window.confirm).toHaveBeenCalledWith('¿Eliminar este turno?');
+    
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith('http://localhost:8080/api/shifts/1', expect.objectContaining({
+        method: 'DELETE'
+      }));
+    });
   });
 });

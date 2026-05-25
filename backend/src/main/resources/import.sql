@@ -47,7 +47,7 @@ INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('45656901D', 'Ana Ma
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('567823412E', 'Luis López', '600555666', 'luis.lopez@email.es');
 
 -- PLANTA 1: INDIVIDUALES (Tipo 0) - 40 Habitaciones
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (101, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (101, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (102, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (103, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (104, 0, 0, 45.0);
