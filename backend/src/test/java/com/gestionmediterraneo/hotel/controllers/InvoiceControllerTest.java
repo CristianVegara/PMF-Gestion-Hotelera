@@ -14,6 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +28,6 @@ import com.gestionmediterraneo.hotel.services.InvoiceGenerationRequest;
 import com.gestionmediterraneo.hotel.services.InvoiceService;
 import com.gestionmediterraneo.hotel.services.LoyaltyService;
 import com.gestionmediterraneo.hotel.services.LoyaltyTier;
-import com.gestionmediterraneo.hotel.services.RevenueReportResponse;
 import com.gestionmediterraneo.hotel.services.RevenueReportService;
 
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,8 @@ class InvoiceControllerTest {
 
     @Test
     void shouldReturnInvoices() throws Exception {
-        when(invoiceService.findAllSorted(anyString(), anyString())).thenReturn(Arrays.asList(new Invoice(), new Invoice()));
+        when(invoiceService.findAllSorted(anyString(), anyString()))
+                .thenReturn(Arrays.asList(new Invoice(), new Invoice()));
 
         mockMvc.perform(get("/api/invoice")
                 .param("sortBy", "id")
@@ -79,7 +81,8 @@ class InvoiceControllerTest {
 
     @Test
     void shouldReturnInternalServerErrorWhenGetInvoicesFails() throws Exception {
-        when(invoiceService.findAllSorted(anyString(), anyString())).thenThrow(new RuntimeException("Database error"));
+        when(invoiceService.findAllSorted(anyString(), anyString()))
+                .thenThrow(new RuntimeException("Database error"));
 
         mockMvc.perform(get("/api/invoice"))
                 .andExpect(status().isInternalServerError())
@@ -104,7 +107,8 @@ class InvoiceControllerTest {
     void shouldReturnBadRequestWhenGenerateInvoiceThrowsIllegalArgumentException() throws Exception {
         InvoiceGenerationRequest request = new InvoiceGenerationRequest();
 
-        when(billingService.generateInvoice(any(InvoiceGenerationRequest.class))).thenThrow(new IllegalArgumentException("Invalid booking ID"));
+        when(billingService.generateInvoice(any(InvoiceGenerationRequest.class)))
+                .thenThrow(new IllegalArgumentException("Invalid booking ID"));
 
         mockMvc.perform(post("/api/invoice/generate")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -117,7 +121,8 @@ class InvoiceControllerTest {
     void shouldReturnInternalServerErrorWhenGenerateInvoiceFails() throws Exception {
         InvoiceGenerationRequest request = new InvoiceGenerationRequest();
 
-        when(billingService.generateInvoice(any(InvoiceGenerationRequest.class))).thenThrow(new RuntimeException("Unexpected error"));
+        when(billingService.generateInvoice(any(InvoiceGenerationRequest.class)))
+                .thenThrow(new RuntimeException("Unexpected error"));
 
         mockMvc.perform(post("/api/invoice/generate")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -149,7 +154,8 @@ class InvoiceControllerTest {
 
     @Test
     void shouldReturnInternalServerErrorWhenFindByIdThrowsDataAccessException() throws Exception {
-        when(invoiceService.findById(1L)).thenThrow(new TransientDataAccessResourceException("Error", new RuntimeException("Cause")));
+        when(invoiceService.findById(1L))
+                .thenThrow(new TransientDataAccessResourceException("Error", new RuntimeException("Cause")));
 
         mockMvc.perform(get("/api/invoice/1"))
                 .andExpect(status().isInternalServerError())
@@ -158,8 +164,11 @@ class InvoiceControllerTest {
 
     @Test
     void shouldReturnRevenueReport() throws Exception {
-        RevenueReportResponse reportResponse = new RevenueReportResponse();
-        when(revenueReportService.calculateRevenue(any(LocalDate.class), any(LocalDate.class), any(), any(), any())).thenReturn(reportResponse);
+        Map<String, Object> reportResponse = new HashMap<>();
+
+        when(revenueReportService.calculateRevenue(
+                any(LocalDate.class), any(LocalDate.class), any(), any(), any()))
+                .thenReturn(reportResponse);
 
         mockMvc.perform(get("/api/invoice/report")
                 .param("from", "2026-01-01")
@@ -170,7 +179,9 @@ class InvoiceControllerTest {
 
     @Test
     void shouldReturnInternalServerErrorWhenRevenueReportFails() throws Exception {
-        when(revenueReportService.calculateRevenue(any(LocalDate.class), any(LocalDate.class), any(), any(), any())).thenThrow(new RuntimeException("Calculation failed"));
+        when(revenueReportService.calculateRevenue(
+                any(LocalDate.class), any(LocalDate.class), any(), any(), any()))
+                .thenThrow(new RuntimeException("Calculation failed"));
 
         mockMvc.perform(get("/api/invoice/report")
                 .param("from", "2026-01-01")
@@ -187,7 +198,9 @@ class InvoiceControllerTest {
         invoice.setTotal(new BigDecimal("150.00"));
 
         when(clientDao.findById(1L)).thenReturn(Optional.of(client));
-        when(invoiceService.findByClientBookingDateRange(anyLong(), any(LocalDate.class), any(LocalDate.class))).thenReturn(Arrays.asList(invoice));
+        when(invoiceService.findByClientBookingDateRange(
+                anyLong(), any(LocalDate.class), any(LocalDate.class)))
+                .thenReturn(Arrays.asList(invoice));
 
         mockMvc.perform(get("/api/invoice/client/1/expenses")
                 .param("from", "2026-01-01")
@@ -231,8 +244,9 @@ class InvoiceControllerTest {
         invoice.setPrecio(new BigDecimal("100.00"));
 
         when(clientDao.findById(1L)).thenReturn(Optional.of(cliente));
-        when(loyaltyService.calculateTier(any(Client.class))).thenReturn(new LoyaltyTier("Bronze", 5.0, 3, 3));
-        when(invoiceService.save(any(Invoice.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(loyaltyService.calculateTier(any(Client.class)))
+                .thenReturn(new LoyaltyTier("Bronze", 5.0, 3, 3));
+        when(invoiceService.save(any(Invoice.class))).thenAnswer(inv -> inv.getArgument(0));
 
         mockMvc.perform(post("/api/invoice")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -276,8 +290,10 @@ class InvoiceControllerTest {
         invoice.setPrecio(new BigDecimal("100.00"));
 
         when(clientDao.findById(1L)).thenReturn(Optional.of(cliente));
-        when(loyaltyService.calculateTier(any(Client.class))).thenReturn(new LoyaltyTier("Bronze", 5.0, 3, 3));
-        when(invoiceService.save(any(Invoice.class))).thenThrow(new TransientDataAccessResourceException("Error", new RuntimeException("Cause")));
+        when(loyaltyService.calculateTier(any(Client.class)))
+                .thenReturn(new LoyaltyTier("Bronze", 5.0, 3, 3));
+        when(invoiceService.save(any(Invoice.class)))
+                .thenThrow(new TransientDataAccessResourceException("Error", new RuntimeException("Cause")));
 
         mockMvc.perform(post("/api/invoice")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -303,8 +319,9 @@ class InvoiceControllerTest {
 
         when(invoiceService.findById(id)).thenReturn(Optional.of(existingInvoice));
         when(clientDao.findById(1L)).thenReturn(Optional.of(cliente));
-        when(loyaltyService.calculateTier(any(Client.class))).thenReturn(new LoyaltyTier("Silver", 10.0, 5, 6));
-        when(invoiceService.save(any(Invoice.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(loyaltyService.calculateTier(any(Client.class)))
+                .thenReturn(new LoyaltyTier("Silver", 10.0, 5, 6));
+        when(invoiceService.save(any(Invoice.class))).thenAnswer(inv -> inv.getArgument(0));
 
         mockMvc.perform(put("/api/invoice/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -369,8 +386,10 @@ class InvoiceControllerTest {
 
         when(invoiceService.findById(id)).thenReturn(Optional.of(existingInvoice));
         when(clientDao.findById(1L)).thenReturn(Optional.of(cliente));
-        when(loyaltyService.calculateTier(any(Client.class))).thenReturn(new LoyaltyTier("Silver", 10.0, 5, 6));
-        when(invoiceService.save(any(Invoice.class))).thenThrow(new TransientDataAccessResourceException("Error", new RuntimeException("Cause")));
+        when(loyaltyService.calculateTier(any(Client.class)))
+                .thenReturn(new LoyaltyTier("Silver", 10.0, 5, 6));
+        when(invoiceService.save(any(Invoice.class)))
+                .thenThrow(new TransientDataAccessResourceException("Error", new RuntimeException("Cause")));
 
         mockMvc.perform(put("/api/invoice/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -406,7 +425,8 @@ class InvoiceControllerTest {
         invoice.setId(1L);
 
         when(invoiceService.findById(1L)).thenReturn(Optional.of(invoice));
-        org.mockito.Mockito.doThrow(new TransientDataAccessResourceException("Error", new RuntimeException("Cause"))).when(invoiceService).delete(1L);
+        org.mockito.Mockito.doThrow(new TransientDataAccessResourceException("Error", new RuntimeException("Cause")))
+                .when(invoiceService).delete(1L);
 
         mockMvc.perform(delete("/api/invoice/1"))
                 .andExpect(status().isInternalServerError())

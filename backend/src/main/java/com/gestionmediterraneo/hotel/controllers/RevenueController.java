@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.gestionmediterraneo.hotel.services.RevenueReportResponse;
 import com.gestionmediterraneo.hotel.services.RevenueReportService;
 
 @RestController
@@ -27,17 +26,17 @@ public class RevenueController {
     public ResponseEntity<?> getRevenue(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
-            @RequestParam(required = false) Long roomId,
-            @RequestParam(required = false) Long clientId,
+            @RequestParam(required = false) Long   roomId,
+            @RequestParam(required = false) Long   clientId,
             @RequestParam(required = false) String type) {
 
         try {
-            RevenueReportResponse report = revenueReportService.calculateRevenue(from, to, roomId, clientId, type);
+            Map<String, Object> report = revenueReportService.calculateRevenue(from, to, roomId, clientId, type);
             return ResponseEntity.ok(report);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error al generar el reporte de ingresos");
-            response.put("error", e.getMessage());
+            response.put("error",   e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

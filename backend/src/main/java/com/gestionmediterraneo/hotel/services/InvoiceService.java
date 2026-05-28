@@ -27,7 +27,6 @@ public class InvoiceService {
         Sort sort = direction.equalsIgnoreCase("desc")
                 ? Sort.by(sortBy).descending()
                 : Sort.by(sortBy).ascending();
-
         return invoiceDao.findAll(sort);
     }
 
@@ -39,6 +38,9 @@ public class InvoiceService {
         return invoiceDao.findByFechaEmisionBetween(start, end);
     }
 
+    public List<Invoice> findPaidByBookingDateRange(LocalDate start, LocalDate end) {
+        return invoiceDao.findPaidByBookingDateRange(start, end);
+    }
     public List<Invoice> findByClientBookingDateRange(Long clientId, LocalDate start, LocalDate end) {
         return invoiceDao.findByClienteIdAndBookingDateRange(clientId, start, end);
     }
