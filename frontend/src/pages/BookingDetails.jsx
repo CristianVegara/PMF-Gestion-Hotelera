@@ -157,6 +157,7 @@ const BookingDetails = () => {
         status: roomStatusMapping['SUCIA']
       };
       
+
       const updateRoomResponse = await fetch(`http://localhost:8080/api/rooms/${booking.habitacion.id}`, {
         method: 'PUT',
         headers: { 

@@ -28,7 +28,8 @@ const ArrivalsToday = ({ date }) => {
     }, [date]);
     
     const sortedBookings = useMemo(() => {
-        return [...bookings].sort((a, b) => a.checkInStatus - b.checkInStatus);
+        const confirmadas = bookings.filter(b => b.estado === 'CONFIRMADA');
+        return [...confirmadas].sort((a, b) => a.checkInStatus - b.checkInStatus);
     }, [bookings]);
     
     return (
