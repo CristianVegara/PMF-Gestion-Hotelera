@@ -5,6 +5,24 @@ html, body {
     font-family: 'Inter', system-ui, sans-serif;
 }
 
+.active-room-client-card {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #eff6ff;
+  border: 1px solid #3b82f6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block;
+  max-width: 280px;
+}
+
+.active-room-client-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.25);
+  background: #dbeafe;
+}
+
 .room-details-page {
     padding: 20px;
     height: 100vh;

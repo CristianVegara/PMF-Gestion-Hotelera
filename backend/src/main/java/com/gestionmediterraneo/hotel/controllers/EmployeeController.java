@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.gestionmediterraneo.hotel.entities.Employee;
+import com.gestionmediterraneo.hotel.entities.User;
 import com.gestionmediterraneo.hotel.services.IEmployeeService;
+import com.gestionmediterraneo.hotel.services.IUserService;
+
 
 @CrossOrigin(origins = {"http://localhost:3000"}) 
 @RestController
@@ -20,7 +23,10 @@ public class EmployeeController {
 
     @Autowired
     private IEmployeeService employeeService;
-
+    
+    @Autowired
+    private IUserService userService;
+    
     @GetMapping
     @PreAuthorize("hasAnyRole('USER')")
     public List<Employee> getEmployees() {
@@ -68,7 +74,18 @@ public class EmployeeController {
     @PostMapping
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeService.save(employee);
+    	try {
+    		if (employee.getUser() != null && employee.getUser().getId() != null) {
+    	        User user = userService.findById(employee.getUser().getId());
+    	        employee.setUser(user);
+    	    }
+    	    return employeeService.save(employee);     	
+            
+    	}
+    	catch(Exception e) {
+    		return null;
+    	}
+
     }
     
     @PutMapping("/{id}")
@@ -79,9 +96,31 @@ public class EmployeeController {
             employee.setNombre(employeeDetails.getNombre());
             employee.setApellido(employeeDetails.getApellido());
             employee.setCargo(employeeDetails.getCargo());
-            employee.setUser(employeeDetails.getUser());
+            if (employeeDetails.getUser() != null && employeeDetails.getUser().getId() != null) {
+                User user = userService.findById(employeeDetails.getUser().getId());
+                employee.setUser(user);
+            }             
+            
             return employeeService.save(employee);
         }
         return null; 
+    }
+    
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')") 
+    public ResponseEntity<Employee> deleteEmployee(@PathVariable Long id) {
+        Employee employee = employeeService.findById(id);
+        
+        if (employee == null) {
+            return ResponseEntity.notFound().build();
+        }        
+        
+        if (employee.getUser() != null) {
+            employee.setUser(null);
+            employeeService.save(employee);
+        }
+        
+        employeeService.delete(id);
+        return ResponseEntity.ok(employee);
     }
 }

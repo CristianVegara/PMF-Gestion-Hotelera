@@ -60,8 +60,8 @@ const ClientsInHouse = () => {
     const stats = useMemo(() => {
         return {
             total: filteredBookings.length,
-            checkIns: bookings.filter(b => b.fechaEntrada === todayStr && b.checkInStatus === 'PENDIENTE').length,
-            checkOuts: bookings.filter(b => b.fechaSalida === todayStr && b.checkInStatus === 'DENTRO').length
+            checkIns: bookings.filter(b => b.fechaEntrada === todayStr).length,
+            checkOuts: bookings.filter(b => b.fechaSalida === todayStr).length
         };
     }, [bookings, filteredBookings, todayStr]);
     
