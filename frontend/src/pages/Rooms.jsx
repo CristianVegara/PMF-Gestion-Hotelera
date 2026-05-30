@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Rooms.css';
 
-
-
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
+  const [selectedRoomBookings, setSelectedRoomBookings] = useState([]); 
   const navigate = useNavigate();
   
   const fetchRooms = () => {
@@ -22,7 +21,7 @@ const Rooms = () => {
       if (!res.ok) throw new Error('No autorizado');
       return res.json();
     })
-    .then(data => setRooms(data))
+    .then(data => setRooms(data || []))
     .catch(err => console.error("Error cargando habitaciones:", err));
   };
   
@@ -41,7 +40,7 @@ const Rooms = () => {
       if (!res.ok) throw new Error('No autorizado');
       return res.json();
     })
-    .then(data => setRooms(data))
+    .then(data => setSelectedRoomBookings(data || [])) 
     .catch(err => console.error("Error cargando reservas:", err));
   };
   
@@ -50,27 +49,30 @@ const Rooms = () => {
   }, []);
   
   return (
-  <div className="rooms-page-wrapper">
-    <div className="rooms-container">
-      <div className="header-actions">
-        <h2 className="title-list">Estado de Habitaciones ({rooms.length})</h2>
-      </div>
-      
-      <div className="rooms-grid">
-        {rooms.map(room => (
-          <div 
-          key={room.id} 
-          className={`room-card ${room.status ? room.status.toLowerCase() : ''}`}
-          onClick={() => navigate(`/rooms/${room.id}`)}
-          >
-          <div className="room-card-number">{room.number}</div>
-          <div className="room-card-type">{room.type}</div>
-          <div className="room-card-status">{room.status}</div>
+    <div className="rooms-page-wrapper">
+      <div className="rooms-container">
+        <div className="header-actions">
+          <h2 className="title-list">Estado de Habitaciones ({rooms.length})</h2>
         </div>
-        ))}
+        
+        <div className="rooms-grid" role="list">
+          {rooms.map(room => (
+            <div 
+              key={room.id} 
+              className={`room-card ${room.status ? room.status.toLowerCase() : ''}`}
+              onClick={() => navigate(`/rooms/${room.id}`)}
+              role="listitem"
+              data-testid={`room-card-${room.id}`}
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="room-card-number">Habitación {room.number}</div>
+              <div className="room-card-type">{room.type}</div>
+              <div className="room-card-status">{room.status}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 

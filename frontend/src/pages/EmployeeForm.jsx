@@ -9,7 +9,8 @@ const EmployeeForm = () => {
   const [employee, setEmployee] = useState({
     nombre: '',
     apellido: '',
-    cargo: ''
+    cargo: '',
+    user: null
   });
   
   const [errors, setErrors] = useState([]);
@@ -26,9 +27,10 @@ const EmployeeForm = () => {
         setEmployee({
           nombre: data.nombre || '',
           apellido: data.apellido || '',
-          cargo: data.cargo || ''
+          cargo: data.cargo || '',
+          user: data.user || null
         });
-      })
+      })      
       .catch(() => navigate('/employees'));
     }
   }, [id, navigate]);
@@ -45,6 +47,13 @@ const EmployeeForm = () => {
     const token = localStorage.getItem('user_token');
     const method = id ? 'PUT' : 'POST';
     const url = id ? `/api/employees/${id}` : '/api/employees';
+
+    const payload = {
+      nombre: employee.nombre,
+      apellido: employee.apellido,
+      cargo: employee.cargo,
+      user: (employee.user && employee.user.id) ? { id: employee.user.id } : null   
+    };
     
     try {
       const response = await fetch(url, {
@@ -53,10 +62,10 @@ const EmployeeForm = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(employee)
+        body: JSON.stringify(payload)
       });
       
-      if (response.status === 200 || response.status === 201) {
+      if (response.status === 200 || response.status === 201 || response.status === 204) {
         navigate('/employees');
       } else {
         const data = await response.json();
@@ -67,7 +76,9 @@ const EmployeeForm = () => {
       alert('Error de conexión');
     }
   };
-  
+
+  const userRole = localStorage.getItem('role')
+
   return (
     <div className="form-container">
       <h2>{id ? 'Editar Empleado' : 'Nuevo Empleado'}</h2>
@@ -122,6 +133,30 @@ const EmployeeForm = () => {
             <option value="MANTENIMIENTO">Mantenimiento</option>
           </select>
         </div>
+
+        {(employee.user && localStorage.getItem('role') === 'ROLE_ADMIN') && (
+          <div className="form-group">
+            <label htmlFor="userRole">Rol del Usuario</label>
+            <select
+              id="userRole"
+              name="userRole"
+              // Al usar el valor que viene de la base de datos, 
+              // el select se posicionará automáticamente en la opción correspondiente
+              value={employee.user?.role || ''} 
+              onChange={(e) => {
+                setEmployee(prev => ({
+                  ...prev,
+                  user: { ...prev.user, role: e.target.value }
+                }));
+              }}
+              required>
+              <option value="">Seleccione un rol...</option>
+              <option value="ROLE_RECEPCIONISTA">Recepcionista</option>
+              <option value="ROLE_SUPERVISOR">Supervisor</option>
+              <option value="ROLE_ADMIN">Administrador</option>
+            </select>
+          </div>
+        )}
         
         <div className="button-group">
           <button type="submit" className="btn-save">
@@ -130,8 +165,7 @@ const EmployeeForm = () => {
           <button
             type="button"
             className="btn-cancel"
-            onClick={() => navigate('/employees')}
-          >
+            onClick={() => navigate('/employees')}>
             Cancelar
           </button>
         </div>

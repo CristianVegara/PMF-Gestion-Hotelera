@@ -1,126 +1,147 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { vitest } from 'vitest';
-import Activities from '../pages/Activities';
-import { BrowserRouter } from 'react-router-dom';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 
-const mockNavigate = vitest.fn();
-vitest.mock('react-router-dom', async () => {
-  const actual = await vitest.importActual('react-router-dom');
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
     useNavigate: () => mockNavigate
   };
 });
 
-global.fetch = vitest.fn();
-global.confirm = vitest.fn();
-
-const mockActivities = [
+const mockActivitiesList = [
   {
     id: 1,
-    descripcion: 'Actividad Test',
-    precio: 10,
-    fechaComienzo: new Date().toISOString(),
-    fechaFin: new Date().toISOString()
+    descripcion: 'Torneo de Pádel',
+    precio: 15.0,
+    fechaComienzo: '2026-05-24T10:00:00',
+    fechaFin: '2026-05-24T14:00:00'
+  },
+  {
+    id: 2,
+    descripcion: 'Cata de Vinos',
+    precio: 30.0,
+    fechaComienzo: '2026-05-25T18:00:00',
+    fechaFin: '2026-05-25T20:00:00'
   }
 ];
 
-const renderComponent = () =>
-  render(
-    <BrowserRouter>
-      <Activities />
-    </BrowserRouter>
-  );
-
-beforeEach(() => {
-  vitest.clearAllMocks();
-});
-
-test('carga y muestra actividades al iniciar', async () => {
-  fetch.mockResolvedValueOnce({
-    ok: true,
-    json: async () => mockActivities
+describe('Panel general de actividades', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    localStorage.clear();
+    vi.resetModules(); 
   });
 
-  renderComponent();
+  test('Recupera las actividades y las lista filtradas según el día seleccionado', async () => {
+    localStorage.setItem('user_token', 'token_seguro_actividades');
+    localStorage.setItem('role', 'ROLE_ADMIN');
 
-  await waitFor(() => {
-    expect(screen.getByText('Actividad Test')).toBeInTheDocument();
-  });
-});
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(mockActivitiesList)
+    }));
 
-test('crea una actividad y limpia el formulario', async () => {
-  fetch
-    .mockResolvedValueOnce({ ok: true, json: async () => [] })
-    .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    .mockResolvedValueOnce({ ok: true, json: async () => mockActivities });
+    const Activities = (await import('../pages/Activities.jsx')).default;
 
-  renderComponent();
+    render(
+      <MemoryRouter>
+        <Activities />
+      </MemoryRouter>
+    );
 
-  fireEvent.change(screen.getByPlaceholderText('Ej: Clase de Yoga'), {
-    target: { value: 'Nueva' }
-  });
-  fireEvent.change(screen.getByPlaceholderText('0.00'), {
-    target: { value: '20' }
-  });
-
-  const inputs = document.querySelectorAll('input[type="datetime-local"]');
-  fireEvent.change(inputs[0], { target: { value: '2026-05-01T10:00' } });
-  fireEvent.change(inputs[1], { target: { value: '2026-05-01T11:00' } });
-
-  fireEvent.click(screen.getByText('Crear actividad'));
-
-  await waitFor(() => {
-    expect(screen.getByPlaceholderText('Ej: Clase de Yoga').value).toBe('');
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-});
-
-test('elimina actividad si el usuario confirma', async () => {
-  fetch
-    .mockResolvedValueOnce({ ok: true, json: async () => mockActivities })
-    .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    .mockResolvedValueOnce({ ok: true, json: async () => [] });
-
-  global.confirm.mockReturnValue(true);
-
-  renderComponent();
-
-  const deleteBtn = await screen.findByText('Eliminar');
-  fireEvent.click(deleteBtn);
-
-  await waitFor(() => {
-    expect(screen.queryByText('Actividad Test')).not.toBeInTheDocument();
-  });
-});
-
-test('no elimina actividad si el usuario cancela', async () => {
-  fetch.mockResolvedValueOnce({
-    ok: true,
-    json: async () => mockActivities
+    const actividadDia = await screen.findByText('Torneo de Pádel');
+    expect(actividadDia).toBeInTheDocument();
+    expect(screen.getByText('15€')).toBeInTheDocument();
+    expect(screen.queryByText('Cata de Vinos')).not.toBeInTheDocument();
   });
 
-  global.confirm.mockReturnValue(false);
+  test('Envía los datos correctos añadiendo los segundos requeridos por el backend', async () => {
+    localStorage.setItem('user_token', 'token_seguro_actividades');
+    localStorage.setItem('role', 'ROLE_ADMIN');
 
-  renderComponent();
+    const mockPostFetch = vi.fn().mockResolvedValue({ ok: true });
+    
+    vi.stubGlobal('fetch', vi.fn().mockImplementation((url, config) => {
+      if (config?.method === 'POST') return mockPostFetch(url, config);
+      return Promise.resolve({ ok: true, json: () => Promise.resolve(mockActivitiesList) });
+    }));
 
-  const deleteBtn = await screen.findByText('Eliminar');
-  fireEvent.click(deleteBtn);
+    const Activities = (await import('../pages/Activities.jsx')).default;
 
-  expect(fetch).toHaveBeenCalledTimes(1);
-  expect(screen.getByText('Actividad Test')).toBeInTheDocument();
-});
+    const { container } = render(
+      <MemoryRouter>
+        <Activities />
+      </MemoryRouter>
+    );
 
-test('navega al detalle al hacer click en la actividad', async () => {
-  fetch.mockResolvedValueOnce({
-    ok: true,
-    json: async () => mockActivities
+    fireEvent.change(screen.getByPlaceholderText('Ej: Clase de Yoga'), { target: { value: 'Aquagym Extremo' } });
+    fireEvent.change(screen.getByPlaceholderText('0.00'), { target: { value: '12.50' } });
+    
+    const inputsFecha = container.querySelectorAll('input[type="datetime-local"]');
+    fireEvent.change(inputsFecha[0], { target: { value: '2026-06-10T09:00' } });
+    fireEvent.change(inputsFecha[1], { target: { value: '2026-06-10T10:30' } });
+
+    const botonEnviar = screen.getByRole('button', { name: /Crear actividad/i });
+    fireEvent.click(botonEnviar);
+
+    await waitFor(() => {
+      expect(mockPostFetch).toHaveBeenCalledWith('http://localhost:8080/api/activities', expect.objectContaining({
+        method: 'POST',
+        body: expect.stringContaining('"fechaComienzo":"2026-06-10T09:00:00"')
+      }));
+    });
   });
 
-  renderComponent();
+  test('Solicita confirmación y borra el evento de la lista', async () => {
+    localStorage.setItem('user_token', 'token_seguro_actividades');
+    localStorage.setItem('role', 'ROLE_ADMIN');
 
-  const card = await screen.findByText('Actividad Test');
-  fireEvent.click(card.closest('.clickable-card'));
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    const mockDeleteFetch = vi.fn().mockResolvedValue({ ok: true });
 
-  expect(mockNavigate).toHaveBeenCalledWith('/activities/1');
+    vi.stubGlobal('fetch', vi.fn().mockImplementation((url, config) => {
+      if (config?.method === 'DELETE') return mockDeleteFetch(url, config);
+      return Promise.resolve({ ok: true, json: () => Promise.resolve(mockActivitiesList) });
+    }));
+
+    const Activities = (await import('../pages/Activities.jsx')).default;
+
+    render(
+      <MemoryRouter>
+        <Activities />
+      </MemoryRouter>
+    );
+
+    const botonEliminar = await screen.findByRole('button', { name: /Eliminar/i });
+    fireEvent.click(botonEliminar);
+
+    expect(window.confirm).toHaveBeenCalledWith('¿Eliminar esta actividad?');
+    expect(mockDeleteFetch).toHaveBeenCalledWith('http://localhost:8080/api/activities/1', expect.any(Object));
+  });
+
+  test('Oculta los botones de gestión si el usuario tiene un rol sin permisos', async () => {
+    localStorage.setItem('user_token', 'token_seguro_actividades');
+    localStorage.setItem('role', 'ROLE_USER');
+
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(mockActivitiesList)
+    }));
+
+    const Activities = (await import('../pages/Activities.jsx')).default;
+
+    render(
+      <MemoryRouter>
+        <Activities />
+      </MemoryRouter>
+    );
+
+    await screen.findByText('Torneo de Pádel');
+
+    expect(screen.queryByRole('button', { name: /Crear actividad/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Eliminar/i })).not.toBeInTheDocument();
+  });
 });

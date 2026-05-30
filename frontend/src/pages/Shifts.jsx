@@ -3,6 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Shifts.css';
 
+
 const Shifts = ({ token }) => {
   const [shifts, setShifts] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -41,27 +42,63 @@ const Shifts = ({ token }) => {
     fetchData();
   }, [token]);
   
-  const createShift = async (e) => {
+ const createShift = async (e) => {
     e.preventDefault();
+
+    const selectedSchedule = schedules.find(
+      s => s.id === parseInt(newShift.scheduleId)
+    );
+
+    const newShiftStart = new Date(
+      `${newShift.fecha}T${selectedSchedule.horaEntrada}`
+    );
+
+    const employeeShifts = shifts.filter(
+      s => s.employee?.id === parseInt(newShift.employeeId)
+    );
+
+    const hasConflict = employeeShifts.some(existingShift => {
+      const existingStart = new Date(
+        `${existingShift.fecha.split('T')[0]}T${existingShift.schedule.horaEntrada}`
+      );
+
+      const diffHours = Math.abs(newShiftStart - existingStart) / (1000 * 60 * 60);
+
+      return diffHours < 12;
+    });
+
+    if (hasConflict) {
+      alert('Este empleado ya tiene un turno en esa fecha o dentro de las 12 horas previas.');
+      return;
+    }
+
     const payload = {
       fecha: `${newShift.fecha}T00:00:00`,
       employee: { id: parseInt(newShift.employeeId) },
       schedule: { id: parseInt(newShift.scheduleId) },
       observaciones: newShift.observaciones
     };
-    
+
     try {
       const token = localStorage.getItem('user_token');
+
       const response = await fetch('http://localhost:8080/api/shifts', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(payload)
       });
+
       if (response.ok) {
-        setNewShift({ employeeId: '', scheduleId: '', fecha: '', observaciones: '' });
+        setNewShift({
+          employeeId: '',
+          scheduleId: '',
+          fecha: '',
+          observaciones: ''
+        });
+
         fetchData();
         alert("Turno asignado con éxito");
       }

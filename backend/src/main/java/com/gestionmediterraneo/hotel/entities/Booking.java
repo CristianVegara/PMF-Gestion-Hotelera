@@ -53,32 +53,9 @@ public class Booking {
     
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"booking"})
-    private List<Charge> charges = new ArrayList<>();
-    
-   
-    @PrePersist
-    @PreUpdate 
-    public void asignarEstadoAutomatico() {
-        if (this.fechaEntrada == null || this.fechaSalida == null) {
-            this.estado = BookingStatus.SIN_CONFIRMAR;            
-        }
-        else {
-            this.estado = BookingStatus.CONFIRMADA;
-        }        
-        
-    }
-	public Booking() {
-	}
+    private List<Charge> charges = new ArrayList<>();       
+ 
 	
-	public Booking(Long id, LocalDate fechaEntrada, LocalDate fechaSalida, String estado, Client cliente,
-			Room habitacion) {
-		this.id = id;
-		this.fechaEntrada = fechaEntrada;
-		this.fechaSalida = fechaSalida;
-		this.cliente = cliente;
-		this.habitacion = habitacion;
-		asignarEstadoAutomatico();
-	}
 
 	public Long getId() {
 		return id;

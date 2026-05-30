@@ -21,7 +21,6 @@
 .activity-card-header h1 {
   margin: 0;
   font-size: 2rem;
-  letter-spacing: -0.5px;
 }
 
 .fecha-texto {
@@ -35,12 +34,13 @@
   padding: 15px 25px;
   border-radius: 12px;
   text-align: center;
-  backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.stats-badge .current { font-size: 1.5rem; font-weight: bold; }
-.stats-badge .total { font-size: 1.1rem; opacity: 0.8; }
+.stats-badge .current {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
 
 .slots-grid {
   display: grid;
@@ -59,59 +59,10 @@
   border: 2px solid transparent;
 }
 
-.slot-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
 .activity-slot.occupied {
   background: white;
   border-color: #e2e8f0;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-}
-
-.user-icon {
-  font-size: 1.2rem;
-  margin-right: 15px;
-  background: #f1f5f9;
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.client-data {
-  display: flex;
-  flex-direction: column;
-}
-
-.client-name {
-  display: block;
-  font-weight: 600;
-  color: #0f172a;
-}
-
-.client-dni {
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
-.status-tag {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  background: #dcfce7;
-  color: #166534;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: bold;
 }
 
 .activity-slot.available {
@@ -125,13 +76,52 @@
 .activity-slot.available:hover {
   background: #f1f5f9;
   border-color: #3b82f6;
-  transform: translateY(-2px);
   color: #3b82f6;
+  transform: translateY(-2px);
 }
 
-.plus-icon {
-  font-size: 1.5rem;
-  margin-right: 10px;
+.slot-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.user-icon {
+  font-size: 1.2rem;
+  margin-right: 15px;
+  background: #f1f5f9;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.client-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.client-name {
+  font-weight: 600;
+}
+
+.client-dni {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.status-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.7rem;
+  background: #dcfce7;
+  color: #166534;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .btn-back {
@@ -141,53 +131,80 @@
   color: #64748b;
   cursor: pointer;
   font-weight: 600;
-  transition: color 0.2s;
 }
 
-.btn-back:hover { color: #1e293b; }
+.btn-back:hover {
+  color: #1e293b;
+}
 
-.activity-slot.occupied.clickable {
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.client-modal {
+  width: 420px;
+  max-width: 90%;
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
   cursor: pointer;
-  border: 1px solid #e2e8f0;
 }
 
-.activity-slot.occupied.clickable:hover {
-  border-color: #3b82f6;
-  background-color: #f8fafc;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+.client-search {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  outline: none;
 }
 
-@media (max-width: 640px) {
-  .activity-page {
-    margin: 18px auto;
-    padding: 0 10px;
-  }
+.selection-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
 
-  .activity-card-header {
-    align-items: stretch;
-    border-radius: 12px;
-    flex-direction: column;
-    padding: 22px;
-  }
+.client-option {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border: none;
+  background: white;
+  cursor: pointer;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
 
-  .activity-card-header h1 {
-    font-size: 1.55rem;
-  }
+.client-option:hover {
+  background: #f8fafc;
+}
 
-  .fecha-texto {
-    font-size: 0.95rem;
-  }
-
-  .stats-badge {
-    padding: 12px;
-  }
-
-  .slots-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .activity-slot {
-    min-height: 86px;
-  }
+.client-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

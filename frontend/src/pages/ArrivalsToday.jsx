@@ -28,7 +28,8 @@ const ArrivalsToday = ({ date }) => {
     }, [date]);
     
     const sortedBookings = useMemo(() => {
-        return [...bookings].sort((a, b) => a.checkInStatus - b.checkInStatus);
+        const confirmadas = bookings.filter(b => b.estado === 'CONFIRMADA');
+        return [...confirmadas].sort((a, b) => a.checkInStatus - b.checkInStatus);
     }, [bookings]);
     
     return (
@@ -43,19 +44,18 @@ const ArrivalsToday = ({ date }) => {
                     <th>Hab.</th>
                     <th>Huésped</th>
                     <th className="text-center">Estado</th>
+                    <th className="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {loading ? (
-                    <tr><td colSpan="3" className="text-center">Cargando...</td></tr>
+                    <tr><td colSpan="4" className="text-center">Cargando...</td></tr>
                     ) : sortedBookings.map(b => (
                     <tr key={b.id}>
                         <td className="bold">#{b.habitacion?.number}</td>
                         <td>{b.cliente?.nombre}</td>
                         <td className="text-center">
-                            <span className={`badge ${b.checkInStatus === 1 ? 'status-confirmada' : 'status-sin-confirmar'}`}>
-                                {b.checkInStatus === 1 ? 'DENTRO' : 'PENDIENTE'}
-                            </span>
+                                {b.checkInStatus}                           
                         </td>
                         <td><Link to={`/bookings/${b.id}`} className="btn-edit">Booking</Link></td>                            
                     </tr>

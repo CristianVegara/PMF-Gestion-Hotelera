@@ -42,4 +42,9 @@ public class UserServiceImp implements IUserService {
 		return userDao.findByEmployee_Id(id);
 	}
 
+	@Override
+	public User findById(Long id) {
+		return userDao.findById(id).orElse(null);
+	}
+
 }
