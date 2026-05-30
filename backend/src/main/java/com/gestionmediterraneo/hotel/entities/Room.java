@@ -8,34 +8,51 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+/**
+ * Represents a hotel room with type, status, and pricing.
+ *
+ * <p>Rooms have a number, type (single, double, suite),
+ * status (available, occupied, dirty, out of service),
+ * a base price, and a dynamic price calculated at runtime.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see RoomType
+ * @see RoomStatus
+ */
 @Entity
 @Table(name = "habitacion")
 public class Room {
 
-	@Id
+	/** Unique identifier for the room. */
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-   
+
+    /** Room number, must be unique. */
     @NotBlank(message = "no puede estar vacío")
     @Column(name = "numero", nullable = false, unique = true)
     private String number;
 
+    /** Type of the room (single, double, suite). */
     @NotNull(message = "no puede ser nulo")
-    @Enumerated(EnumType.ORDINAL) 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "tipo")
     private RoomType type;
 
+    /** Current status of the room. */
     @NotNull(message = "no puede ser nulo")
-    @Enumerated(EnumType.ORDINAL) 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "estado")
     private RoomStatus status;
 
+    /** Base price per night. */
     @NotNull(message = "no puede ser nulo")
     @Positive(message = "debe ser mayor que 0")
     @Column(name = "precio_por_noche")
     private Double price;
-    
-    @Transient 
+
+    /** Dynamically calculated price (not persisted). */
+    @Transient
     private Double dynamicPrice;
 
     public Room() {}
@@ -46,7 +63,7 @@ public class Room {
         this.status = status;
         this.price = price;
     }
-    
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -69,6 +86,6 @@ public class Room {
 	public void setDynamicPrice(Double dynamicPrice) {
 		this.dynamicPrice = dynamicPrice;
 	}
-    
-    
+
+
 }

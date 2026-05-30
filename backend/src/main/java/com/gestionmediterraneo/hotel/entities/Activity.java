@@ -17,43 +17,60 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+/**
+ * Represents a hotel activity that clients can participate in.
+ *
+ * <p>Activities have a description, price, start/end datetime,
+ * a maximum number of participants, and a many-to-many
+ * relationship with {@link Client} entities.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see Client
+ */
 @Entity
 @Table(name="activities")
 public class Activity{
-	
+
+	/** Unique identifier for the activity. */
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	Long id;
-	
+
+	/** Description of the activity. */
 	@NotEmpty(message="No puede estar vacío")
 	@Column(nullable=false)
 	String descripcion;
-	
+
+	/** Price per participant for this activity. */
 	@NotNull(message="No puede estar vacío")
 	@Column(nullable=false)
-	Double precio;	
+	Double precio;
 
+    /** Start date and time of the activity. */
     @NotNull(message="No puede estar vacío")
     @Column(name="fecha_comienzo", columnDefinition = "DATETIME")
     private LocalDateTime fechaComienzo;
 
+    /** End date and time of the activity. */
     @NotNull(message="No puede estar vacío")
     @Column(name="fecha_fin", columnDefinition = "DATETIME")
     private LocalDateTime fechaFin;
-    
+
+    /** Maximum number of participants allowed. */
     @NotNull(message="No puede estar vacío")
     @Column(nullable=false)
     private byte maxParticipantes;
-    
+
+    /** List of clients registered for this activity. */
     @ManyToMany
     @JoinTable(
         name = "activities_clients",
         joinColumns = @JoinColumn(name = "activity_id"),
         inverseJoinColumns = @JoinColumn(name = "client_id")
     )
-    @JsonIgnoreProperties({"activities", "bookings"}) 
+    @JsonIgnoreProperties({"activities", "bookings"})
     private List<Client> clients;
-  
+
 
 
 	public Long getId() {
@@ -95,7 +112,7 @@ public class Activity{
 	public void setFechaFin(LocalDateTime fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-	
+
 	public List<Client> getClients() {
 	    return clients;
 	}
@@ -111,7 +128,7 @@ public class Activity{
 	public void setMaxParticipantes(byte maxParticipantes) {
 		this.maxParticipantes = maxParticipantes;
 	}
-	
-	
-	
+
+
+
 }

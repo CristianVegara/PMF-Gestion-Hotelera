@@ -31,14 +31,19 @@ import com.gestionmediterraneo.hotel.services.IClientService;
 
 import jakarta.validation.Valid;
 
+/**
+ * REST controller for managing {@link Activity} resources.
+ *
+ * @author Gestión Mediterráneo
+ */
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/activities")
 public class ActivityController {
-	
+
     @Autowired
     private IActivityService activityService;
-    
+
     @Autowired
     private IClientService clientService;
 
@@ -60,7 +65,7 @@ public class ActivityController {
 
         return new ResponseEntity<List<Activity>>(activities, HttpStatus.OK);
     }
-    
+
     @PutMapping("/{id}/clients")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> updateActivityClients(@PathVariable Long id, @RequestBody List<Long> clientIds) {
@@ -86,9 +91,9 @@ public class ActivityController {
     public ResponseEntity<?> getActivitiesByDate(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin) {
-        
+
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             List<Activity> activities = activityService.findByFechaComienzoBetween(fechaInicio, fechaFin);
             return new ResponseEntity<List<Activity>>(activities, HttpStatus.OK);
@@ -98,13 +103,13 @@ public class ActivityController {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Activity activity = null;
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             activity = activityService.findById(id);
         } catch (DataAccessException e) {
@@ -112,15 +117,15 @@ public class ActivityController {
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        
+
         if (activity == null) {
             response.put("mensaje", "La actividad ID: ".concat(id.toString().concat(" no existe en la base de datos")));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        
+
         return new ResponseEntity<Activity>(activity, HttpStatus.OK);
     }
-    
+
     @PostMapping
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> create(@Valid @RequestBody Activity activity, BindingResult result) {
@@ -149,7 +154,7 @@ public class ActivityController {
         response.put("activity", activityNew);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
-    
+
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> update(@Valid @RequestBody Activity activity, BindingResult result, @PathVariable Long id) {
@@ -179,7 +184,7 @@ public class ActivityController {
             currentActivity.setFechaComienzo(activity.getFechaComienzo());
             currentActivity.setFechaFin(activity.getFechaFin());
             currentActivity.setMaxParticipantes(activity.getMaxParticipantes());
-            currentActivity.setClients(activity.getClients()); 
+            currentActivity.setClients(activity.getClients());
 
             activityUpdated = activityService.save(currentActivity);
         } catch (DataAccessException e) {
@@ -193,7 +198,7 @@ public class ActivityController {
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
-    
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
     public ResponseEntity<?> delete(@PathVariable Long id) {

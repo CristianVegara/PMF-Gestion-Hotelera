@@ -21,6 +21,16 @@ import com.gestionmediterraneo.hotel.entities.Room;
 import com.gestionmediterraneo.hotel.enums.InvoiceItemType;
 import com.gestionmediterraneo.hotel.enums.InvoiceStatus;
 
+/**
+ * Service for generating and managing hotel invoices.
+ *
+ * <p>Handles invoice building logic including room charges,
+ * line items, discounts (including loyalty-based), and tax calculation.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see Invoice
+ * @see BillingService
+ */
 @Service
 public class BillingService {
 
@@ -30,6 +40,14 @@ public class BillingService {
     private final IRoomDAO       roomDao;
     private final LoyaltyService loyaltyService;
 
+    /**
+     * Constructor for BillingService.
+     * @param invoiceDao     invoice data access object
+     * @param bookingDao     booking data access object
+     * @param chargeDao      charge data access object
+     * @param roomDao        room data access object
+     * @param loyaltyService loyalty tier calculation service
+     */
     public BillingService(
             IInvoiceDAO invoiceDao,
             IBookingDAO bookingDao,
@@ -45,6 +63,8 @@ public class BillingService {
     /**
      * Generates (or regenerates) a full invoice from an
      * {@link InvoiceGenerationRequest}.  Called explicitly by staff.
+     * @param request the invoice generation request
+     * @return the generated invoice
      */
     @Transactional
     public Invoice generateInvoice(InvoiceGenerationRequest request) {
@@ -58,16 +78,25 @@ public class BillingService {
                 false);
     }
 
+    /**
+     * Creates a pending invoice for a booking.
+     * @param booking the booking to create the invoice for
+     * @return the created pending invoice
+     */
     @Transactional
     public Invoice createPendingInvoiceForBooking(Booking booking) {
         return buildOrRefreshInvoice(
                 booking,
-                BigDecimal.valueOf(10),   
+                BigDecimal.valueOf(10),
                 null,
                 "Reserva pendiente de abono",
                 true);
     }
 
+    /**
+     * Marks all invoices associated with a booking as paid.
+     * @param bookingId the booking identifier
+     */
     @Transactional
     public void markBookingInvoicesPaid(Long bookingId) {
         List<Invoice> invoices = invoiceDao.findByBooking_Id(bookingId);
@@ -80,9 +109,12 @@ public class BillingService {
     /**
      * Single method that builds or refreshes an invoice.
      *
-     * @param isPending when {@code true} the invoice keeps {@link InvoiceStatus#PENDIENTE}
-     *                  and unapplied charges are included but NOT marked as applied.
-     *                  When {@code false} (manual generation) charges are marked applied.
+     * @param booking                 the booking to invoice
+     * @param taxPercentage           tax percentage to apply
+     * @param requestedDiscountPercentage  requested discount percentage (null for loyalty-based)
+     * @param memo                    memo/concept for the invoice
+     * @param isPending               whether this is a pending invoice
+     * @return the built or refreshed invoice
      */
     private Invoice buildOrRefreshInvoice(
             Booking booking,
@@ -174,6 +206,7 @@ public class BillingService {
 
         return saved;
     }
+    /** Resolve the number of nights for a booking. */
     private long resolveNights(Booking booking) {
         LocalDate checkIn  = booking.getFechaEntrada();
         LocalDate checkOut = booking.getFechaSalida();
@@ -187,6 +220,7 @@ public class BillingService {
         return nights;
     }
 
+    /** Resolve the room to use for billing. */
     private Room resolveRoom(Booking booking) {
         if (booking.getHabitacion() != null) return booking.getHabitacion();
         if (booking.getRoomType() != null) {
@@ -198,6 +232,7 @@ public class BillingService {
                 "La reserva debe tener una habitación o tipo de habitación para generar la factura");
     }
 
+    /** Build an invoice item from the given parameters. */
     private InvoiceItem buildItem(
             InvoiceItemType type,
             String description,
@@ -213,6 +248,7 @@ public class BillingService {
         return item;
     }
 
+    /** Map a {@link ChargeType} to an {@link InvoiceItemType}. */
     private InvoiceItemType mapChargeType(com.gestionmediterraneo.hotel.enums.ChargeType chargeType) {
         return switch (chargeType) {
             case MINIBAR    -> InvoiceItemType.MINIBAR;

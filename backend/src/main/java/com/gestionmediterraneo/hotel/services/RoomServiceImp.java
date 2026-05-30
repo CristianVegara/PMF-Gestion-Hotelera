@@ -16,15 +16,24 @@ import com.gestionmediterraneo.hotel.enums.RoomType;
 import java.time.LocalDate;
 
 
+/**
+ * Implementation of {@link IRoomService} for managing {@link Room} entities with dynamic pricing.
+ *
+ * <p>Dynamic pricing is calculated based on global occupancy, type occupancy,
+ * and seasonal factors using a cosine-based month factor.</p>
+ *
+ * @author Gestión Mediterráneo
+ */
 @Service
 public class RoomServiceImp implements IRoomService {
 
     @Autowired
     private IRoomDAO roomDao;
-    
+
     @Autowired
     private IBookingDAO bookingDao;
 
+    /** Get all rooms with dynamically calculated prices. */
     @Override
     public List<Room> getAllRoomsWithDynamicPrice(LocalDate date) {
         List<Room> rooms = roomDao.findAll();
@@ -35,11 +44,12 @@ public class RoomServiceImp implements IRoomService {
         }
         return rooms;
     }
-    
+
+    /** Get the dynamic price for a room type on a given date. */
     @Override
     public Double getPriceByTypeAndDate(RoomType type, LocalDate date) {
         List<Room> allRooms = roomDao.findAll();
-        
+
         Room referenceRoom = allRooms.stream()
                 .filter(r -> r.getType() == type)
                 .findFirst()
@@ -53,6 +63,7 @@ public class RoomServiceImp implements IRoomService {
         return Math.round((referenceRoom.getPrice() * multiplier) * 100.0) / 100.0;
     }
 
+    /** Get a room with its dynamically calculated price. */
     @Override
     public Room getRoomWithDynamicPrice(Long id, LocalDate date) {
         Room room = roomDao.findById(id).orElse(null);
@@ -62,15 +73,15 @@ public class RoomServiceImp implements IRoomService {
         double globalOccupancy = calculateOccupancyByDate(date, allRooms.size());
 
         double multiplier = calculateMultiplier(room.getType(), date, allRooms, globalOccupancy);
-        
+
         room.setDynamicPrice(Math.round((room.getPrice() * multiplier) * 100.0) / 100.0);
         return room;
     }
 
     private double calculateMultiplier(RoomType type, LocalDate date, List<Room> allRooms, double globalOccupancy) {
         double multiplier = 1.0;
-        
-        double monthFactor = Math.cos((date.getMonthValue() - 7) * Math.PI / 6); 
+
+        double monthFactor = Math.cos((date.getMonthValue() - 7) * Math.PI / 6);
         multiplier += (monthFactor * 0.7) + 0.5;
 
         if (globalOccupancy > 0.5) {
@@ -96,8 +107,8 @@ public class RoomServiceImp implements IRoomService {
 
     private void applyPricingLogic(Room room, List<Room> allRooms, double globalOccupancy, LocalDate date) {
         double multiplier = 1.0;
-        
-        double monthFactor = Math.cos((date.getMonthValue() - 7) * Math.PI / 6); 
+
+        double monthFactor = Math.cos((date.getMonthValue() - 7) * Math.PI / 6);
         multiplier += Math.max(0, monthFactor * 0.5);
 
         multiplier += Math.max(0, (globalOccupancy - 0.5) * 0.5);
@@ -111,7 +122,7 @@ public class RoomServiceImp implements IRoomService {
         double finalPrice = room.getPrice() * multiplier;
         room.setDynamicPrice(Math.round(finalPrice * 100.0) / 100.0);
     }
-    
+
     @Override
     @Transactional(readOnly = true)
     public List<Room> findAll() {

@@ -15,34 +15,51 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
+/**
+ * Records an audit log entry for tracking system actions.
+ *
+ * <p>Each log entry captures the user who performed an action,
+ * the type of entity affected, and optional details about the action.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see User
+ */
 @Entity
 @Table(name = "audit_logs")
 public class AuditLog {
 
+    /** Unique identifier for the audit log entry. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** User who performed the action. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"employee", "passwordHash"})
     private User user;
 
+    /** Username of the user performing the action. */
     @Column(name = "username", nullable = false, length = 120)
     private String username;
 
+    /** Description of the action performed. */
     @Column(name = "action", nullable = false, length = 80)
     private String action;
 
+    /** Type of entity that was affected (e.g., "Client", "Booking"). */
     @Column(name = "entity_type", nullable = false, length = 80)
     private String entityType;
 
+    /** ID of the entity that was affected. */
     @Column(name = "entity_id")
     private Long entityId;
 
+    /** Additional details about the action (truncated to 1000 chars). */
     @Column(name = "details", length = 1000)
     private String details;
 
+    /** Timestamp when the log entry was created. */
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 

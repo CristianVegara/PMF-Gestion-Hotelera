@@ -42,7 +42,7 @@ public class BookingController {
     @Autowired
     private AuditLogService auditLogService;
 
-    
+
     @GetMapping
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getAllBookings() {
@@ -60,44 +60,44 @@ public class BookingController {
 
         return new ResponseEntity<List<Booking>>(bookings, HttpStatus.OK);
     }
-    
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<?> getById(@PathVariable("id") Long id){    	
+    public ResponseEntity<?> getById(@PathVariable("id") Long id){
     	try {
         	Booking booking = bookingDao.findById(id).orElse(null);
-        	
+
         	if(booking == null) {
         		   Map<String, Object> response = new HashMap<>();
                    response.put("mensaje", "No hay reservas con ese id");
                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         	}
-        	
-        	
+
+
         	return new ResponseEntity<>(booking, HttpStatus.OK);
-        	
+
     	} catch (Exception e) {
     		Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
             response.put("error", e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    	}    	
-    
+    	}
+
     }
-    
-    
+
+
     @GetMapping("/in-house/")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getInHouseBookings() {
         try {
             List<Booking> bookings = bookingDao.findByCheckInStatus(CheckInStatus.DENTRO);
-            
+
             if (bookings.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("mensaje", "No hay clientes in-house");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
-            
+
             return new ResponseEntity<>(bookings, HttpStatus.OK);
 
         } catch (Exception e) {
@@ -108,26 +108,26 @@ public class BookingController {
         }
     }
 
-    
+
     @GetMapping("/date")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getBookingsByDate(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         try {
             List<Booking> bookings = bookingDao.findBookingsByDate(date, BookingStatus.CANCELADA);
-            
+
             if (bookings.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("mensaje", "No hay reservas para la fecha: " + date);
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
-            
+
             return new ResponseEntity<>(bookings, HttpStatus.OK);
 
         } catch (Exception e) {
             System.err.println("-- ERROR EN BOOKINGS IN-HOUSE --");
             e.printStackTrace();
-            
+
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
             response.put("error", e.getMessage());
@@ -138,7 +138,7 @@ public class BookingController {
     @PostMapping(consumes = "application/json")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
-        try {          
+        try {
             Booking savedBooking = bookingDao.save(booking);
             Invoice pendingInvoice = billingService.createPendingInvoiceForBooking(savedBooking);
             auditLogService.record(
@@ -158,21 +158,21 @@ public class BookingController {
         } catch (Exception e) {
             System.err.println("-- ERROR AL CREAR RESERVA --");
             e.printStackTrace();
-            
+
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error al realizar la inserción en la base de datos");
             response.put("error", e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     @GetMapping("/room/{roomId}")
     @PreAuthorize("hasAnyRole('USER')")
     public List<Booking> getBookingsByRoom(@PathVariable Long roomId) {
         return bookingDao.buscarPorHabitacion(roomId);
     }
-    
-    
+
+
     @PutMapping(value = "/{id}", consumes = "application/json")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> updateBooking(@PathVariable Long id, @RequestBody Booking bookingDetails) {
@@ -209,9 +209,9 @@ public class BookingController {
 
         }).orElse(ResponseEntity.notFound().build());
     }
-    
-  
-    
+
+
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
     public void delete(@PathVariable Long id) {

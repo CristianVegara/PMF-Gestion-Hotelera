@@ -16,17 +16,17 @@ import com.gestionmediterraneo.hotel.services.IEmployeeService;
 import com.gestionmediterraneo.hotel.services.IUserService;
 
 
-@CrossOrigin(origins = {"http://localhost:3000"}) 
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
     @Autowired
     private IEmployeeService employeeService;
-    
+
     @Autowired
     private IUserService userService;
-    
+
     @GetMapping
     @PreAuthorize("hasAnyRole('USER')")
     public List<Employee> getEmployees() {
@@ -37,7 +37,7 @@ public class EmployeeController {
             throw e;
         }
     }
-    
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER')")
     public Employee getEmployee( @PathVariable Long id) {
@@ -48,12 +48,12 @@ public class EmployeeController {
             throw e;
         }
     }
-    
+
     @GetMapping("/no-user")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> getEmployeesWithoutUser() {
-    	
-    	
+
+
 
         Map<String, Object> response = new HashMap<>();
 
@@ -79,15 +79,15 @@ public class EmployeeController {
     	        User user = userService.findById(employee.getUser().getId());
     	        employee.setUser(user);
     	    }
-    	    return employeeService.save(employee);     	
-            
+    	    return employeeService.save(employee);
+
     	}
     	catch(Exception e) {
     		return null;
     	}
 
     }
-    
+
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails) {
@@ -99,27 +99,27 @@ public class EmployeeController {
             if (employeeDetails.getUser() != null && employeeDetails.getUser().getId() != null) {
                 User user = userService.findById(employeeDetails.getUser().getId());
                 employee.setUser(user);
-            }             
-            
+            }
+
             return employeeService.save(employee);
         }
-        return null; 
+        return null;
     }
-    
+
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')") 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Employee> deleteEmployee(@PathVariable Long id) {
         Employee employee = employeeService.findById(id);
-        
+
         if (employee == null) {
             return ResponseEntity.notFound().build();
-        }        
-        
+        }
+
         if (employee.getUser() != null) {
             employee.setUser(null);
             employeeService.save(employee);
         }
-        
+
         employeeService.delete(id);
         return ResponseEntity.ok(employee);
     }

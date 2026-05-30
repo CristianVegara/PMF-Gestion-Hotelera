@@ -1,5 +1,14 @@
 package com.gestionmediterraneo.hotel.services;
 
+/**
+ * Represents a client's loyalty tier based on booking history.
+ *
+ * <p>The tier includes the rank name, discount percentage,
+ * recent booking count, and total booking count.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see LoyaltyService
+ */
 public class LoyaltyTier {
 
     private final String rank;

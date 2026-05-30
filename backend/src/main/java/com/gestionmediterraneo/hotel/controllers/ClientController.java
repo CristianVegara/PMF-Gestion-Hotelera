@@ -32,7 +32,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/clients")
 public class ClientController {
-	
+
     @Autowired
     private IClientService clientService;
 
@@ -59,14 +59,14 @@ public class ClientController {
 
         return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
     }
-    
-    
+
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Client client = null;
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             client = clientService.findById(id);
         } catch (DataAccessException e) {
@@ -74,12 +74,12 @@ public class ClientController {
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        
+
         if (client == null) {
             response.put("mensaje", "El cliente ID: ".concat(id.toString().concat(" no existe en la base de datos")));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        
+
         return new ResponseEntity<Client>(client, HttpStatus.OK);
     }
 
@@ -101,8 +101,8 @@ public class ClientController {
         response.put("payments", client.getPayments());
         response.put("refunds", client.getRefunds());
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }    
-    
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> create(@Valid @RequestBody Client client, BindingResult result) {
@@ -118,7 +118,7 @@ public class ClientController {
             response.put("errors", errors);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
         }
-        
+
         if (client.getCorreo() == null || !client.getCorreo().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             response.put("mensaje", "El email no tiene un formato válido (xxx@x.x)");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -141,8 +141,8 @@ public class ClientController {
                 "Alta de cliente " + clientNew.getNombre() + " con DNI " + clientNew.getDni());
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
-    
-    
+
+
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> update(@Valid @RequestBody Client client, BindingResult result, @PathVariable Long id) {
@@ -158,7 +158,7 @@ public class ClientController {
             response.put("Errores en los campos", errors);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-        
+
         if (client.getCorreo() == null || !client.getCorreo().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             response.put("mensaje", "El email no tiene un formato válido (xxx@x.x)");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -196,8 +196,8 @@ public class ClientController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
-    
+
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
@@ -225,6 +225,6 @@ public class ClientController {
                 "Eliminación de cliente " + clientEliminar.getNombre() + " con DNI " + clientEliminar.getDni());
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
-    
-    
+
+
 }

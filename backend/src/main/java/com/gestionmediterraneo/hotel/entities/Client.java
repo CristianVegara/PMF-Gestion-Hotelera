@@ -16,39 +16,55 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 
+/**
+ * Represents a hotel client with personal information and related data.
+ *
+ * <p>A client can have multiple bookings, invoices, payments, refunds,
+ * and can participate in activities. Also linked to discounts.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see Booking
+ * @see Invoice
+ * @see Activity
+ */
 @Entity
 @Table(name="clients")
 public class Client {
-	
+
+	/** Unique identifier for the client. */
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	Long id;
-	
+
+	/** Client's DNI (national ID number), must be unique. */
 	@NotEmpty(message="No puede estar vacío")
 	@Column(nullable=false, unique=true)
 	String dni;
-	
+
+	/** Client's full name. */
 	@NotEmpty(message="No puede estar vacío")
 	@Column(nullable=false, unique=false)
 	String nombre;
-	
+
+	/** Client's phone number. */
 	@NotEmpty(message="No puede estar vacío")
 	@Column(nullable=false, unique=false)
 	String telefono;
-	
+
+	/** Client's email address, must be unique. */
 	@NotEmpty(message="No puede estar vacío")
 	@Column(nullable=false, unique=true)
 	String correo;
-	
+
 	@ManyToMany(mappedBy = "clients")
 	@JsonIgnoreProperties("clients")
 	private List<Activity> activities;
-	
+
 	@ManyToMany(mappedBy = "clients")
 	@JsonIgnore
 	private List<Discount> discounts;
-	
-	@JsonIgnoreProperties({"cliente", "hibernateLazyInitializer", "handler"}) 
+
+	@JsonIgnoreProperties({"cliente", "hibernateLazyInitializer", "handler"})
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Invoice> invoices = new ArrayList<>();
 
@@ -79,7 +95,7 @@ public class Client {
 	public void setRefunds(List<Refund> refunds) {
 	    this.refunds = refunds;
 	}
-	
+
 
 	public Long getId() {
 		return id;
@@ -120,7 +136,7 @@ public class Client {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	
+
 	public List<Activity> getActivities() {
 	    return activities;
 	}
@@ -128,7 +144,7 @@ public class Client {
 	public void setActivities(List<Activity> activities) {
 	    this.activities = activities;
 	}
-	
+
 	public List<Discount> getDiscounts() {
 	    return discounts;
 	}

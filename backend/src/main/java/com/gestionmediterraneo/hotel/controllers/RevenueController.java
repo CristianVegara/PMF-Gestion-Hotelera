@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.gestionmediterraneo.hotel.services.RevenueReportService;
 
+/**
+ * REST controller for revenue report generation.
+ *
+ * @author Gestión Mediterráneo
+ */
 @RestController
 @RequestMapping("/api/reports")
 @CrossOrigin(origins = {"http://localhost:3000"})

@@ -2,6 +2,11 @@ package com.gestionmediterraneo.hotel.services;
 
 import java.math.BigDecimal;
 
+/**
+ * DTO for generating an invoice from a booking.
+ *
+ * @author Gestión Mediterráneo
+ */
 public class InvoiceGenerationRequest {
 
     private Long bookingId;
