@@ -193,6 +193,7 @@
     color: #212529;
     background-color: #ffffff;
     transition: background-color 0.2s ease;
+    white-space: nowrap;
 }
 
 .invoices-table tr:hover td {

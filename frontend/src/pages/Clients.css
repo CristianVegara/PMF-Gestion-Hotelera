@@ -190,7 +190,8 @@
 
 @media (max-width: 768px) {
   .sort-controls {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row !important;
     gap: 10px;
   }
   

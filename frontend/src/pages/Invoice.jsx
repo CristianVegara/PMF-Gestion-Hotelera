@@ -215,6 +215,11 @@ const Invoice = () => {
     `);
     win.document.close();
   };
+  const editInvoice = (invoice) => {
+    if (!invoice?.id) return;
+    window.location.href = `/invoice/edit/${invoice.id}`;
+  };
+
 
   const printInvoice = (invoice) => {
     const win = window.open("", "_blank", "width=900,height=700");
@@ -620,16 +625,17 @@ const Invoice = () => {
                     {inv.pagada ? "Pagada" : "Pendiente"}
                   </td>
                   <td className="text-center">{formatCurrency(inv.total)}</td>
+                  <td> 
+                    {(userRole === "ADMIN" || userRole === "SUPERVISOR") && (
+                    <button onClick={() => editInvoice(inv)}>Editar</button>
+                    )}
+                  </td>
                   <td>
-                    <div className="action-group">
-                      {(userRole === "ADMIN" || userRole === "SUPERVISOR") && (
-                        <Link to={`/invoice/edit/${inv.id}`}>Editar</Link>
-                      )}
-                      <button onClick={() => printInvoice(inv)}>PDF</button>
-                      {(userRole === "ADMIN" || userRole === "SUPERVISOR") && (
-                        <button onClick={() => deleteInvoice(inv.id)}>Eliminar</button>
-                      )}
-                    </div>
+                    <button onClick={() => printInvoice(inv)}>PDF</button></td>
+                  <td>
+                    {(userRole === "ADMIN" || userRole === "SUPERVISOR") && (
+                    <button onClick={() => deleteInvoice(inv.id)}>Eliminar</button>
+                    )}
                   </td>
                 </tr>
               ))}
