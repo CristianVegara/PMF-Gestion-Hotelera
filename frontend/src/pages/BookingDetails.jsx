@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './BookingDetails.css';
 
-const token = localStorage.getItem('user_token');
 
 const BookingDetails = () => {
   const { id } = useParams();
@@ -37,6 +36,8 @@ const BookingDetails = () => {
   const fetchBooking = async () => {
     try {
       setLoading(true);
+      const token = localStorage.getItem('user_token');
+
       const response = await fetch(`http://localhost:8080/api/bookings/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -58,7 +59,8 @@ const BookingDetails = () => {
     try {
       let currentIndex = roomTypesOrder.indexOf(booking.roomType);  
       let room;
-      
+      const token = localStorage.getItem('user_token');
+
       for (let i = 0; i < roomTypesOrder.length; i++) {
         const currentTypeToCheck = roomTypesOrder[currentIndex];
         const freeRoomResponse = await fetch(`http://localhost:8080/api/rooms/free/${currentTypeToCheck}`, {
@@ -118,7 +120,7 @@ const BookingDetails = () => {
         estado: bookingStatusMapping[booking.estado || 'CONFIRMADA'],
         checkInStatus: checkInStatusMapping['DENTRO']
       };
-      
+
       const updateBookingResponse = await fetch(`http://localhost:8080/api/bookings/${booking.id}`, {
         method: 'PUT',
         headers: { 
@@ -143,9 +145,16 @@ const BookingDetails = () => {
   };
   
   const handleCheckOut = async () => {
-    const confirmar = window.confirm('¿Está seguro de que desea realizar el Check-Out y dar salida al cliente?');
+    const checkoutPrematuro = !isToday(booking.fechaSalida);
+
+    const mensaje = checkoutPrematuro
+      ? '¡IMPORTANTE! Vas a hacer el Check-Out antes de que finalice la reserva. La fecha de salida se cambiará al día de hoy. ¿Deseas continuar?'
+      : '¿Está seguro de que desea realizar el Check-Out y dar salida al cliente?';
+
+    const confirmar = window.confirm(mensaje);
+
     if (!confirmar) return;
-    
+
     try {
       const hoy = new Date().toISOString().split('T')[0];
       
@@ -157,6 +166,9 @@ const BookingDetails = () => {
         status: roomStatusMapping['SUCIA']
       };
       
+      const token = localStorage.getItem('user_token');
+      
+
       const updateRoomResponse = await fetch(`http://localhost:8080/api/rooms/${booking.habitacion.id}`, {
         method: 'PUT',
         headers: { 
@@ -297,7 +309,7 @@ const BookingDetails = () => {
     return (
     <div className="booking-error-container">
       <h2>No se encontró la reserva</h2>
-      <Link to="/bookings" className="btn-back">
+      <Link to="/clients" className="btn-back">
         Volver
       </Link>
     </div>
@@ -318,21 +330,23 @@ const BookingDetails = () => {
         
         <div className="edit-action">
           {currentCheckInStatusText === 'PENDIENTE' && (
-          <button className="btn-checkin-action" onClick={handleCheckIn}>
-            Dar Entrada (Check-In)
-          </button>
+            <button className="btn-checkin-action" onClick={handleCheckIn}>
+              Dar Entrada (Check-In)
+            </button>
           )}
           
-          {currentCheckInStatusText === 'DENTRO' && isToday(booking.fechaSalida) && (
-          <button className="btn-checkout-action" onClick={handleCheckOut}>
-            Dar Salida (Check-Out)
-          </button>
+          {currentCheckInStatusText === 'DENTRO' && (
+            <button className="btn-checkout-action" onClick={handleCheckOut}>
+                {isToday(booking.fechaSalida)
+                    ? 'Dar Salida (Check-Out)'
+                    : 'Dar Salida (Check-Out prematuro)'}
+            </button>
           )}
           
           
       </div>
       
-      <Link to="/bookings" className="btn-back">
+      <Link to="/clients" className="btn-back">
         Volver
       </Link>
     </div>

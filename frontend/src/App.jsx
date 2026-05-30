@@ -87,9 +87,10 @@ function App() {
             <Route path="/clients/:id" element={<ClientDetails />} />
           </Route>
 
-          <Route element={<ProtectedLayout rolesPermitidos={['ADMIN']} />} >
-            <Route path="/clients/:id" element={<ClientDetails />} />
+          <Route element={<ProtectedLayout rolesPermitidos={['USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
+            <Route path="/clients/edit/:id" element={<ClientForm />} />
           </Route>
+
 
           <Route element={<ProtectedLayout rolesPermitidos={['RECEPCIONISTA', 'SUPERVISOR', 'ADMIN']} />} >
             <Route path="/employees" element={<Employees />} />

@@ -47,110 +47,110 @@ INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('45656901D', 'Ana Ma
 INSERT INTO clients (dni, nombre, telefono, correo) VALUES ('567823412E', 'Luis López', '600555666', 'luis.lopez@email.es');
 
 -- PLANTA 1: INDIVIDUALES (Tipo 0) - 40 Habitaciones
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (101, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (102, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (101, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (102, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (103, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (104, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (105, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (106, 0, 2, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (107, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (108, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (104, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (105, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (106, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (107, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (108, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (109, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (110, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (111, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (112, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (113, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (110, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (111, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (112, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (113, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (114, 0, 2, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (115, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (116, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (115, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (116, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (117, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (118, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (119, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (118, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (119, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (120, 0, 3, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (121, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (122, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (123, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (121, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (122, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (123, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (124, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (125, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (126, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (127, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (125, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (126, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (127, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (128, 0, 2, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (129, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (130, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (131, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (129, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (130, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (131, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (132, 0, 0, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (133, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (134, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (135, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (136, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (137, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (133, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (134, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (135, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (136, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (137, 0, 0, 45.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (138, 0, 2, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (139, 0, 1, 45.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (140, 0, 1, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (139, 0, 0, 45.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (140, 0, 0, 45.0);
 
 -- PLANTA 2: DOBLES (Tipo 1) - 40 Habitaciones
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (201, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (202, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (203, 1, 1, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (201, 1, 3, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (202, 1, 2, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (203, 1, 0, 75.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (204, 1, 0, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (205, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (206, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (207, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (208, 1, 2, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (209, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (210, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (211, 1, 1, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (205, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (206, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (207, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (208, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (209, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (210, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (211, 1, 0, 75.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (212, 1, 0, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (213, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (214, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (215, 1, 3, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (216, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (217, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (218, 1, 1, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (213, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (214, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (215, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (216, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (217, 1, 3, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (218, 1, 0, 75.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (219, 1, 2, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (220, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (221, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (222, 1, 1, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (220, 1, 0 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (221, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (222, 1, 0, 75.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (223, 1, 0, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (224, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (225, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (226, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (227, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (228, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (229, 1, 2, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (230, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (231, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (232, 1, 1, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (224, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (225, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (226, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (227, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (228, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (229, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (230, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (231, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (232, 1, 0, 75.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (233, 1, 0, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (234, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (235, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (236, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (237, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (238, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (239, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (240, 1, 1, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (234, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (235, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (236, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (237, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (238, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (239, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (240, 1, 0, 75.0);
 
 -- PLANTA 3: 5 SUITES (Tipo 2) Y EL RESTO DOBLES (Tipo 1)
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (301, 2, 1, 150.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (302, 2, 1, 150.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (303, 2, 0, 150.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (304, 2, 1, 150.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (305, 2, 1, 150.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (306, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (307, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (308, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (309, 1, 2, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (310, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (311, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (312, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (313, 1, 1, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (301, 2, 0, 150.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (302, 2, 2, 150.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (303, 2, 3, 150.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (304, 2, 0, 150.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (305, 2, 0, 150.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (306, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (307, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (308, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (309, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (310, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (311, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (312, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (313, 1, 0, 75.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (314, 1, 0, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (315, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (316, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (317, 1, 1, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (315, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (316, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (317, 1, 0, 75.0);
 INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (318, 1, 3, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (319, 1, 1, 75.0);
-INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (320, 1, 1, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (319, 1, 0, 75.0);
+INSERT INTO habitacion (numero, tipo, estado, precio_por_noche) VALUES (320, 1, 0, 75.0);
 
 --Inserts de actividades de prueba
 INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Excursión en 4x4', 45.00, '2026-05-19 10:00:00', '2026-05-19 12:00:00', 10);
@@ -212,7 +212,7 @@ INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('202
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 7, 3, 'Sin cambios');
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 8, 3, 'Sin cambios');
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-28', 9, 3, 'Sin cambios');
--- Miércoles 29 (Rotación de ejemplo)
+-- Miércoles 29 
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 7, 1, 'Rotación');
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 8, 1, 'Rotación');
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-04-29', 9, 1, 'Rotación');
@@ -709,71 +709,71 @@ INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, ro
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-04-05', '2026-04-15', 1, 19, 49, 1, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-04-05', '2026-04-15', 1, 20, 50, 1, 2);
 
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 1, 1, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 2, 2, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 3, 3, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 4, 4, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 5, 5, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 6, 6, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 7, 7, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 8, 8, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 9, 9, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 10, 10, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 11, 11, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 12, 12, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 13, 13, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 14, 14, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 15, 15, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 16, 16, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 17, 17, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 18, 18, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 19, 19, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 20, 20, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 1, 21, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 2, 22, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 3, 23, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 4, 24, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 5, 25, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 6, 26, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 7, 27, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 8, 28, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 9, 29, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 10, 30, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 11, 31, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 12, 32, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 13, 33, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 14, 34, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 15, 35, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 16, 36, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 17, 37, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 18, 38, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 19, 39, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 20, 40, 0, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 1, 41, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 2, 42, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 3, 43, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 4, 44, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 5, 45, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 6, 46, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 7, 47, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 8, 48, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 9, 49, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 10, 50, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 11, 51, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 12, 52, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 13, 53, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 14, 54, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 15, 55, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 16, 56, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 17, 57, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 18, 58, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 19, 59, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 20, 60, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 1, 61, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 2, 62, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 3, 63, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 4, 64, 1, 1);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 5, 65, 1, 1);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 1, 1, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 2, 2, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 3, 3, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 4, 4, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 5, 5, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 6, 6, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 7, 7, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 8, 8, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 9, 9, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 10, 10, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 11, 11, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 12, 12, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 13, 13, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 14, 14, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 15, 15, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 16, 16, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 17, 17, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 18, 18, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 19, 19, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 20, 20, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 1, 21, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 2, 22, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 3, 23, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 4, 24, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 5, 25, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 6, 26, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 7, 27, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 8, 28, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 9, 29, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 10, 30, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 11, 31, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 12, 32, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 13, 33, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 14, 34, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 15, 35, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 16, 36, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 17, 37, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 18, 38, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 19, 39, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 20, 40, 0, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 1, 41, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 2, 42, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 3, 43, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 4, 44, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 5, 45, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 6, 46, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 7, 47, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 8, 48, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 9, 49, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 10, 50, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 11, 51, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 12, 52, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 13, 53, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 14, 54, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 15, 55, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 16, 56, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 17, 57, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 18, 58, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 19, 59, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 20, 60, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 1, 61, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 2, 62, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 3, 63, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 4, 64, 1, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-01', '2026-05-15', 1, 5, 65, 1, 2);
 
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-09-01', '2025-09-15', 1, 6, 1, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-09-01', '2025-09-15', 1, 7, 2, 0, 2);
@@ -907,8 +907,6 @@ INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, ro
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 13, 23, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 14, 24, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 15, 25, 0, 2);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-22', '2026-05-25', 1, 16, null, 0, 0);
-INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2026-05-25', '2026-05-27', 1, 16, 4, 0, 1);
 
 -- Datos de prueba para el nuevo sistema de facturación
 -- Reservas controladas con facturas asociadas: pagadas, pendientes, actividades, minibar y extras.
@@ -919,77 +917,113 @@ INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id
 INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9005, '2026-06-02', '2026-06-05', 1, 5, 45, 1, 0);
 INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9006, '2026-06-08', '2026-06-12', 1, 6, 85, 2, 0);
 
-INSERT INTO charges (booking_id, type, description, amount, charge_date, applied_to_invoice) VALUES (9001, 'MINIBAR', 'Minibar habitación 101', 18.50, '2026-05-05', b'1');
-INSERT INTO charges (booking_id, type, description, amount, charge_date, applied_to_invoice) VALUES (9001, 'ACTIVIDAD', 'Ruta gastronómica local', 35.00, '2026-05-05', b'1');
-INSERT INTO charges (booking_id, type, description, amount, charge_date, applied_to_invoice) VALUES (9002, 'EXTRA', 'Parking cubierto', 48.00, '2026-05-09', b'1');
-INSERT INTO charges (booking_id, type, description, amount, charge_date, applied_to_invoice) VALUES (9002, 'LIMPIEZA', 'Limpieza adicional solicitada', 22.00, '2026-05-10', b'1');
-INSERT INTO charges (booking_id, type, description, amount, charge_date, applied_to_invoice) VALUES (9003, 'ACTIVIDAD', 'Buceo guiado premium', 160.00, '2026-05-16', b'1');
-INSERT INTO charges (booking_id, type, description, amount, charge_date, applied_to_invoice) VALUES (9004, 'MINIBAR', 'Consumo minibar pendiente', 12.00, '2026-05-24', b'0');
-INSERT INTO charges (booking_id, type, description, amount, charge_date, applied_to_invoice) VALUES (9005, 'EXTRA', 'Cuna y amenities familiares', 30.00, '2026-06-02', b'0');
-INSERT INTO charges (booking_id, type, description, amount, charge_date, applied_to_invoice) VALUES (9006, 'ACTIVIDAD', 'Paseo privado en barco', 240.00, '2026-06-09', b'0');
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1, 1, null, 0, 0);
 
-INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada)
-VALUES (9001, 9001, 1, 1, 'PAGADA', '2026-05-06', 'Estancia individual + minibar + actividad', 3, 45.00, 188.50, 0.00, 0.00, 'BRONZE', 188.50, 18.85, 207.35, b'1');
-INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada)
-VALUES (9002, 9002, 41, 2, 'PAGADA', '2026-05-11', 'Estancia doble + parking + limpieza', 4, 75.00, 370.00, 5.00, 18.50, 'SILVER', 351.50, 35.15, 386.65, b'1');
-INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada)
-VALUES (9003, 9003, 81, 3, 'PAGADA', '2026-05-18', 'Suite con experiencia de buceo', 4, 150.00, 760.00, 10.00, 76.00, 'GOLD', 684.00, 68.40, 752.40, b'1');
-INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada)
-VALUES (9004, 9004, 5, 4, 'PENDIENTE', '2026-05-24', 'Factura pendiente estancia en curso', 3, 45.00, 147.00, 0.00, 0.00, 'BRONZE', 147.00, 14.70, 161.70, b'0');
-INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada)
-VALUES (9005, 9005, 45, 5, 'PENDIENTE', '2026-06-02', 'Reserva futura doble familiar', 3, 75.00, 255.00, 5.00, 12.75, 'SILVER', 242.25, 24.23, 266.48, b'0');
-INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada)
-VALUES (9006, 9006, 85, 6, 'PENDIENTE', '2026-06-08', 'Suite futura con actividad náutica', 4, 150.00, 840.00, 10.00, 84.00, 'GOLD', 756.00, 75.60, 831.60, b'0');
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 2, null, 1, 0);
 
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9001, 'HABITACION', 'Habitación 101 - 3 noches', 3, 45.00, 135.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9001, 'MINIBAR', 'Minibar habitación 101', 1, 18.50, 18.50);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9001, 'ACTIVIDAD', 'Ruta gastronómica local', 1, 35.00, 35.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9002, 'HABITACION', 'Habitación 201 - 4 noches', 4, 75.00, 300.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9002, 'EXTRA', 'Parking cubierto', 1, 48.00, 48.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9002, 'LIMPIEZA', 'Limpieza adicional solicitada', 1, 22.00, 22.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9003, 'HABITACION', 'Suite 301 - 4 noches', 4, 150.00, 600.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9003, 'ACTIVIDAD', 'Buceo guiado premium', 2, 80.00, 160.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9004, 'HABITACION', 'Habitación 105 - 3 noches', 3, 45.00, 135.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9004, 'MINIBAR', 'Consumo minibar pendiente', 1, 12.00, 12.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9005, 'HABITACION', 'Habitación 205 - 3 noches', 3, 75.00, 225.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9005, 'EXTRA', 'Cuna y amenities familiares', 1, 30.00, 30.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9006, 'HABITACION', 'Suite 305 - 4 noches', 4, 150.00, 600.00);
-INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9006, 'ACTIVIDAD', 'Paseo privado en barco', 1, 240.00, 240.00);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 5 DAY), CURDATE(), 1, 3, 1, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 1;
 
-INSERT INTO payments (invoice_id, client_id, method, amount, payment_date) VALUES (9001, 1, 'TARJETA', 207.35, '2026-05-06');
-INSERT INTO payments (invoice_id, client_id, method, amount, payment_date) VALUES (9002, 2, 'TRANSFERENCIA', 386.65, '2026-05-11');
-INSERT INTO payments (invoice_id, client_id, method, amount, payment_date) VALUES (9003, 3, 'EFECTIVO', 752.40, '2026-05-18');
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), CURDATE(), 1, 4, 2, 2, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 2;
 
--- Actividades extra para asociar cargos y probar ingresos por actividad.
-INSERT INTO activities (id, descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES (9001, 'Ruta gastronómica local', 35.00, '2026-05-05 18:00:00', '2026-05-05 21:00:00', 14);
-INSERT INTO activities (id, descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES (9002, 'Buceo guiado premium', 80.00, '2026-05-16 09:00:00', '2026-05-16 12:30:00', 6);
-INSERT INTO activities (id, descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES (9003, 'Paseo privado en barco', 240.00, '2026-06-09 10:00:00', '2026-06-09 13:00:00', 4);
-INSERT INTO activities (id, descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES (9004, 'Cata mediterránea en terraza', 42.00, '2026-06-04 19:30:00', '2026-06-04 21:30:00', 18);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 5, 3, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 3;
 
-INSERT INTO activities_clients (activity_id, client_id) VALUES (9001, 1);
-INSERT INTO activities_clients (activity_id, client_id) VALUES (9001, 4);
-INSERT INTO activities_clients (activity_id, client_id) VALUES (9002, 3);
-INSERT INTO activities_clients (activity_id, client_id) VALUES (9002, 6);
-INSERT INTO activities_clients (activity_id, client_id) VALUES (9003, 6);
-INSERT INTO activities_clients (activity_id, client_id) VALUES (9004, 5);
-INSERT INTO activities_clients (activity_id, client_id) VALUES (9004, 2);
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), DATE_ADD(CURDATE(), INTERVAL 2 DAY), 1, 6, 4, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 4;
 
--- Turnos actuales para probar planificación operativa junto a facturación.
-INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-24', 1, 1, 'Recepción mañana - checkouts y cobros');
-INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-24', 2, 2, 'Recepción tarde - reservas pendientes');
-INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-24', 4, 1, 'Limpieza habitaciones con checkout');
-INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-25', 3, 1, 'Recepción mañana - revisión facturas pendientes');
-INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-25', 5, 2, 'Limpieza tarde - preparación entradas');
-INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-05-25', 7, 3, 'Seguridad noche');
-INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-06-02', 1, 1, 'Entrada reserva 9005');
-INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-06-08', 2, 1, 'Entrada reserva 9006');
-INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES ('2026-06-12', 3, 2, 'Checkout suite y cierre de factura');
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1, 7, 5, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 5;
 
--- Auditoría precargada para comprobar el historial de movimientos desde la BBDD.
-INSERT INTO audit_logs (username, action, entity_type, entity_id, details, created_at) VALUES ('admin', 'RESERVA_CREADA', 'Booking', 9001, 'Reserva de prueba creada para validar facturación', '2026-05-03 09:10:00');
-INSERT INTO audit_logs (username, action, entity_type, entity_id, details, created_at) VALUES ('admin', 'FACTURA_GENERADA', 'Invoice', 9001, 'Factura pagada de prueba con habitación, minibar y actividad', '2026-05-06 11:30:00');
-INSERT INTO audit_logs (username, action, entity_type, entity_id, details, created_at) VALUES ('recepcionista', 'PAGO_REGISTRADO', 'Payment', 9001, 'Pago de prueba registrado para factura 9001', '2026-05-06 11:35:00');
-INSERT INTO audit_logs (username, action, entity_type, entity_id, details, created_at) VALUES ('recepcionista', 'FACTURA_PENDIENTE_GENERADA', 'Invoice', 9004, 'Factura pendiente de estancia en curso', '2026-05-24 10:15:00');
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 4 DAY), DATE_ADD(CURDATE(), INTERVAL 1 DAY), 1, 8, 6, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 6;
 
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 9, 7, 2, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 7;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 10, 8, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 8;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 2 DAY), 1, 11, 9, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 9;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 2 DAY), 1, 12, 10, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 10;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1, 13, 11, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 11;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 14, 12, 2, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 12;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 6 DAY), 1, 15, 13, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 13;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 4 DAY), DATE_ADD(CURDATE(), INTERVAL 2 DAY), 1, 16, 14, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 14;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 17, 15, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 15;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 3 DAY), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1, 18, 16, 1, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 16;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 19, 17, 2, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 17;
+
+INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (DATE_SUB(CURDATE(), INTERVAL 4 DAY), DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 20, 18, 0, 1);
+UPDATE habitacion SET estado = 1 WHERE id = 18;
+
+INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Tour Gastronómico', 35.00, CONCAT(CURDATE(), ' 11:00:00'), CONCAT(CURDATE(), ' 13:00:00'), 12);
+INSERT INTO activities (descripcion, precio, fecha_comienzo, fecha_fin, max_participantes) VALUES ('Clase de Surf', 40.00, CONCAT(DATE_ADD(CURDATE(), INTERVAL 3 DAY), ' 16:00:00'), CONCAT(DATE_ADD(CURDATE(), INTERVAL 3 DAY), ' 18:00:00'), 10);
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (CURDATE(), 7, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 8, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 9, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 3 DAY), 7, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 4 DAY), 8, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 9, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 2, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 5, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 6 DAY), 7, 3, 'Noche');
+
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 3, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, 1, 'Mañana');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 6, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 4, 2, 'Tarde');
+INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 8, 3, 'Noche');
 
 SET FOREIGN_KEY_CHECKS = 1;

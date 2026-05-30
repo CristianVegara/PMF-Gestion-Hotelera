@@ -1,6 +1,8 @@
 package com.gestionmediterraneo.hotel.controllers;
 
 import com.gestionmediterraneo.hotel.daos.IBookingDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.gestionmediterraneo.hotel.daos.IRoomDAO;
 import com.gestionmediterraneo.hotel.entities.Booking;
 import com.gestionmediterraneo.hotel.entities.Room;
@@ -136,10 +138,7 @@ public class BookingController {
     @PostMapping(consumes = "application/json")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
-        try {
-            booking.setEstado(BookingStatus.CONFIRMADA);
-            booking.setCheckInStatus(CheckInStatus.PENDIENTE);
-            
+        try {          
             Booking savedBooking = bookingDao.save(booking);
             Invoice pendingInvoice = billingService.createPendingInvoiceForBooking(savedBooking);
             auditLogService.record(
@@ -177,62 +176,41 @@ public class BookingController {
     @PutMapping(value = "/{id}", consumes = "application/json")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public ResponseEntity<?> updateBooking(@PathVariable Long id, @RequestBody Booking bookingDetails) {
+
         return bookingDao.findById(id).map(booking -> {
+
             booking.setFechaEntrada(bookingDetails.getFechaEntrada());
             booking.setFechaSalida(bookingDetails.getFechaSalida());
-            
-            if (bookingDetails.getCliente() != null) {
-                booking.setCliente(bookingDetails.getCliente());
-            }
-            if (bookingDetails.getEstado() != null) {
-                booking.setEstado(bookingDetails.getEstado());
-            }
-            if (bookingDetails.getCheckInStatus() != null) {
-                booking.setCheckInStatus(bookingDetails.getCheckInStatus());
-            }
-            if (bookingDetails.getRoomType() != null) {
-                booking.setRoomType(bookingDetails.getRoomType());
-            }
+
+            booking.setCliente(bookingDetails.getCliente());
+
+            booking.setEstado(bookingDetails.getEstado());
+            bookingDao.saveAndFlush(booking);
+
+            booking.setEstado(bookingDetails.getEstado());
+
+            booking.setCheckInStatus(bookingDetails.getCheckInStatus());
+            booking.setRoomType(bookingDetails.getRoomType());
+
+            Room room = null;
+
             if (bookingDetails.getHabitacion() != null) {
                 booking.setHabitacion(bookingDetails.getHabitacion());
+                room = booking.getHabitacion();
             }
-            
-            bookingDao.save(booking);
 
-            if (booking.getCheckInStatus() == CheckInStatus.FUERA) {
-                billingService.markBookingInvoicesPaid(booking.getId());
-                auditLogService.record(
-                        "CHECKOUT_RESERVA",
-                        "Booking",
-                        booking.getId(),
-                        "Checkout de reserva y marcado de facturas como pagadas");
-            } else {
-                Invoice pendingInvoice = billingService.createPendingInvoiceForBooking(booking);
-                auditLogService.record(
-                        "RESERVA_ACTUALIZADA",
-                        "Booking",
-                        booking.getId(),
-                        "Reserva actualizada; factura pendiente recalculada ID "
-                                + (pendingInvoice != null ? pendingInvoice.getId() : "-"));
-            }
-            
-            Room room = booking.getHabitacion();
+            bookingDao.saveAndFlush(booking);
+
             if (room != null) {
-                LocalDate hoy = LocalDate.now();
-                boolean deberiaEstarOcupada = (hoy.isEqual(booking.getFechaEntrada()) || hoy.isAfter(booking.getFechaEntrada())) 
-                                              && hoy.isBefore(booking.getFechaSalida());
-
-                if (deberiaEstarOcupada) {
-                    room.setStatus(RoomStatus.OCUPADA);
-                } else {
-                    room.setStatus(RoomStatus.LIBRE);
-                }
                 roomDao.save(room);
             }
 
             return ResponseEntity.ok(booking);
+
         }).orElse(ResponseEntity.notFound().build());
     }
+    
+  
     
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPERVISOR')")

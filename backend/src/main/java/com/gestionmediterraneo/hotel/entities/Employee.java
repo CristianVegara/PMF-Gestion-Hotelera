@@ -19,8 +19,7 @@ public class Employee {
     private String apellido;
     private String cargo;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})    @JoinColumn(name = "user_id")
     private User user;
 
 	public Long getId() {

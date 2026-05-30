@@ -54,7 +54,6 @@ const UserForm = () => {
       employee: user.employee ? { id: user.employee } : null
     };
 
-    console.log("Datos enviados al servidor:", JSON.stringify(payload, null, 2));
 
     try {
       const token = localStorage.getItem('user_token');
@@ -73,7 +72,7 @@ const UserForm = () => {
 
       if (response.status === 200 || response.status === 201) {
         alert(data.mensaje || 'Usuario creado correctamente');
-        navigate('/user/form');
+        navigate('/employees');
       } else if (response.status === 400 && data.errors) {
         setErrors(data.errors);
       } else {

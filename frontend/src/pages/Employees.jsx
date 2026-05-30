@@ -36,7 +36,7 @@ const Employees = () => {
   };
   
   const deleteEmployee = async (e, id) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     if (window.confirm('¿Estás seguro de eliminar este empleado?')) {
       try {
         const token = localStorage.getItem('user_token');
@@ -48,13 +48,15 @@ const Employees = () => {
           }
         });
         
+        console.log("Respuesta del servidor:", res.status, await res.text());
+        
         if (res.ok) {
           fetchEmployees();
         } else {
-          alert("No se pudo eliminar el empleado.");
+          alert(`Error al eliminar (Código: ${res.status})`);
         }
       } catch (err) {
-        console.error(err);
+        console.error("Error de red:", err);
       }
     }
   };
@@ -127,19 +129,10 @@ const Employees = () => {
                             e.stopPropagation();
                             navigate(`/employees/edit/${employee.id}`);
                           }}
-                          className="btn-edit"
-                        >
+                          className="btn-edit">
                           Editar
                         </button>
-                      )}
-                      {userRole === 'ADMIN' && (
-                        <button 
-                          onClick={(e) => deleteEmployee(e, employee.id)} 
-                          className="btn-delete"
-                        >
-                          Eliminar
-                        </button>
-                      )}
+                      )}                      
                     </div>
                   </td>
                 </tr>

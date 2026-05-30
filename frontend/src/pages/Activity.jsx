@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import './Activity.css';
 
 const ActivityDetail = () => {
@@ -9,11 +9,12 @@ const ActivityDetail = () => {
   const [availableClients, setAvailableClients] = useState([]);
   const [showSelection, setShowSelection] = useState(false);
   const [error, setError] = useState(null);
+  const [search, setSearch] = useState('');
 
   const todayStr = useMemo(() => {
     const local = new Date();
     const offset = local.getTimezoneOffset();
-    const adjusted = new Date(local.getTime() - (offset * 60 * 1000));
+    const adjusted = new Date(local.getTime() - offset * 60 * 1000);
     return adjusted.toISOString().split('T')[0];
   }, []);
 
@@ -22,22 +23,22 @@ const ActivityDetail = () => {
       const token = localStorage.getItem('user_token');
 
       fetch(`/api/activities/${id}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` }
       })
-      .then(res => res.ok ? res.json() : Promise.reject('Error'))
-      .then(data => setActivity(data))
-      .catch(err => setError(err.message));
+        .then(res => (res.ok ? res.json() : Promise.reject('Error al cargar')))
+        .then(data => setActivity(data))
+        .catch(err => setError(err.message));
 
       const fetchInHouseBookings = async () => {
         try {
           const response = await fetch(`/api/bookings/date?date=${todayStr}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${token}` }
           });
           const data = await response.json();
           const bookings = Array.isArray(data) ? data : [];
-          const inHouse = bookings.filter(book => book.checkInStatus === 'DENTRO');
+          const inHouse = bookings.filter(b => b.checkInStatus === 'DENTRO');
           setAvailableClients(inHouse.map(b => b.cliente).filter(c => c !== null));
-        } catch (err) {
+        } catch {
           setAvailableClients([]);
         }
       };
@@ -46,41 +47,53 @@ const ActivityDetail = () => {
     }
   }, [id, todayStr]);
 
-  const syncClientsWithServer = (updatedActivity) => {
+  const syncClientsWithServer = async (updatedActivity) => {
     const token = localStorage.getItem('user_token');
-    
-    fetch(`/api/activities/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(updatedActivity)
-    })
-    .catch(err => console.error(err));
+    try {
+      const response = await fetch(`/api/activities/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(updatedActivity)
+      });
+      
+      if (!response.ok) throw new Error('Error al actualizar en el servidor');
+      return await response.json();
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   };
 
-  const addClient = (client) => {
-    setActivity(prev => {
-      const updatedList = [...(prev.clients || []), client];
-      const updatedActivity = { ...prev, clients: updatedList };
-      syncClientsWithServer(updatedActivity);
-      return updatedActivity;
-    });
-    setShowSelection(false);
+  const addClient = async (client) => {
+    try {
+      const updatedList = [...(activity.clients || []), client];
+      const updatedActivity = { ...activity, clients: updatedList };
+      
+      await syncClientsWithServer(updatedActivity);
+      setActivity(updatedActivity);
+      setShowSelection(false);
+    } catch (err) {
+      alert("No se pudo añadir el cliente");
+    }
   };
 
-  const removeClient = (clientId) => {
-    setActivity(prev => {
-      const updatedList = (prev.clients || []).filter(c => c.id !== clientId);
-      const updatedActivity = { ...prev, clients: updatedList };
-      syncClientsWithServer(updatedActivity);
-      return updatedActivity;
-    });
+  const removeClient = async (clientId) => {
+    try {
+      const updatedList = (activity.clients || []).filter(c => c.id !== clientId);
+      const updatedActivity = { ...activity, clients: updatedList };
+      
+      await syncClientsWithServer(updatedActivity);
+      setActivity(updatedActivity);
+    } catch (err) {
+      alert("No se pudo eliminar el cliente");
+    }
   };
 
   const formatRangoHorario = (inicio, fin) => {
-    if (!inicio || !fin) return "Fecha no disponible";
+    if (!inicio || !fin) return 'Fecha no disponible';
     const dateIn = new Date(inicio);
     const dateOut = new Date(fin);
     const dia = dateIn.getDate().toString().padStart(2, '0');
@@ -114,38 +127,39 @@ const ActivityDetail = () => {
       </div>
 
       {showSelection && (
-        <div className="client-selection-modal">
-          <h3>Seleccionar cliente:</h3>
-          <div className="selection-list">
-            {availableClients
-              .filter(c => !clients.find(oc => oc.id === c.id))
-              .map(client => (
-                <button key={client.id} onClick={() => addClient(client)}>
-                  {client.nombre}
-                </button>
-              ))}
+        <div className="modal-overlay" onClick={() => setShowSelection(false)}>
+          <div className="client-modal" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Seleccionar cliente</h3>
+              <button className="close-btn" onClick={() => setShowSelection(false)}>×</button>
+            </div>
+            <input className="client-search" placeholder="Buscar cliente..." value={search} onChange={e => setSearch(e.target.value)} />
+            <div className="selection-list">
+              {availableClients
+                .filter(c => !clients.find(oc => oc.id === c.id))
+                .filter(c => c.nombre.toLowerCase().includes(search.toLowerCase()) || (c.dni || '').toLowerCase().includes(search.toLowerCase()))
+                .map(client => (
+                  <button key={client.id} className="client-option" onClick={() => addClient(client)}>
+                    <div className="client-avatar">👤</div>
+                    <div><strong>{client.nombre}</strong><small>{client.dni}</small></div>
+                  </button>
+                ))}
+            </div>
           </div>
-          <button onClick={() => setShowSelection(false)}>Cancelar</button>
         </div>
       )}
 
       <div className="slots-grid">
-        {clients.map((cliente) => (
+        {clients.map(cliente => (
           <div key={cliente.id} className="activity-slot occupied">
-            <div className="slot-content">
+            <Link to={`/clients/${cliente.id}`} className="slot-content">
               <div className="user-icon">👤</div>
               <div className="client-data">
                 <span className="client-name">{cliente.nombre}</span>
                 <span className="client-dni">{cliente.dni}</span>
               </div>
-            </div>
-            <div 
-                className="status-tag clickable" 
-                style={{ cursor: 'pointer' }} 
-                onClick={() => removeClient(cliente.id)}
-            >
-                Eliminar
-            </div>
+            </Link>
+            <div className="status-tag clickable" onClick={() => removeClient(cliente.id)}>Eliminar</div>
           </div>
         ))}
 
