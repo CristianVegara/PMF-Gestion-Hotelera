@@ -40,7 +40,7 @@ body {
     flex-grow: 1;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) rgb(139 24 24 / 4%);
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
 }
 
 .sidebar ul::-webkit-scrollbar {
