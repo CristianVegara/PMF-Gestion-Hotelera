@@ -41,7 +41,7 @@ body {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 #f1f5f9;
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
 }
 
 .sidebar ul::-webkit-scrollbar {
@@ -49,16 +49,16 @@ body {
 }
 
 .sidebar ul::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .sidebar ul::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
 }
 
 .sidebar ul::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .sidebar li {
