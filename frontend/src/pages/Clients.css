@@ -361,6 +361,32 @@
     padding: 10px 20px;
 }
 
+/* Compact stats bar (ClientsInHouse) */
+.compact-stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.stat-chip {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    color: #1a252f;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.stat-chip strong {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #007bff;
+}
+
 /* Dashboard styles */
 .dashboard-container {
     padding: 2rem;
@@ -639,6 +665,15 @@
     .stats-horizontal-bar {
         grid-template-columns: 1fr;
         gap: 1rem;
+    }
+
+    .compact-stats {
+        gap: 8px;
+    }
+
+    .stat-chip {
+        padding: 6px 12px;
+        font-size: 0.8rem;
     }
 }
 

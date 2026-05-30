@@ -629,10 +629,7 @@ const Invoice = () => {
                     {(userRole === "ADMIN" || userRole === "SUPERVISOR") && (
                     <button onClick={() => editInvoice(inv)}>Editar</button>
                     )}
-                  </td>
-                  <td>
-                    <button onClick={() => printInvoice(inv)}>PDF</button></td>
-                  <td>
+                    <button onClick={() => printInvoice(inv)}>PDF</button>
                     {(userRole === "ADMIN" || userRole === "SUPERVISOR") && (
                     <button onClick={() => deleteInvoice(inv.id)}>Eliminar</button>
                     )}
