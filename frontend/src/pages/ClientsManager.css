@@ -7,6 +7,13 @@
     gap: 5px;
     padding: 0 20px;
     margin-bottom: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.tabs-container::-webkit-scrollbar {
+    display: none;
 }
 
 .tab-button {
@@ -19,6 +26,8 @@
     color: #495057;
     border-radius: 8px 8px 0 0;
     transition: 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .tab-button.active {
@@ -46,4 +55,20 @@
     padding: 6px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+    .manager-container {
+        padding: 12px 8px;
+    }
+
+    .tabs-container {
+        padding: 0 8px;
+        gap: 4px;
+    }
+
+    .tab-button {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+    }
 }

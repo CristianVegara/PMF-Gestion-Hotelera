@@ -1,0 +1,175 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    height: 100vh;
+}
+
+#root {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background-color: #1e3a8a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.sidebar .brand {
+    font-size: 1.35rem;
+    font-weight: bold;
+    padding: 0 20px;
+    margin-bottom: 40px;
+    line-height: 1.2;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.sidebar li {
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    display: block;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar a:hover {
+    background-color: #3b5ba1;
+}
+
+.user-info {
+    color: #ffffff;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.btn-logout {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    width: 80%;
+    margin: 0 auto 20px auto;
+    display: block;
+    transition: background-color 0.2s ease;
+}
+
+.btn-logout:hover {
+    background-color: #a93226;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 24px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    #root {
+        flex-direction: column;
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 12px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    }
+
+    .sidebar .brand {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        padding: 0 4px;
+    }
+
+    .sidebar ul {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 4px;
+        flex-grow: 0;
+        overflow-y: visible;
+        /* Hide scrollbar on mobile for cleaner look */
+        scrollbar-width: none;
+    }
+
+    .sidebar ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    .sidebar li {
+        flex: 0 0 auto;
+        margin-bottom: 0;
+        scroll-snap-align: start;
+    }
+
+    .sidebar a {
+        padding: 9px 12px;
+        white-space: nowrap;
+        background-color: rgba(255,255,255,0.08);
+    }
+
+    .sidebar-footer {
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .user-info {
+        margin: 0;
+        min-width: 0;
+        overflow: hidden;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .btn-logout {
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 8px 12px;
+        width: auto;
+    }
+
+    .main-content {
+        padding: 14px;
+        /* Allow main content to grow naturally below the fixed-height navbar on mobile */
+        flex: 1;
+    }
+}

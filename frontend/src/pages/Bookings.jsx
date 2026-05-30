@@ -122,8 +122,7 @@ const Bookings = () => {
 
                     <input
                         type="text"
-                        placeholder="Hab..."
-                        style={{ width: '60px' }}
+                        placeholder="Buscar habitación..."
                         value={filterRoom}
                         onChange={(e) => setFilterRoom(e.target.value)}
                     />
