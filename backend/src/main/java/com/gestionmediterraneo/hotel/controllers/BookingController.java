@@ -9,6 +9,9 @@ import com.gestionmediterraneo.hotel.entities.Room;
 import com.gestionmediterraneo.hotel.enums.BookingStatus;
 import com.gestionmediterraneo.hotel.enums.CheckInStatus;
 import com.gestionmediterraneo.hotel.enums.RoomStatus;
+import com.gestionmediterraneo.hotel.entities.Invoice;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
+import com.gestionmediterraneo.hotel.services.BillingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,6 +35,12 @@ public class BookingController {
 
     @Autowired
     private IRoomDAO roomDao;
+
+    @Autowired
+    private BillingService billingService;
+
+    @Autowired
+    private AuditLogService auditLogService;
 
     
     @GetMapping
@@ -131,6 +140,19 @@ public class BookingController {
     public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
         try {          
             Booking savedBooking = bookingDao.save(booking);
+            Invoice pendingInvoice = billingService.createPendingInvoiceForBooking(savedBooking);
+            auditLogService.record(
+                    "RESERVA_CREADA",
+                    "Booking",
+                    savedBooking.getId(),
+                    "Reserva creada para cliente ID " + (savedBooking.getCliente() != null ? savedBooking.getCliente().getId() : "-")
+                            + " del " + savedBooking.getFechaEntrada()
+                            + " al " + savedBooking.getFechaSalida());
+            auditLogService.record(
+                    "FACTURA_PENDIENTE_GENERADA",
+                    "Invoice",
+                    pendingInvoice != null ? pendingInvoice.getId() : null,
+                    "Factura pendiente creada automáticamente para reserva ID " + savedBooking.getId());
             return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
 
         } catch (Exception e) {

@@ -12,6 +12,7 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionmediterraneo.hotel.entities.Client;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
 import com.gestionmediterraneo.hotel.services.IClientService;
 import com.gestionmediterraneo.hotel.security.JwtUtils;
 

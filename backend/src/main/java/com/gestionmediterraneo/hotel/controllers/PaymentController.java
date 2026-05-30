@@ -14,6 +14,8 @@ import com.gestionmediterraneo.hotel.daos.IInvoiceDAO;
 import com.gestionmediterraneo.hotel.daos.IPaymentDAO;
 import com.gestionmediterraneo.hotel.entities.Invoice;
 import com.gestionmediterraneo.hotel.entities.Payment;
+import com.gestionmediterraneo.hotel.enums.InvoiceStatus;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -25,6 +27,9 @@ public class PaymentController {
 
     @Autowired
     private IInvoiceDAO invoiceDao;
+
+    @Autowired
+    private AuditLogService auditLogService;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
@@ -40,7 +45,14 @@ public class PaymentController {
             payment.setClient(invoice.getCliente());
             Payment saved = paymentDao.save(payment);
             invoice.setPagada(true);
+            invoice.setStatus(InvoiceStatus.PAGADA);
             invoiceDao.save(invoice);
+            auditLogService.record(
+                    "PAGO_REGISTRADO",
+                    "Payment",
+                    saved.getId(),
+                    "Pago registrado para factura ID " + invoice.getId()
+                            + " por importe " + saved.getAmount());
             response.put("mensaje", "Pago registrado con éxito");
             response.put("data", saved);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);

@@ -908,6 +908,14 @@ INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, ro
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 14, 24, 0, 2);
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES ('2025-11-01', '2025-11-15', 1, 15, 25, 0, 2);
 
+-- Datos de prueba para el nuevo sistema de facturación
+-- Reservas controladas con facturas asociadas: pagadas, pendientes, actividades, minibar y extras.
+INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9001, '2026-05-03', '2026-05-06', 1, 1, 1, 0, 2);
+INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9002, '2026-05-07', '2026-05-11', 1, 2, 41, 1, 2);
+INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9003, '2026-05-14', '2026-05-18', 1, 3, 81, 2, 2);
+INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9004, '2026-05-24', '2026-05-27', 1, 4, 5, 0, 1);
+INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9005, '2026-06-02', '2026-06-05', 1, 5, 45, 1, 0);
+INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9006, '2026-06-08', '2026-06-12', 1, 6, 85, 2, 0);
 
 INSERT INTO booking (fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1, 1, null, 0, 0);
 

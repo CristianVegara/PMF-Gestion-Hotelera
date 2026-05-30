@@ -2,81 +2,144 @@ package com.gestionmediterraneo.hotel.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gestionmediterraneo.hotel.daos.IInvoiceItemDAO;
+import com.gestionmediterraneo.hotel.daos.IInvoiceDAO;
+import com.gestionmediterraneo.hotel.entities.Invoice;
 import com.gestionmediterraneo.hotel.entities.InvoiceItem;
 import com.gestionmediterraneo.hotel.enums.InvoiceItemType;
 
 @Service
 public class RevenueReportService {
 
-    private final IInvoiceItemDAO invoiceItemDao;
+    private final IInvoiceDAO invoiceDao;
 
-    public RevenueReportService(IInvoiceItemDAO invoiceItemDao) {
-        this.invoiceItemDao = invoiceItemDao;
+    public RevenueReportService(IInvoiceDAO invoiceDao) {
+        this.invoiceDao = invoiceDao;
     }
 
     @Transactional(readOnly = true)
     public RevenueReportResponse calculateRevenue(LocalDate start, LocalDate end, Long roomId, Long clientId, String type) {
-        List<InvoiceItem> items = invoiceItemDao.findByInvoice_FechaEmisionBetween(start, end);
+        List<Invoice> invoices = invoiceDao.findByFechaEmisionBetweenAndPagadaTrue(start, end);
 
         if (roomId != null) {
-            items = items.stream()
-                .filter(item -> item.getInvoice().getBooking() != null && item.getInvoice().getBooking().getHabitacion() != null)
-                .filter(item -> roomId.equals(item.getInvoice().getBooking().getHabitacion().getId()))
+            invoices = invoices.stream()
+                .filter(invoice -> invoice.getHabitacion() != null)
+                .filter(invoice -> roomId.equals(invoice.getHabitacion().getId()))
                 .collect(Collectors.toList());
         }
 
         if (clientId != null) {
-            items = items.stream()
-                .filter(item -> item.getInvoice().getCliente() != null)
-                .filter(item -> clientId.equals(item.getInvoice().getCliente().getId()))
+            invoices = invoices.stream()
+                .filter(invoice -> invoice.getCliente() != null)
+                .filter(invoice -> clientId.equals(invoice.getCliente().getId()))
                 .collect(Collectors.toList());
         }
 
+        InvoiceItemType selectedType = null;
         if (type != null && !type.isBlank()) {
             try {
-                InvoiceItemType itemType = InvoiceItemType.valueOf(type.toUpperCase());
-                items = items.stream()
-                    .filter(item -> item.getType() == itemType)
-                    .collect(Collectors.toList());
+                selectedType = InvoiceItemType.valueOf(type.toUpperCase());
             } catch (IllegalArgumentException e) {
-                items = new ArrayList<>();
+                return new RevenueReportResponse(List.of(), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
             }
         }
+        final InvoiceItemType typeFilter = selectedType;
 
         Map<InvoiceItemType, BigDecimal> categoryTotals = new HashMap<>();
-        BigDecimal gross = BigDecimal.ZERO;
-        BigDecimal net = BigDecimal.ZERO;
-        BigDecimal tax = BigDecimal.ZERO;
+        BigDecimal totalGross = BigDecimal.ZERO;
+        BigDecimal totalNet = BigDecimal.ZERO;
+        BigDecimal totalTax = BigDecimal.ZERO;
 
-        for (InvoiceItem item : items) {
-            BigDecimal amount = item.getAmount() != null ? item.getAmount() : BigDecimal.ZERO;
-            gross = gross.add(amount);
-            if (item.getInvoice() != null && item.getInvoice().getIva() != null) {
-                tax = tax.add(item.getInvoice().getIva());
+        for (Invoice invoice : invoices) {
+            List<InvoiceItem> items = invoice.getItems();
+            boolean hasItems = items != null && !items.isEmpty();
+
+            if (typeFilter != null && hasItems) {
+                List<InvoiceItem> matchingItems = items.stream()
+                        .filter(item -> item.getType() == typeFilter)
+                        .collect(Collectors.toList());
+
+                if (matchingItems.isEmpty()) {
+                    continue;
+                }
+
+                BigDecimal matchingBase = matchingItems.stream()
+                        .map(InvoiceItem::getAmount)
+                        .filter(Objects::nonNull)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                BigDecimal invoiceBase = items.stream()
+                        .map(InvoiceItem::getAmount)
+                        .filter(Objects::nonNull)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                BigDecimal invoiceGross = amountOrZero(invoice.getTotal());
+                BigDecimal invoiceNet = amountOrZero(invoice.getSubtotal());
+                BigDecimal invoiceTax = amountOrZero(invoice.getIva());
+
+                BigDecimal ratio = invoiceBase.compareTo(BigDecimal.ZERO) == 0
+                        ? BigDecimal.ONE
+                        : matchingBase.divide(invoiceBase, 6, java.math.RoundingMode.HALF_UP);
+
+                BigDecimal gross = invoiceGross.multiply(ratio);
+                BigDecimal net = invoiceNet.multiply(ratio);
+                BigDecimal tax = invoiceTax.multiply(ratio);
+
+                totalGross = totalGross.add(gross);
+                totalNet = totalNet.add(net);
+                totalTax = totalTax.add(tax);
+                categoryTotals.merge(typeFilter, gross, BigDecimal::add);
+                continue;
             }
-            categoryTotals.merge(item.getType(), amount, BigDecimal::add);
+
+            if (typeFilter != null) {
+                continue;
+            }
+
+            BigDecimal gross = amountOrZero(invoice.getTotal());
+            BigDecimal net = amountOrZero(invoice.getSubtotal());
+            BigDecimal tax = amountOrZero(invoice.getIva());
+
+            totalGross = totalGross.add(gross);
+            totalNet = totalNet.add(net);
+            totalTax = totalTax.add(tax);
+
+            if (hasItems) {
+                BigDecimal invoiceBase = items.stream()
+                        .map(InvoiceItem::getAmount)
+                        .filter(Objects::nonNull)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                for (InvoiceItem item : items) {
+                    BigDecimal itemAmount = amountOrZero(item.getAmount());
+                    BigDecimal ratio = invoiceBase.compareTo(BigDecimal.ZERO) == 0
+                            ? BigDecimal.ZERO
+                            : itemAmount.divide(invoiceBase, 6, java.math.RoundingMode.HALF_UP);
+                    categoryTotals.merge(item.getType(), gross.multiply(ratio), BigDecimal::add);
+                }
+            } else {
+                categoryTotals.merge(InvoiceItemType.HABITACION, gross, BigDecimal::add);
+            }
         }
 
-        net = gross.subtract(tax);
-
         List<RevenueReportDTO> breakdown = categoryTotals.entrySet().stream()
-                .map(entry -> new RevenueReportDTO(entry.getKey().name(), entry.getValue(), entry.getValue(), entry.getValue().subtract(itemTax(entry.getKey(), entry.getValue())), itemTax(entry.getKey(), entry.getValue())))
+                .map(entry -> {
+                    BigDecimal gross = entry.getValue();
+                    BigDecimal net = gross.divide(BigDecimal.valueOf(1.10), 2, java.math.RoundingMode.HALF_UP);
+                    BigDecimal tax = gross.subtract(net);
+                    return new RevenueReportDTO(entry.getKey().name(), gross, gross, net, tax);
+                })
                 .collect(Collectors.toList());
 
-        return new RevenueReportResponse(breakdown, gross, net, tax);
+        return new RevenueReportResponse(breakdown, totalGross, totalNet, totalTax);
     }
 
-    private BigDecimal itemTax(InvoiceItemType type, BigDecimal amount) {
-        return amount.multiply(BigDecimal.valueOf(0.10));
+    private BigDecimal amountOrZero(BigDecimal amount) {
+        return amount != null ? amount : BigDecimal.ZERO;
     }
 }

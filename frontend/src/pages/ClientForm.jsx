@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ClientForm.css';
 
-
-
 const ClientForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -84,7 +82,7 @@ const ClientForm = () => {
       } else {
         alert(data.mensaje || 'Error inesperado');
       }
-    } catch (err) {
+    } catch {
       alert('Error de conexión');
     }
   };

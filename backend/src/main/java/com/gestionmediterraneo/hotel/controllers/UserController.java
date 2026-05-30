@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionmediterraneo.hotel.entities.Employee;
 import com.gestionmediterraneo.hotel.entities.User;
+import com.gestionmediterraneo.hotel.services.AuditLogService;
 import com.gestionmediterraneo.hotel.services.IUserService;
 import com.gestionmediterraneo.hotel.services.IEmployeeService;
 
@@ -44,6 +45,9 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuditLogService auditLogService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
@@ -116,6 +120,11 @@ public class UserController {
 
         response.put("mensaje", "El usuario ha sido creado con éxito");
         response.put("user", newUser);
+        auditLogService.record(
+                "USUARIO_CREADO",
+                "User",
+                newUser.getId(),
+                "Usuario creado: " + newUser.getUsername() + " con rol " + newUser.getRole());
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
@@ -159,6 +168,11 @@ public class UserController {
 
         response.put("mensaje", "El usuario ha sido actualizado con éxito");
         response.put("user", updatedUser);
+        auditLogService.record(
+                "USUARIO_ACTUALIZADO",
+                "User",
+                updatedUser.getId(),
+                "Usuario actualizado: " + updatedUser.getUsername() + " con rol " + updatedUser.getRole());
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
@@ -175,6 +189,11 @@ public class UserController {
             }
 
             userService.delete(usuario);
+            auditLogService.record(
+                    "USUARIO_ELIMINADO",
+                    "User",
+                    usuario.getId(),
+                    "Usuario eliminado: " + usuario.getUsername());
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al eliminar el usuario de la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

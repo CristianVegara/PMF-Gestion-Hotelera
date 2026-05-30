@@ -11,12 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gestionmediterraneo.hotel.daos.IChargeDAO;
 import com.gestionmediterraneo.hotel.daos.IInvoiceDAO;
-import com.gestionmediterraneo.hotel.daos.IInvoiceItemDAO;
 import com.gestionmediterraneo.hotel.daos.IBookingDAO;
+import com.gestionmediterraneo.hotel.daos.IRoomDAO;
 import com.gestionmediterraneo.hotel.entities.Charge;
 import com.gestionmediterraneo.hotel.entities.Invoice;
 import com.gestionmediterraneo.hotel.entities.InvoiceItem;
 import com.gestionmediterraneo.hotel.entities.Booking;
+import com.gestionmediterraneo.hotel.entities.Room;
 import com.gestionmediterraneo.hotel.enums.InvoiceItemType;
 import com.gestionmediterraneo.hotel.enums.InvoiceStatus;
 
@@ -24,21 +25,41 @@ import com.gestionmediterraneo.hotel.enums.InvoiceStatus;
 public class BillingService {
 
     private final IInvoiceDAO invoiceDao;
-    private final IInvoiceItemDAO invoiceItemDao;
     private final IBookingDAO bookingDao;
     private final IChargeDAO chargeDao;
+    private final IRoomDAO roomDao;
+    private final LoyaltyService loyaltyService;
 
-    public BillingService(IInvoiceDAO invoiceDao, IInvoiceItemDAO invoiceItemDao, IBookingDAO bookingDao, IChargeDAO chargeDao) {
+    public BillingService(IInvoiceDAO invoiceDao, IBookingDAO bookingDao, IChargeDAO chargeDao, IRoomDAO roomDao, LoyaltyService loyaltyService) {
         this.invoiceDao = invoiceDao;
-        this.invoiceItemDao = invoiceItemDao;
         this.bookingDao = bookingDao;
         this.chargeDao = chargeDao;
+        this.roomDao = roomDao;
+        this.loyaltyService = loyaltyService;
     }
 
     @Transactional
     public Invoice generateInvoice(InvoiceGenerationRequest request) {
         Booking booking = bookingDao.findById(request.getBookingId()).orElseThrow(() -> new IllegalArgumentException("Booking no encontrado"));
+        return createOrUpdateInvoice(booking, request.getTaxPercentage(), request.getDiscountPercentage(), request.getMemo());
+    }
 
+    @Transactional
+    public Invoice createPendingInvoiceForBooking(Booking booking) {
+        return createOrUpdateInvoice(booking, BigDecimal.valueOf(10), null, "Reserva pendiente de abono");
+    }
+
+    @Transactional
+    public void markBookingInvoicesPaid(Long bookingId) {
+        List<Invoice> invoices = invoiceDao.findByBooking_Id(bookingId);
+        for (Invoice invoice : invoices) {
+            invoice.setPagada(true);
+            invoice.setStatus(InvoiceStatus.PAGADA);
+        }
+        invoiceDao.saveAll(invoices);
+    }
+
+    private Invoice createOrUpdateInvoice(Booking booking, BigDecimal taxPercentage, BigDecimal requestedDiscountPercentage, String memo) {
         LocalDate checkIn = booking.getFechaEntrada();
         LocalDate checkOut = booking.getFechaSalida();
         long nights = ChronoUnit.DAYS.between(checkIn, checkOut);
@@ -46,14 +67,25 @@ public class BillingService {
             throw new IllegalArgumentException("Las fechas de reserva no son válidas");
         }
 
-        BigDecimal roomPrice = BigDecimal.valueOf(booking.getHabitacion().getPrice());
+        Room billingRoom = booking.getHabitacion();
+        if (billingRoom == null && booking.getRoomType() != null) {
+            billingRoom = roomDao.findFirstByType(booking.getRoomType()).orElse(null);
+        }
+        if (billingRoom == null) {
+            throw new IllegalArgumentException("La reserva debe tener una habitación o tipo de habitación para generar la factura");
+        }
+
+        BigDecimal roomPrice = BigDecimal.valueOf(billingRoom.getPrice());
         BigDecimal roomSubtotal = roomPrice.multiply(BigDecimal.valueOf(nights));
         BigDecimal subtotal = roomSubtotal;
 
         List<Charge> charges = chargeDao.findByBookingId(booking.getId());
         List<InvoiceItem> items = new ArrayList<>();
 
-        items.add(buildItem(InvoiceItemType.HABITACION, "Habitación " + booking.getHabitacion().getNumber(), (int) nights, roomPrice, roomSubtotal));
+        String roomDescription = booking.getHabitacion() != null
+                ? "Habitación " + booking.getHabitacion().getNumber()
+                : "Habitación " + booking.getRoomType();
+        items.add(buildItem(InvoiceItemType.HABITACION, roomDescription, (int) nights, roomPrice, roomSubtotal));
 
         for (Charge charge : charges) {
             BigDecimal amount = charge.getAmount();
@@ -62,30 +94,42 @@ public class BillingService {
             charge.setAppliedToInvoice(true);
         }
 
-        BigDecimal discountPct = request.getDiscountPercentage() == null ? BigDecimal.ZERO : request.getDiscountPercentage();
+        BigDecimal discountPct = requestedDiscountPercentage;
+        String loyaltyRank = null;
+        if (discountPct == null && booking.getCliente() != null) {
+            LoyaltyTier tier = loyaltyService.calculateTier(booking.getCliente());
+            discountPct = BigDecimal.valueOf(tier.getDiscountPercentage());
+            loyaltyRank = tier.getRank();
+        }
+        if (discountPct == null) {
+            discountPct = BigDecimal.ZERO;
+        }
+
         BigDecimal discountAmount = subtotal.multiply(discountPct).divide(BigDecimal.valueOf(100));
         BigDecimal subtotalAfterDiscount = subtotal.subtract(discountAmount);
-        BigDecimal taxPct = request.getTaxPercentage() == null ? BigDecimal.ZERO : request.getTaxPercentage();
+        BigDecimal taxPct = taxPercentage == null ? BigDecimal.ZERO : taxPercentage;
         BigDecimal taxAmount = subtotalAfterDiscount.multiply(taxPct).divide(BigDecimal.valueOf(100));
         BigDecimal total = subtotalAfterDiscount.add(taxAmount);
 
-        Invoice invoice = new Invoice();
+        Invoice invoice = invoiceDao.findByBooking_Id(booking.getId()).stream().findFirst().orElseGet(Invoice::new);
         invoice.setCliente(booking.getCliente());
         invoice.setHabitacion(booking.getHabitacion());
         invoice.setBooking(booking);
         invoice.setStatus(InvoiceStatus.PENDIENTE);
         invoice.setFechaEmision(LocalDate.now());
-        invoice.setConcepto(request.getMemo() == null ? "Factura generada para reserva" : request.getMemo());
+        invoice.setConcepto(memo == null || memo.isBlank() ? "Factura generada para reserva" : memo);
         invoice.setNoches((int) nights);
         invoice.setPrecio(roomPrice);
         invoice.setSubtotalBeforeDiscount(subtotal);
         invoice.setDiscountPercentage(discountPct);
         invoice.setDiscountAmount(discountAmount);
+        invoice.setLoyaltyRank(loyaltyRank);
         invoice.setSubtotal(subtotalAfterDiscount);
         invoice.setIva(taxAmount);
         invoice.setTotal(total);
         invoice.setPagada(false);
-        invoice.setItems(items);
+        invoice.getItems().clear();
+        invoice.getItems().addAll(items);
 
         for (InvoiceItem item : items) {
             item.setInvoice(invoice);

@@ -34,7 +34,7 @@ const Login = ({ setUser }) => {
       }
       
       const user = {
-        username: username,
+        username: data.username || username,
         role: data.role || "USER" 
       };
       
@@ -47,7 +47,7 @@ const Login = ({ setUser }) => {
       
       navigate("/rooms");
       
-    } catch (err) {
+    } catch {
       setError("Credenciales incorrectas o error de conexión con el servidor");
     }
   };
