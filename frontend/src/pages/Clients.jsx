@@ -101,7 +101,7 @@ const Clients = () => {
         </div>
         
         <div className="table-responsive">
-          <table className="clients-table">
+          <table className="modern-table">
             <thead>
               <tr>
                 <th>ID</th>

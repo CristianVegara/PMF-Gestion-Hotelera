@@ -1026,4 +1026,26 @@ INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 4, 2, 'Tarde');
 INSERT INTO shifts (fecha, employee_id, schedule_id, observaciones) VALUES (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 8, 3, 'Noche');
 
+INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9010, '2026-04-28', '2026-05-03', 1, 1, 1, 0, 2);
+
+INSERT INTO booking (id, fecha_entrada, fecha_salida, estado, client_id, room_id, room_type, check_in_status) VALUES (9011, '2026-06-15', '2026-06-20', 1, 2, 2, 0, 2);
+
+INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage,discount_amount, loyalty_rank, subtotal, iva, total, pagada) VALUES (9010, 9010, 1, 1, 'PAGADA', '2026-04-30', 'Estancia puente abril-mayo', 5, 45.00, 225.00, 0.00, 0.00, 'Sin rango', 225.00, 22.50, 247.50, b'1');
+
+INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada) VALUES (9011, 9011, 2, 2, 'PAGADA', '2026-06-15', 'Estancia junio fuera de rango', 5, 75.00, 375.00, 5.00, 18.75, 'SILVER', 356.25, 35.63, 391.88, b'1');
+
+INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada) VALUES (9012, null, null, 3, 'PAGADA', '2026-05-20', 'Cargo manual mayo sin reserva', 1, 50.00, 50.00, 0.00, 0.00, 'Sin rango', 50.00, 5.00, 55.00, b'1');
+
+INSERT INTO invoices (id, booking_id, room_id, cliente_id, status, fecha_emision, concepto, noches, precio, subtotal_before_discount, discount_percentage, discount_amount, loyalty_rank, subtotal, iva, total, pagada) VALUES (9013, null, null, 4, 'PAGADA', '2026-06-01', 'Cargo manual junio sin reserva', 1, 60.00, 60.00, 0.00, 0.00, 'Sin rango', 60.00, 6.00, 66.00, b'1');
+
+-- Items para las nuevas facturas
+INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9010, 'HABITACION', 'Habitación 101 - 5 noches puente', 5, 45.00, 225.00);
+
+INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9011, 'HABITACION', 'Habitación 201 - 5 noches junio', 5, 75.00, 375.00);
+
+INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9012, 'EXTRA', 'Cargo manual mayo', 1, 50.00, 50.00);
+
+INSERT INTO invoice_items (invoice_id, type, description, quantity, unit_price, amount) VALUES (9013, 'EXTRA', 'Cargo manual junio', 1, 60.00, 60.00);
+
+
 SET FOREIGN_KEY_CHECKS = 1;

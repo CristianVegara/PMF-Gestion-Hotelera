@@ -145,3 +145,39 @@ button:disabled {
     color: #94a3b8;
     margin: 0;
 }
+
+@media (max-width: 640px) {
+    .booking-form-wrapper {
+        padding: 12px;
+        align-items: flex-start;
+    }
+
+    .form-card {
+        padding: 20px 16px;
+        border-radius: 10px;
+    }
+
+    .form-card h2 {
+        font-size: 1.25rem;
+    }
+
+    .dates-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+
+    .client-selector-box {
+        font-size: 1rem;
+    }
+}

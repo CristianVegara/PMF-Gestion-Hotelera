@@ -53,6 +53,7 @@ html, body {
     display: flex;
     gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .btn-status-action {
@@ -114,6 +115,8 @@ html, body {
     justify-content: space-between;
     align-items: center;
     max-width: 900px;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .info-label {
@@ -236,6 +239,7 @@ html, body {
 .history-list {
     flex: 1;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding-right: 5px;
 }
 
@@ -270,13 +274,16 @@ html, body {
     align-items: center;
     z-index: 1000;
     backdrop-filter: blur(3px);
+    padding: 16px;
+    box-sizing: border-box;
 }
 
 .modal-content {
     background: white;
     padding: 30px;
     border-radius: 15px;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
@@ -327,12 +334,67 @@ html, body {
     .calendar-section, .history-section {
         flex: none;
         height: auto;
-        min-height: 500px;
+        min-height: auto;
+    }
+
+    .datepicker-container {
+        margin-bottom: 20px;
     }
 
     .btn-new-res {
-        position: sticky; 
-        float: right;
-        margin-top: -50px;
+        position: static;
+        float: none;
+        margin-top: 16px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .room-details-page {
+        padding: 12px;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .details-header-card {
+        padding: 16px;
+        border-left-width: 5px;
+    }
+
+    .header-main-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .room-actions-status-container {
+        width: 100%;
+    }
+
+    .btn-status-action {
+        flex: 1;
+        text-align: center;
+    }
+
+    .info-grid {
+        gap: 16px;
+    }
+
+    .react-datepicker__day,
+    .react-datepicker__day-name {
+        line-height: 2.4rem !important;
+        font-size: 0.9rem;
+    }
+
+    .calendar-section,
+    .history-section {
+        padding: 16px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .btn-modal {
+        width: 100%;
     }
 }

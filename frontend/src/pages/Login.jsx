@@ -45,7 +45,7 @@ const Login = ({ setUser }) => {
         setUser(user);
       }
       
-      navigate("/rooms");
+      navigate("/clients");
       
     } catch {
       setError("Credenciales incorrectas o error de conexión con el servidor");

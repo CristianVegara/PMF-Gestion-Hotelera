@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.gestionmediterraneo.hotel.security.JwtUtils;
-import com.gestionmediterraneo.hotel.services.RevenueReportResponse;
 import com.gestionmediterraneo.hotel.services.RevenueReportService;
 
 @WebMvcTest(controllers = RevenueController.class, properties = "spring.main.allow-bean-definition-overriding=true")
@@ -35,9 +36,10 @@ class RevenueControllerTest {
 
     @Test
     void shouldReturnRevenueReportSuccessfully() throws Exception {
-        RevenueReportResponse report = new RevenueReportResponse();
-        
-        when(revenueReportService.calculateRevenue(any(LocalDate.class), any(LocalDate.class), any(), any(), any()))
+        Map<String, Object> report = new HashMap<>();
+
+        when(revenueReportService.calculateRevenue(
+                any(LocalDate.class), any(LocalDate.class), any(), any(), any()))
                 .thenReturn(report);
 
         mockMvc.perform(get("/api/reports/revenue")
@@ -49,7 +51,8 @@ class RevenueControllerTest {
 
     @Test
     void shouldReturnInternalServerErrorWhenCalculationFails() throws Exception {
-        when(revenueReportService.calculateRevenue(any(LocalDate.class), any(LocalDate.class), any(), any(), any()))
+        when(revenueReportService.calculateRevenue(
+                any(LocalDate.class), any(LocalDate.class), any(), any(), any()))
                 .thenThrow(new RuntimeException("Service error"));
 
         mockMvc.perform(get("/api/reports/revenue")

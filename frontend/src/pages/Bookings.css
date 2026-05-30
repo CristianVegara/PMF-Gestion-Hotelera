@@ -41,24 +41,32 @@
     color: white;
 }
 
-.bookings-table {
-    width: 100%;
-    border-collapse: collapse;
+.sort-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
 }
 
-.bookings-table th {
-    background-color: #f8f9fa;
-    color: #7f8c8d;
-    padding: 15px;
-    text-align: left;
-    border-bottom: 2px solid #eee;
+.sort-controls input,
+.sort-controls select {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
 }
 
-.bookings-table td {
-    padding: 15px;
-    border-bottom: 1px solid #f2f2f2;
-    color: #2c3e50;
-    vertical-align: middle;
+.results-counter {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0 0 12px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
 }
 
 .booking-row:hover {
@@ -70,6 +78,14 @@
     padding: 4px 10px;
     border-radius: 15px;
     font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
     font-weight: 600;
 }
 
@@ -98,14 +114,19 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    padding: 16px;
+    box-sizing: border-box;
 }
 
 .modal-content {
     background: white;
     padding: 30px;
     border-radius: 12px;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .form-group {
@@ -150,6 +171,7 @@
     border-radius: 6px;
     cursor: pointer;
 }
+
 .modal-confirm-delete {
     text-align: center;
     border-top: 5px solid #e74c3c;
@@ -183,3 +205,45 @@
 
 .btn-edit { background-color: #d1ecf1; color: #0c5460; }
 .btn-delete { background-color: #f8d7da; color: #721c24; }
+
+@media (max-width: 768px) {
+    .bookings-page-wrapper {
+        padding: 16px 10px;
+    }
+
+    .bookings-container {
+        padding: 16px 12px;
+        border-radius: 10px;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .title-list {
+        font-size: 1.45rem;
+    }
+
+    .sort-controls {
+        flex-direction: column;
+    }
+
+    .sort-controls input,
+    .sort-controls select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .btn-save,
+    .btn-cancel {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -55,15 +55,6 @@
     padding: 10px 0;
 }
 
-.sort-controls label {
-    font-weight: 600;
-    color: #1a252f;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.95rem;
-}
-
 .sort-controls select {
     padding: 8px 12px;
     border-radius: 6px;
@@ -169,14 +160,13 @@
     border: 1px solid #dee2e6;
     -webkit-overflow-scrolling: touch;
 }
-
-.invoices-table {
+.modern-table {
     width: 100%;
     min-width: 1040px;
     border-collapse: collapse;
 }
 
-.invoices-table th {
+.modern-table th {
     background-color: #1a252f;
     color: #ffffff;
     text-align: left;
@@ -187,21 +177,22 @@
     font-size: 0.85rem;
 }
 
-.invoices-table td {
+.modern-table td {
     padding: 16px 15px;
     border-bottom: 1px solid #dee2e6;
     color: #212529;
     background-color: #ffffff;
     transition: background-color 0.2s ease;
+    white-space: nowrap;
 }
 
-.invoices-table tr:hover td {
+.modern-table tr:hover td {
     background-color: #e2e6ea !important;
     color: #000000 !important;
     cursor: pointer;
 }
 
-.invoices-table tr:last-child td {
+.modern-table tr:last-child td {
     border-bottom: none;
 }
 
@@ -271,14 +262,6 @@
     background-color: #a93226;
 }
 
-.invoice-breakdown {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
 .invoice-subtotal {
     color: #6c757d;
 }
@@ -332,7 +315,7 @@
     white-space: nowrap;
 }
 
-.invoices-table tr:hover .invoice-breakdown {
+.modern-table tr:hover{
     transform: scale(1.01);
     transition: all 0.2s ease;
 }
@@ -373,14 +356,8 @@
 
     .sort-controls {
         align-items: stretch;
-        flex-direction: column;
+        flex-direction: row;
         gap: 12px;
-    }
-
-    .sort-controls label {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 6px;
     }
 
     .sort-controls select {

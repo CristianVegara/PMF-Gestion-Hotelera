@@ -44,14 +44,6 @@
     align-items: flex-end;
 }
 
-.sort-controls label {
-    display: flex;
-    flex-direction: column;
-    font-weight: 600;
-    color: #555;
-    gap: 5px;
-}
-
 .sort-controls input, 
 .sort-controls select {
     padding: 10px;
@@ -61,23 +53,6 @@
 
 .table-responsive {
     overflow-x: auto;
-}
-
-.clients-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.clients-table th {
-    text-align: left;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
-}
-
-.clients-table td {
-    padding: 15px;
-    border-bottom: 1px solid #dee2e6;
 }
 
 .clickable-row {
@@ -120,7 +95,7 @@
 
 @media (max-width: 768px) {
     .sort-controls {
-        flex-direction: column;
+        flex-direction: row;
         align-items: stretch;
     }
 }

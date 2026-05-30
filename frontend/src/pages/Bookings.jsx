@@ -122,8 +122,7 @@ const Bookings = () => {
 
                     <input
                         type="text"
-                        placeholder="Hab..."
-                        style={{ width: '60px' }}
+                        placeholder="Buscar habitación..."
                         value={filterRoom}
                         onChange={(e) => setFilterRoom(e.target.value)}
                     />
@@ -134,7 +133,7 @@ const Bookings = () => {
                 </p>
 
                 <div className="table-responsive">
-                    <table className="bookings-table">
+                    <table className="modern-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
