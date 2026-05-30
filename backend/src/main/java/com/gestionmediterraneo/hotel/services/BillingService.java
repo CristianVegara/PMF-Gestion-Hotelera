@@ -77,9 +77,6 @@ public class BillingService {
         }
         invoiceDao.saveAll(invoices);
     }
-        LocalDate checkOut = booking.getFechaSalida();
-        long nights = ChronoUnit.DAYS.between(checkIn, checkOut);
-        if (nights <= 0) {
     /**
      * Single method that builds or refreshes an invoice.
      *
@@ -93,6 +90,12 @@ public class BillingService {
             BigDecimal requestedDiscountPercentage,
             String memo,
             boolean isPending) {
+
+        long nights = resolveNights(booking);
+        Room billingRoom = resolveRoom(booking);
+
+        // --- room line ---
+        BigDecimal roomPrice    = BigDecimal.valueOf(billingRoom.getPrice());
         BigDecimal roomSubtotal = roomPrice.multiply(BigDecimal.valueOf(nights));
 
         // --- charges ---
