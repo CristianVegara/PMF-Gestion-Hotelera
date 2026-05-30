@@ -73,6 +73,7 @@
     padding: 15px;
     background-color: #f8f9fa;
     border-bottom: 2px solid #dee2e6;
+    color: #000;
 }
 
 .clients-table td {
@@ -120,7 +121,7 @@
 
 @media (max-width: 768px) {
     .sort-controls {
-        flex-direction: column;
+        flex-direction: row;
         align-items: stretch;
     }
 }
