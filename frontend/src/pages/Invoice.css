@@ -55,15 +55,6 @@
     padding: 10px 0;
 }
 
-.sort-controls label {
-    font-weight: 600;
-    color: #1a252f;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.95rem;
-}
-
 .sort-controls select {
     padding: 8px 12px;
     border-radius: 6px;
@@ -367,12 +358,6 @@
         align-items: stretch;
         flex-direction: column;
         gap: 12px;
-    }
-
-    .sort-controls label {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 6px;
     }
 
     .sort-controls select {

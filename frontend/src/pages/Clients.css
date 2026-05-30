@@ -58,7 +58,7 @@
     font-weight: 600;
     color: #1a252f;
     display: flex;
-    align-items: center;
+    align-items: start;
     gap: 10px;
 }
 

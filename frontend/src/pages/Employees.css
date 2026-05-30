@@ -44,14 +44,6 @@
     align-items: flex-end;
 }
 
-.sort-controls label {
-    display: flex;
-    flex-direction: column;
-    font-weight: 600;
-    color: #555;
-    gap: 5px;
-}
-
 .sort-controls input, 
 .sort-controls select {
     padding: 10px;
