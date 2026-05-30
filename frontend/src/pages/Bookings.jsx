@@ -133,7 +133,7 @@ const Bookings = () => {
                 </p>
 
                 <div className="table-responsive">
-                    <table className="bookings-table">
+                    <table className="modern-table">
                         <thead>
                             <tr>
                                 <th>ID</th>

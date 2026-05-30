@@ -63,24 +63,6 @@
     overflow-x: auto;
 }
 
-.clients-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.clients-table th {
-    text-align: left;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
-    color: #000;
-}
-
-.clients-table td {
-    padding: 15px;
-    border-bottom: 1px solid #dee2e6;
-}
-
 .clickable-row {
     cursor: pointer;
     transition: background 0.2s ease;

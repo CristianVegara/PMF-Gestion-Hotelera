@@ -480,7 +480,7 @@ const Invoice = () => {
 
                 {Array.isArray(reportData.breakdown) && reportData.breakdown.length > 0 ? (
                   <div className="table-responsive">
-                    <table className="invoices-table">
+                    <table className="modern-table">
                       <thead>
                         <tr>
                           <th>Concepto</th>
@@ -557,7 +557,7 @@ const Invoice = () => {
 
                 {Array.isArray(expenseResult.invoices) && expenseResult.invoices.length > 0 && (
                   <div className="table-responsive">
-                    <table className="invoices-table">
+                    <table className="modern-table">
                       <thead>
                         <tr>
                           <th>ID</th>
@@ -593,7 +593,7 @@ const Invoice = () => {
         </div>
 
         <div className="table-responsive">
-          <table className="invoices-table">
+          <table className="modern-table">
             <thead>
               <tr>
                 <th>ID</th>
