@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import com.gestionmediterraneo.hotel.entities.Shift;
 import com.gestionmediterraneo.hotel.services.IShiftService;
 
+/**
+ * REST controller for managing {@link Shift} resources.
+ *
+ * @author Gestión Mediterráneo
+ */
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/shifts")
@@ -99,7 +104,7 @@ public class ShiftController {
         response.put("mensaje", "El turno ha sido eliminado con éxito");
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
-    
+
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('RECEPCIONISTA')")
     public ResponseEntity<?> updateShift(@PathVariable Long id, @RequestBody Shift shiftDetails) {
@@ -107,16 +112,16 @@ public class ShiftController {
                 .filter(s -> s.getId().equals(id))
                 .findFirst()
                 .orElse(null);
-        
+
         if (shift == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        
+
         shift.setFecha(shiftDetails.getFecha());
         shift.setEmployee(shiftDetails.getEmployee());
         shift.setSchedule(shiftDetails.getSchedule());
         shift.setObservaciones(shiftDetails.getObservaciones());
-        
+
         return ResponseEntity.ok(shiftService.save(shift));
     }
 }

@@ -6,15 +6,34 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+/**
+ * Service for calculating client loyalty tiers based on booking history.
+ *
+ * <p>Tiers are determined by the number of bookings in the last 3, 6,
+ * and 12 months, as well as the total number of bookings.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see LoyaltyTier
+ */
 @Service
 public class LoyaltyService {
 
+    /** Booking DAO. */
     private final IBookingDAO bookingDao;
 
+    /**
+     * Constructor for LoyaltyService.
+     * @param bookingDao booking data access object
+     */
     public LoyaltyService(IBookingDAO bookingDao) {
         this.bookingDao = bookingDao;
     }
 
+    /**
+     * Calculate the loyalty tier for a client.
+     * @param client the client to calculate the tier for
+     * @return the calculated loyalty tier
+     */
     public LoyaltyTier calculateTier(Client client) {
         if (client == null || client.getId() == null) {
             return new LoyaltyTier("Sin rango", 0, 0, 0);

@@ -16,6 +16,11 @@ import com.gestionmediterraneo.hotel.daos.IBookingDAO;
 import com.gestionmediterraneo.hotel.entities.Charge;
 import com.gestionmediterraneo.hotel.entities.Booking;
 
+/**
+ * REST controller for managing {@link Charge} resources.
+ *
+ * @author Gestión Mediterráneo
+ */
 @RestController
 @RequestMapping("/api/charges")
 @CrossOrigin(origins = {"http://localhost:3000"})

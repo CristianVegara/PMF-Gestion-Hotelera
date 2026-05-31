@@ -1,5 +1,10 @@
 package com.gestionmediterraneo.hotel.security;
 
+/**
+ * DTO for login request containing username and password.
+ *
+ * @author Gestión Mediterráneo
+ */
 public class LoginRequest {
 
     private String username;

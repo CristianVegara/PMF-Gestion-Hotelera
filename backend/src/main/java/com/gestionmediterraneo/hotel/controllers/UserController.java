@@ -32,6 +32,11 @@ import com.gestionmediterraneo.hotel.services.IEmployeeService;
 
 import jakarta.validation.Valid;
 
+/**
+ * REST controller for managing {@link User} resources.
+ *
+ * @author Gestión Mediterráneo
+ */
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/users")
@@ -39,7 +44,7 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
-    
+
     @Autowired
     private IEmployeeService employeeService;
 
@@ -86,7 +91,7 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result) {        
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result) {
         user.setCreatedAt(LocalDate.now());
         User newUser = null;
         Map<String, Object> response = new HashMap<>();
@@ -151,11 +156,11 @@ public class UserController {
 
         try {
             currentUser.setUsername(user.getUsername());
-            
+
             if (user.getPasswordHash() != null && !user.getPasswordHash().isEmpty()) {
                 currentUser.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
             }
-            
+
             currentUser.setRole(user.getRole());
             currentUser.setEmployee(user.getEmployee());
 

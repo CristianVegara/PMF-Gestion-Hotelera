@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import com.gestionmediterraneo.hotel.daos.IRefundDAO;
 import com.gestionmediterraneo.hotel.entities.Refund;
 
+/**
+ * REST controller for managing {@link Refund} resources.
+ *
+ * @author Gestión Mediterráneo
+ */
 @RestController
 @RequestMapping("/api/refunds")
 @CrossOrigin(origins = {"http://localhost:3000"})

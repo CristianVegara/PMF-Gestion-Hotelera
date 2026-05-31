@@ -12,50 +12,68 @@ import com.gestionmediterraneo.hotel.enums.BookingStatus;
 import com.gestionmediterraneo.hotel.enums.CheckInStatus;
 import com.gestionmediterraneo.hotel.enums.RoomType;
 
+/**
+ * Represents a hotel room booking made by a client.
+ *
+ * <p>A booking includes check-in/check-out dates, room type,
+ * booking status, check-in status, and the associated client and room.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see Client
+ * @see Room
+ * @see BookingStatus
+ */
 @Entity
 @Table(name="booking")
 public class Booking {
-    
+
+    /** Unique identifier for the booking. */
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    
+
+    /** Check-in date for this booking. */
     @NotNull(message = "no puede ser nulo")
     private LocalDate fechaEntrada;
-    
+
+    /** Check-out date for this booking. */
     @NotNull(message = "no puede ser nulo")
     private LocalDate fechaSalida;
-    
-    @NotNull(message = "no puede ser nulo")
-    @Enumerated(EnumType.ORDINAL) 
-    private BookingStatus estado;
-    
 
-    
+    /** Current status of the booking (confirmed, cancelled, etc.). */
     @NotNull(message = "no puede ser nulo")
-    @Enumerated(EnumType.ORDINAL) 
+    @Enumerated(EnumType.ORDINAL)
+    private BookingStatus estado;
+
+    /** Current check-in status (pending, checked in, checked out). */
+    @NotNull(message = "no puede ser nulo")
+    @Enumerated(EnumType.ORDINAL)
     private CheckInStatus checkInStatus;
 
+    /** Required room type for the booking (used when no specific room is assigned). */
     @NotNull(message = "no puede ser nulo")
-    @Enumerated(EnumType.ORDINAL) 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "room_type")
     private RoomType roomType;
-    
+
+    /** Client who made this booking. */
     @NotNull(message = "no puede ser nulo")
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonIgnoreProperties({"bookings", "activities"})
+    @JsonIgnoreProperties({"bookings", "activities", "invoices", "payments", "refunds"})
     private Client cliente;
 
+    /** Specific room assigned to this booking (nullable). */
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room habitacion;
-    
+
+    /** List of charges associated with this booking. */
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"booking"})
-    private List<Charge> charges = new ArrayList<>();       
- 
-	
+    private List<Charge> charges = new ArrayList<>();
+
+
 
 	public Long getId() {
 		return id;
@@ -113,10 +131,10 @@ public class Booking {
 	public RoomType getRoomType() {
 		return roomType;
 	}
-	
+
 	public void setRoomType(RoomType roomType) {
 		this.roomType = roomType;
-	}	
-	
-	
+	}
+
+
 }

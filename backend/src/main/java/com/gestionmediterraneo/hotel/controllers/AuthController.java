@@ -21,7 +21,7 @@ import com.gestionmediterraneo.hotel.security.LoginRequest;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-	
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -35,16 +35,16 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            
+
             String jwt = jwtUtils.generateJwtToken(authentication);
-            
+
             Map<String, Object> response = new HashMap<>();
             response.put("token", jwt);
             response.put("role", authentication.getAuthorities().iterator().next().getAuthority());
             response.put("username", authentication.getName());
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "Credenciales incorrectas: " + e.getMessage());

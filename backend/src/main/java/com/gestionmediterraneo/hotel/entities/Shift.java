@@ -5,24 +5,39 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Represents a specific work shift assigned to an employee on a given date.
+ *
+ * <p>A shift links an {@link Employee} to a {@link Schedule} on a
+ * particular {@code fecha} (date), with optional observations.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see Employee
+ * @see Schedule
+ */
 @Entity
 @Table(name="shifts")
 public class Shift {
+    /** Unique identifier for the shift. */
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    /** Date of the shift. */
     @Column(nullable = false)
-    private LocalDate fecha; 
+    private LocalDate fecha;
 
+    /** Employee assigned to this shift. */
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Employee employee;
 
+    /** Schedule (shift pattern) applied for this shift. */
     @JsonIgnoreProperties({"shifts"})
     @ManyToOne(fetch = FetchType.EAGER)
     private Schedule schedule;
 
+    /** Optional observations or notes about this shift. */
     private String observaciones;
 
 	public Long getId() {
@@ -64,7 +79,7 @@ public class Shift {
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
-    
-    
+
+
 
 }

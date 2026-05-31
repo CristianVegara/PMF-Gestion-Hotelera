@@ -9,10 +9,26 @@ import org.springframework.data.repository.query.Param;
 
 import com.gestionmediterraneo.hotel.entities.Invoice;
 
+/**
+ * Data Access Object for {@link Invoice} entities.
+ *
+ * @author Gestión Mediterráneo
+ */
 public interface IInvoiceDAO extends JpaRepository<Invoice, Long> {
 
+    /**
+     * Find invoices issued within the given date range.
+     * @param start start date (inclusive)
+     * @param end   end date (inclusive)
+     */
     List<Invoice> findByFechaEmisionBetween(LocalDate start, LocalDate end);
-    
+
+    /**
+     * Find all paid invoices whose associated booking overlaps the given date range.
+     * For invoices without a booking, uses the emission date instead.
+     * @param start start date (inclusive)
+     * @param end   end date (inclusive)
+     */
     @Query("""
             SELECT i FROM Invoice i
             WHERE i.pagada = true
@@ -32,6 +48,9 @@ public interface IInvoiceDAO extends JpaRepository<Invoice, Long> {
     /**
      * All invoices (paid and pending) for a client whose booking overlaps
      * the requested period.  Used for the client-expenses endpoint.
+     * @param clientId   the client identifier
+     * @param start      start date (inclusive)
+     * @param end        end date (inclusive)
      */
     @Query("""
             SELECT i FROM Invoice i
@@ -50,7 +69,9 @@ public interface IInvoiceDAO extends JpaRepository<Invoice, Long> {
             @Param("start") LocalDate start,
             @Param("end") LocalDate end);
 
+    /** Find invoices by booking ID. */
     List<Invoice> findByBooking_Id(Long bookingId);
 
+    /** Find paid invoices issued within the given date range. */
     List<Invoice> findByFechaEmisionBetweenAndPagadaTrue(LocalDate start, LocalDate end);
 }

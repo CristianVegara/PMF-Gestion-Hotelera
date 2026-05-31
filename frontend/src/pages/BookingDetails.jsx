@@ -109,8 +109,9 @@ const BookingDetails = () => {
       const roomData = await updateRoomResponse.json();
       const roomUpdated = roomData.room || roomData;
       
+      const { charges: _c, ...bookingWithoutCharges } = booking;
       const bookingToUpdate = {
-        ...booking,
+        ...bookingWithoutCharges,
         habitacion: {
           ...roomUpdated,
           type: roomTypesOrder.indexOf(roomUpdated.type) !== -1 ? roomTypesOrder.indexOf(roomUpdated.type) : roomUpdated.type,
@@ -135,7 +136,10 @@ const BookingDetails = () => {
         setBooking(updatedData);
         alert(`Check-In exitoso. Se asignó la habitación ${roomUpdated.number}.`);
       } else {
-        throw new Error('Error al actualizar la reserva');
+        const errorBody = await updateBookingResponse.text();
+        console.error('PUT booking falló:', updateBookingResponse.status, errorBody);
+        console.error('Payload enviado:', JSON.stringify(bookingToUpdate, null, 2));
+        throw new Error(`Error ${updateBookingResponse.status} al actualizar la reserva: ${errorBody}`);
       }
       
     } catch (error) {
@@ -188,8 +192,9 @@ const BookingDetails = () => {
       ? Object.keys(bookingStatusMapping).find(key => bookingStatusMapping[key] === booking.estado) || 'CONFIRMADA'
       : booking.estado || 'CONFIRMADA';
       
+      const { charges: _c, ...bookingWithoutCharges } = booking;
       const bookingToUpdate = {
-        ...booking,
+        ...bookingWithoutCharges,
         fechaSalida: hoy,
         habitacion: {
           ...roomUpdated,

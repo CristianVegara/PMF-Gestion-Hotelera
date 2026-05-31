@@ -9,18 +9,25 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gestionmediterraneo.hotel.daos.IScheduleDAO;
 import com.gestionmediterraneo.hotel.entities.Schedule;
 
+/**
+ * Implementation of {@link IScheduleService} for managing {@link Schedule} entities.
+ *
+ * @author Gestión Mediterráneo
+ */
 @Service
 public class ScheduleServiceImp implements IScheduleService {
 
     @Autowired
     private IScheduleDAO scheduleDao;
 
+    /** Retrieve all schedules. */
     @Override
     @Transactional(readOnly = true)
     public List<Schedule> findAll() {
         return (List<Schedule>) scheduleDao.findAll();
     }
 
+    /** Save a schedule. */
     @Override
     @Transactional
     public Schedule save(Schedule schedule) {

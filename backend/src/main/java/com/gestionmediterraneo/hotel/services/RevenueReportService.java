@@ -18,11 +18,24 @@ import com.gestionmediterraneo.hotel.entities.Invoice;
 import com.gestionmediterraneo.hotel.entities.InvoiceItem;
 import com.gestionmediterraneo.hotel.enums.InvoiceItemType;
 
+/**
+ * Service for calculating revenue reports from paid invoices.
+ *
+ * <p>Revenue is attributed to the booking stay period, not the invoice
+ * emission date. Supports optional filters by room, client, and item type.</p>
+ *
+ * @author Gestión Mediterráneo
+ */
 @Service
 public class RevenueReportService {
 
+    /** Invoice DAO. */
     private final IInvoiceDAO invoiceDao;
 
+    /**
+     * Constructor for RevenueReportService.
+     * @param invoiceDao invoice data access object
+     */
     public RevenueReportService(IInvoiceDAO invoiceDao) {
         this.invoiceDao = invoiceDao;
     }

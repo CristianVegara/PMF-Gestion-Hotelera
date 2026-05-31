@@ -10,34 +10,48 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 
+/**
+ * Represents a hotel package that bundles rooms, activities, and discounts.
+ *
+ * @author Gestión Mediterráneo
+ * @see Room
+ * @see Activity
+ * @see Discount
+ */
 @Entity
 @Table(name = "packages")
 public class Package {
-	
+
+	    /** Unique identifier for the package. */
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
+	    /** Name of the package. */
 	    private String nombre;
+	    /** Price of the package. */
 	    private Double precio;
 
+	    /** Activities included in this package. */
 	    @ManyToMany
 	    @JoinTable(
-	      name = "package_activities", 
-	      joinColumns = @JoinColumn(name = "paquete_id"), 
+	      name = "package_activities",
+	      joinColumns = @JoinColumn(name = "paquete_id"),
 	      inverseJoinColumns = @JoinColumn(name = "actividad_id"))
 	    private List<Activity> actividades;
 
+	    /** Rooms included in this package. */
 	    @ManyToMany
 	    @JoinTable(
-	      name = "package_rooms", 
-	      joinColumns = @JoinColumn(name = "paquete_id"), 
+	      name = "package_rooms",
+	      joinColumns = @JoinColumn(name = "paquete_id"),
 	      inverseJoinColumns = @JoinColumn(name = "habitacion_id"))
 	    private List<Room> habitaciones;
 
+	    /** Discounts included in this package. */
 	    @ManyToMany
 	    @JoinTable(
-	      name = "package_discounts", 
-	      joinColumns = @JoinColumn(name = "paquete_id"), 
+	      name = "package_discounts",
+	      joinColumns = @JoinColumn(name = "paquete_id"),
 	      inverseJoinColumns = @JoinColumn(name = "descuento_id"))
 	    private List<Discount> descuentos;
 
@@ -87,6 +101,5 @@ public class Package {
 
 		public void setDescuentos(List<Discount> descuentos) {
 			this.descuentos = descuentos;
-		}  
+		}
 }
-

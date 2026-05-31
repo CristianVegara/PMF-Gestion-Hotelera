@@ -17,6 +17,11 @@ import com.gestionmediterraneo.hotel.entities.Payment;
 import com.gestionmediterraneo.hotel.enums.InvoiceStatus;
 import com.gestionmediterraneo.hotel.services.AuditLogService;
 
+/**
+ * REST controller for managing {@link Payment} resources.
+ *
+ * @author Gestión Mediterráneo
+ */
 @RestController
 @RequestMapping("/api/payments")
 @CrossOrigin(origins = {"http://localhost:3000"})

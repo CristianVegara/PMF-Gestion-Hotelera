@@ -11,20 +11,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gestionmediterraneo.hotel.services.IClientService;
 import com.gestionmediterraneo.hotel.services.IUserService;
 
+/**
+ * Test controller for verifying backend connectivity.
+ *
+ * @author Gestión Mediterráneo
+ */
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
-	
+
 	@Autowired
 	private IUserService userService;
-	
+
 	@Autowired
 	private IClientService clientService;
-	
-	
+
+
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'RECEPCIONISTA', 'SUPERVISOR', 'ADMIN')")
     public String test() {
-        return "El Backend responde la llamada";    
+        return "El Backend responde la llamada";
     }
 }

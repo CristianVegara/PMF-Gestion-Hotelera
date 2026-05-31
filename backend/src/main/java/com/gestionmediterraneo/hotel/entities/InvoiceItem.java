@@ -10,35 +10,52 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Represents a single line item on an {@link Invoice}.
+ *
+ * <p>Each item has a type (room, activity, minibar, cleaning, extra),
+ * a description, quantity, unit price, and total amount.</p>
+ *
+ * @author Gestión Mediterráneo
+ * @see Invoice
+ * @see InvoiceItemType
+ */
 @Entity
 @Table(name = "invoice_items")
 public class InvoiceItem {
 
+    /** Unique identifier for the invoice item. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** Invoice this item belongs to. */
     @ManyToOne
     @JoinColumn(name = "invoice_id", nullable = false)
     @JsonIgnoreProperties({"items", "hibernateLazyInitializer", "handler"})
     private Invoice invoice;
 
+    /** Type of the invoice item. */
     @NotNull(message = "Debe indicar el tipo de ítem")
     @Enumerated(EnumType.STRING)
     private InvoiceItemType type;
 
+    /** Description of the item. */
     @NotNull(message = "Debe indicar la descripción")
     @Size(min = 3, max = 255)
     private String description;
 
+    /** Quantity of the item. */
     @NotNull(message = "Debe indicar la cantidad")
     @Positive(message = "La cantidad debe ser mayor que 0")
     private Integer quantity;
 
+    /** Unit price per item. */
     @NotNull(message = "Debe indicar el precio unitario")
     @Positive(message = "El precio unitario debe ser mayor que 0")
     private BigDecimal unitPrice;
 
+    /** Total amount for this item (quantity × unitPrice). */
     @NotNull(message = "Debe indicar el total")
     @Positive(message = "El total debe ser mayor que 0")
     private BigDecimal amount;
