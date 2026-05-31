@@ -182,25 +182,25 @@ public class BookingController {
             booking.setFechaEntrada(bookingDetails.getFechaEntrada());
             booking.setFechaSalida(bookingDetails.getFechaSalida());
 
-            booking.setCliente(bookingDetails.getCliente());
-
-            booking.setEstado(bookingDetails.getEstado());
-            bookingDao.saveAndFlush(booking);
-
-            booking.setEstado(bookingDetails.getEstado());
-
-            booking.setCheckInStatus(bookingDetails.getCheckInStatus());
-            booking.setRoomType(bookingDetails.getRoomType());
-
-            Room room = null;
-
+            if (bookingDetails.getCliente() != null) {
+                booking.setCliente(bookingDetails.getCliente());
+            }
+            if (bookingDetails.getEstado() != null) {
+                booking.setEstado(bookingDetails.getEstado());
+            }
+            if (bookingDetails.getCheckInStatus() != null) {
+                booking.setCheckInStatus(bookingDetails.getCheckInStatus());
+            }
+            if (bookingDetails.getRoomType() != null) {
+                booking.setRoomType(bookingDetails.getRoomType());
+            }
             if (bookingDetails.getHabitacion() != null) {
                 booking.setHabitacion(bookingDetails.getHabitacion());
-                room = booking.getHabitacion();
             }
 
-            bookingDao.saveAndFlush(booking);
+            bookingDao.save(booking);
 
+            Room room = booking.getHabitacion();
             if (room != null) {
                 roomDao.save(room);
             }

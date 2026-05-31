@@ -60,7 +60,7 @@ public class Booking {
     @NotNull(message = "no puede ser nulo")
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonIgnoreProperties({"bookings", "activities"})
+    @JsonIgnoreProperties({"bookings", "activities", "invoices", "payments", "refunds"})
     private Client cliente;
 
     /** Specific room assigned to this booking (nullable). */
